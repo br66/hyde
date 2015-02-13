@@ -28,7 +28,7 @@ void Init_All(); //this function exists
 /*********************************
 FOR OBJECTS
 *********************************/
-//objTest_t *star;
+objTest_t *star;
 const int OBJTEST_WIDTH = 20;
 const int OBJTEST_HEIGHT = 20;
 
@@ -36,8 +36,8 @@ const int OBJTEST_HEIGHT = 20;
 FUNCTIONS FOR OBJTEST
 *********************************/
 void handle_Input(objTest_t *self);
-//void moveObject(objTest_t *self);
-//void showObject(objTest_t *self);
+void moveObject(objTest_t *self);
+void showObject(objTest_t *self);
 
 void applySurface (int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
@@ -51,7 +51,7 @@ void applySurface (int x, int y, SDL_Surface* source, SDL_Surface* destination, 
     SDL_BlitSurface( source, NULL, destination, &offset );
 }
 
-/*void handle_Input(objTest_t *self) //shouldn't this be at the top of the file?? 
+void handle_Input(objTest_t *self) //shouldn't this be at the top of the file?? 
 {
 	//printf("handle input\n");
 	if ( eventT.type == SDL_KEYDOWN ) // << not doing this line
@@ -77,7 +77,7 @@ void applySurface (int x, int y, SDL_Surface* source, SDL_Surface* destination, 
             case SDLK_RIGHT: self->xVel -= OBJTEST_WIDTH / 2; break;
 		}
 	}
-}*/
+}
 
 int main(int argc, char *argv[]) 
 {	
@@ -91,15 +91,16 @@ int main(int argc, char *argv[])
 
 	Uint8 *keys;
 
-	//star->x = 0;
-	//star->y = 0;
-	//star->xVel = 0;
-	//star->yVel = 0;
+	star->x = 0;
+	star->y = 0;
+	star->xVel = 0;
+	star->yVel = 0;
+	
 
 	//ZOMG JUS LIEK QUAEK TOOOOO
-	//star->handleInput = handle_Input; //just because i set it, does it mean it will happen?
-	//star->move = moveObject;
-	//star->show = showObject;
+	star->handleInput = handle_Input; //just because i set it, does it mean it will happen?
+	star->move = moveObject;
+	star->show = showObject;
 
 	Init_All();
 
@@ -120,9 +121,9 @@ int main(int argc, char *argv[])
 /***********************************************************************************************************************/
 	do
 	{
-		//star->handleInput(star);
-		//star->move(star);
-		//star->show(star);
+		star->handleInput(star);
+		star->move(star);
+		star->show(star);
 		
 		ResetBuffer();
 		NextFrame();
@@ -164,7 +165,7 @@ void Init_All()
   atexit(CleanUpAll); //when the program exits
 }
 
-/*void moveObject (objTest_t *self)
+void moveObject (objTest_t *self)
 {
 	self->x += self->xVel;
 
@@ -184,4 +185,4 @@ void Init_All()
 void showObject (objTest_t *self)
 {
 	applySurface(self->x, self->y, dot, screen, NULL);
-}*/
+}

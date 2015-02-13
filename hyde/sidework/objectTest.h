@@ -12,8 +12,8 @@ typedef struct objTest_s
 	int xVel, yVel;
 
 	void (*handleInput) (struct objTest_s *self);
-	//void (*move) (objTest_t *self);
-	//void (*show) (objTest_t *self);
+	void (*move) (struct objTest_s *self);
+	void (*show) (struct objTest_s *self);
 
 } objTest_t; //created an entiity type for entity
 
