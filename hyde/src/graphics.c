@@ -1,5 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
+#include <SDL.h>
+
 #include "sprite.h"
 #include "graphics.h"
 #include "mouse.h"

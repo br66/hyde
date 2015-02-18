@@ -1,18 +1,34 @@
 #include <stdlib.h>
-#include "SDL.h"
-#include "SDL_image.h"
+#include <SDL.h>
+#include <SDL_image.h>
 #include "graphics.h"
+
 #include "sprite.h"
+#include "entity.h"
 
 extern SDL_Surface *screen;
 extern SDL_Surface *buffer; /*pointer to the draw buffer*/
 extern SDL_Rect Camera;
+
+SDL_Event event;
 
 void Init_All();
 
 int getImagePathFromFile(char *filepath,char * filename);
 int getCoordinatesFromFile(int *x, int *y,char * filename);
 void addCoordinateToFile(char *filepath,int x, int y);
+
+void applySurface (int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
+{
+	//clip = NULL;
+
+	SDL_Rect offset;
+
+    offset.x = x;
+    offset.y = y;
+
+    SDL_BlitSurface( source, NULL, destination, &offset );
+}
 
 
 /*this program must be run from the directory directly below images and src, not from within src*/
@@ -22,6 +38,9 @@ int main(int argc, char *argv[])
   SDL_Surface *temp = NULL;
   SDL_Surface *bg;
   Sprite *tile;
+  //
+  entity_t *entity1;
+  //
   int done;
   int keyn;
   int i;
@@ -50,7 +69,18 @@ int main(int argc, char *argv[])
             DrawSprite(tile,buffer,(i * tile->w) + tx,ty,0);
         }
   }
+
+  //
+  //entity1 = Init_Ent();
+  //entity1->sprite = LoadSprite("images/32_32_16_2sprite.png",32,32);
+  //entity1->x = 0;
+  //entity1->y = 0;
+  //entity1->xVel = 0;
+  //entity1->yVel = 0;
+  //
+
   done = 0;
+  //////////////////////////////////////////////////
   do
   {
     ResetBuffer ();
@@ -58,10 +88,22 @@ int main(int argc, char *argv[])
     NextFrame();
     SDL_PumpEvents();
     keys = SDL_GetKeyState(&keyn);
+
+	//applySurface(star->x, star->y, bg, screen, NULL);
+
+	//if(keys[SDLK_UP])
+		//{
+			//star->xVel += 2;
+			//star->x += star->xVel;
+			
+			//printf("guhhhh");
+		//}
+
     if(SDL_GetMouseState(&mx,&my))
     {
       DrawSprite(tile,buffer,(mx /32) * 32,(my /32) * 32,0); 
     }
+
     if(keys[SDLK_ESCAPE])done = 1;
   }while(!done);
   exit(0);		/*technically this will end the program, but the compiler likes all functions that can return a value TO return a value*/

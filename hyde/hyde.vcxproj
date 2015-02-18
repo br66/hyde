@@ -23,6 +23,9 @@
     <ClInclude Include="src\mouse.h" />
     <ClInclude Include="src\sprite.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="todo.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D42D3D16-3BF2-4574-A7EB-78F654EAAB46}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

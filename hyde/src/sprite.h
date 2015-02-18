@@ -1,6 +1,5 @@
-#include <SDL.h>
-#include <SDL_image.h>
-
+//#include "SDL.h"
+#ifndef __SPRITE_H__
 typedef struct Sprite_T
 {
   SDL_Surface *image;		/*pointer to the actual image in memory*/
@@ -10,6 +9,7 @@ typedef struct Sprite_T
   int color1,color2,color3;		/*if the file was palette swapped these are the colors that were changed*/
   int used;					/*used by the maintanenc functions to keep track of how many times a single sprite is being used*/
 }Sprite;
+
 
 void SwapSprite(SDL_Surface *sprite,int color1,int color2,int color3);
 void InitSpriteList();
@@ -24,3 +24,14 @@ void CloseSprites();		/*call this before you exit to make sure all the memory th
 
 void InitMouseSprite();
 void DrawMouseSprite();
+
+#endif
+
+enum AnimState
+{
+	IDLE = 0,
+	WALK,
+	JUMP,
+	DIE,
+	TRANSFORM,
+};

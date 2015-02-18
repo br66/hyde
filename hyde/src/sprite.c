@@ -1,3 +1,5 @@
+#include <SDL.h>
+#include <SDL_image.h>
 #include "sprite.h"
 #include "graphics.h"
 #include "mouse.h"
