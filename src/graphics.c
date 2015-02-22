@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_image.h>
 
 /* Load Image from file function */
 SDL_Surface *load_Image (char *filename)
@@ -14,7 +15,7 @@ SDL_Surface *load_Image (char *filename)
 
 	//getting the image from the file system
 	//attaching an address to the pointer
-	loadedImage = SDL_LoadBMP(filename);
+	loadedImage = IMG_Load(filename);
 
 	//if my pointer is not null / if i was able to get the image successfully
 	if( loadedImage != NULL)

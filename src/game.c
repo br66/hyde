@@ -5,11 +5,14 @@
 #include "graphics.h"
 
 SDL_Surface *screen = NULL;
+//SDL_Surface *image = NULL;
 
 //For events (ex. key presses)
 SDL_Event event;
 
 /* game functions */
+
+/* Start everything */
 bool init()
 {
 	//Initialize SDL and checks if it did it successfully
@@ -34,13 +37,35 @@ bool init()
 	return true;
 }
 
+/* for loading the files all at once, foreshadow to precaching? */
+bool load_Files()
+{
+	//image = load_Image ("x.png")
 
+	//if (image == NULL)
+	/*{
+		return false;
+	}
+
+	return true; */
+}
+
+/* for program exiting, cleaning and freeing up memory */
+void clear()
+{
+	//SDL_FreeSurface (image);
+
+	//Will free the screen surface and close SDL
+	SDL_Quit();
+}
 
 /* -------------- */
 
 //create main or else (error LNK2001: unresolved external symbol _SDL_main)
 int main(int argc, char *argv[])
 {	
+	bool done = false;
+
 	SDL_Surface *message = NULL; //image for loading/showing
 	SDL_Surface *background = NULL; //image visible
 	
@@ -85,24 +110,25 @@ int main(int argc, char *argv[])
 
 	//The window will stay open for 2000/1000 sec a.k.a. 2 seconds.
 	//SDL takes time in milliseconds.
-	SDL_Delay (2000);
+	//SDL_Delay (2000);
 
+	do
+	{
+		//while there is still things to do
+		while (SDL_PollEvent (&event))
+		{
+			//do them
+
+			if(event.type == SDL_QUIT)
+			{
+				done = true;
+			}
+		}
+	}
+	
+	while(!done);
 	SDL_FreeSurface (message);
 	SDL_FreeSurface (background);
-
-	//Will free the screen surface
-	SDL_Quit();
-
-	//int done;
-
-	//done = 0;
-	//////////////////////////
-	//do
-	//{
-
-	//}
-	//////////////////////////
-	//while(!done);
-	//exit(0);
+	exit(0);
 	return 0;
 }
