@@ -4,15 +4,16 @@
 #include "boolean.h"
 #include "graphics.h"
 
-SDL_Surface *screen = NULL;
-//SDL_Surface *image = NULL;
+SDL_Surface *screen = NULL; //application window
+SDL_Surface *message = NULL; //image for loading/showing
+SDL_Surface *background = NULL; //image visible
 
 //For events (ex. key presses)
 SDL_Event event;
 
-/* game functions */
+/* game functions ----------------------------------------------------------------------------------------------------------------------------- */
 
-/* Start everything */
+// Start everything
 bool init()
 {
 	//Initialize SDL and checks if it did it successfully
@@ -40,44 +41,11 @@ bool init()
 /* for loading the files all at once, foreshadow to precaching? */
 bool load_Files()
 {
-	//image = load_Image ("x.png")
-
-	//if (image == NULL)
-	/*{
-		return false;
-	}
-
-	return true; */
-}
-
-/* for program exiting, cleaning and freeing up memory */
-void clear()
-{
-	//SDL_FreeSurface (image);
-
-	//Will free the screen surface and close SDL
-	SDL_Quit();
-}
-
-/* -------------- */
-
-//create main or else (error LNK2001: unresolved external symbol _SDL_main)
-int main(int argc, char *argv[])
-{	
-	bool done = false;
-
-	SDL_Surface *message = NULL; //image for loading/showing
-	SDL_Surface *background = NULL; //image visible
-	
-	if (init() == false)
-	{
-		return 1;
-	}
-
 	/*LOADING IMAGE ONE */
 	background = load_Image("sprite/tree.bmp");
 	if (background == NULL)
 	{
+		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
 
@@ -85,7 +53,38 @@ int main(int argc, char *argv[])
 	message = load_Image("sprite/pass.bmp");
 	if (message == NULL)
 	{
+		return false;
 		printf("error: %s\n", SDL_GetError());
+	}
+
+	return true;
+}
+
+/* for program exiting, cleaning and freeing up memory */
+void clear()
+{
+	SDL_FreeSurface (message);
+	SDL_FreeSurface (background);
+
+	//Will free the screen surface and close SDL
+	SDL_Quit();
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------- */
+
+//create main or else (error LNK2001: unresolved external symbol _SDL_main)
+int main(int argc, char *argv[])
+{	
+	bool done = false;
+	
+	if ( init() == false)
+	{
+		return 1;
+	}
+
+	if ( load_Files() == false)
+	{
+		return 1;
 	}
 
 	/* Efficiency: Instead of loading the image 4 times,
@@ -127,8 +126,7 @@ int main(int argc, char *argv[])
 	}
 	
 	while(!done);
-	SDL_FreeSurface (message);
-	SDL_FreeSurface (background);
+	clear();
 	exit(0);
 	return 0;
 }
