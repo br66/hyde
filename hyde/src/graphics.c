@@ -109,6 +109,7 @@ void NextFrame()
   Uint32 Then;
   SDL_BlitSurface(screen,NULL,videobuffer,NULL);/*copy everything we did to the video surface*/
   SDL_Flip(videobuffer);							/*and then update the screen*/
+
   Then = NOW;									/*these next few lines  are used to show how long each frame takes to update.  */
   NOW = SDL_GetTicks();
 /*  fprintf(stdout,"Ticks passed this frame: %i\n", NOW - Then);*/

@@ -71,12 +71,12 @@ int main(int argc, char *argv[])
   }
 
   //
-  //entity1 = Init_Ent();
-  //entity1->sprite = LoadSprite("images/32_32_16_2sprite.png",32,32);
-  //entity1->x = 0;
-  //entity1->y = 0;
-  //entity1->xVel = 0;
-  //entity1->yVel = 0;
+  entity1 = Init_Ent();
+  entity1->sprite = LoadSprite("dot.bmp",32,32);
+  entity1->x = 0;
+  entity1->y = 0;
+  entity1->xVel = 0;
+  entity1->yVel = 0;
   //
 
   done = 0;
@@ -84,25 +84,26 @@ int main(int argc, char *argv[])
   do
   {
     ResetBuffer ();
-    DrawMouse();
-    NextFrame();
+ 
     SDL_PumpEvents();
     keys = SDL_GetKeyState(&keyn);
 
-	//applySurface(star->x, star->y, bg, screen, NULL);
+	//applySurface(entity1->x, entity1->y, temp, screen, NULL);
 
-	//if(keys[SDLK_UP])
-		//{
-			//star->xVel += 2;
-			//star->x += star->xVel;
+	if(keys[SDLK_UP])
+		{
+			entity1->xVel += 2;
+			entity1->x += entity1->xVel;
 			
-			//printf("guhhhh");
-		//}
+			//make black bg first
+		}
 
     if(SDL_GetMouseState(&mx,&my))
     {
-      DrawSprite(tile,buffer,(mx /32) * 32,(my /32) * 32,0); 
+      DrawSprite(tile,screen,(mx /32) * 32,(my /32) * 32,0); 
     }
+    DrawMouse();
+	NextFrame();
 
     if(keys[SDLK_ESCAPE])done = 1;
   }while(!done);
