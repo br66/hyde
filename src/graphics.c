@@ -34,6 +34,15 @@ SDL_Surface *load_Image (char *filename)
 		//is more efficient.  chances are you may need this image again; but now
 		//since you optimize it when it is first loaded, it doesn't need to be
 		//optimized again upon drawing it to the surface
+
+		//Color Keying
+		if (finalImage != NULL)
+		{
+			//white
+			Uint32 colorkey = SDL_MapRGB( finalImage->format, 0xFF, 0xFF, 0xFF );
+			//get rid of it
+			SDL_SetColorKey (finalImage, SDL_SRCCOLORKEY, colorkey);
+		}
 	}
 
 	//return pointer to the optimized image
