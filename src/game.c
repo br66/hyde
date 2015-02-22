@@ -1,132 +1,124 @@
+//Include SDL to use... SDL
 #include <SDL.h>
 #include <SDL_image.h>
 
+//Include header files I made
 #include "boolean.h"
 #include "graphics.h"
+#include "gfunc.h"
 
 SDL_Surface *screen = NULL; //application window
-SDL_Surface *message = NULL; //image for loading/showing
 SDL_Surface *background = NULL; //image visible
+
+SDL_Surface *sheet = NULL; //image for loading/showing
+SDL_Rect clip[ 4 ]; //rectangle for breaking the image into sections
 
 //For events (ex. key presses)
 SDL_Event event;
 
-/* game functions ----------------------------------------------------------------------------------------------------------------------------- */
-
-// Start everything
-bool init()
-{
-	//Initialize SDL and checks if it did it successfully
-	/*SDL's subsystems (video, audio, timers, engine components) are started up */
-	if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 )
-	{
-		return false;
-	}
-
-	//Set up the screen and check if it did it successfully
-	/*Fourth argument creates the screens surface in system memory */
-	screen = SDL_SetVideoMode (SCREEN_WIDTH, SCREEN_HEIGHT, BITSPERPIXEL, SDL_SWSURFACE);
-	if (screen == NULL)
-	{
-		return false;
-	}
-
-	/* Setting the window title */
-	SDL_WM_SetCaption ("Game", NULL);
-
-	/* If I didn't screw up anything, return true. */
-	return true;
-}
-
-/* for loading the files all at once, foreshadow to precaching? */
-bool load_Files()
-{
-	/*LOADING IMAGE ONE */
-	background = load_Image("sprite/tree.bmp");
-	if (background == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	/*LOADING IMAGE TWO */
-	message = load_Image("sprite/pass.bmp");
-	if (message == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	return true;
-}
-
-/* for program exiting, cleaning and freeing up memory */
-void clear()
-{
-	SDL_FreeSurface (message);
-	SDL_FreeSurface (background);
-
-	//Will free the screen surface and close SDL
-	SDL_Quit();
-}
-
-/* ---------------------------------------------------------------------------------------------------------------------------------------------- */
-
 //create main or else (error LNK2001: unresolved external symbol _SDL_main)
 int main(int argc, char *argv[])
 {	
+	//boolean created for making sure the application stays active until this boolean equals true
 	bool done = false;
 	
+	/* Start everything (SDL, open a window, etc.) and make sure it did it successfully */
 	if ( init() == false)
 	{
 		return 1;
 	}
 
+	/* This func. loads all the sprites and checks that I did it correctly */
 	if ( load_Files() == false)
 	{
 		return 1;
 	}
 
-	/* Efficiency: Instead of loading the image 4 times,
-	we just show it four times. */
+	//top left position on the window
+	clip[0].x = 0;
+	clip[0].y = 0;
+	clip[0].w = 100;
+	clip[0].h = 100;
 
+	//top right position on the window
+	clip[1].x = 100;
+	clip[1].y = 0;
+	clip[1].w = 100;
+	clip[1].h = 100;
+
+	//botttom left position on the window
+	clip[2].x = 0;
+	clip[2].y = 100;
+	clip[2].w = 100;
+	clip[2].h = 100;
+
+	//bottom right position on the window
+	clip[3].x = 100;
+	clip[3].y = 100;
+	clip[3].w = 100;
+	clip[3].h = 100;
+
+	/* Fills the application window with the color white (0xFF, 0xFF, 0xFF) */
+	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
+
+	//Instead of loading the image 4 times, we just show it four times.
 	/* Presenting the background to the screen */
-	show_Surface( 0, 0, background, screen);
-	show_Surface( 0, 375, background, screen);
-	show_Surface( 500, 0, background, screen);
-	show_Surface( 500, 375, background, screen);
+	//show_Surface( 0, 0, background, screen, NULL);
+	//show_Surface( 0, 375, background, screen, NULL);
+	//show_Surface( 500, 0, background, screen, NULL);
+	//show_Surface( 500, 375, background, screen, NULL);
 
-	/* Showing the pass image now */
-	show_Surface( 0, 0, message, screen);
+	/* Showing the spreadsheet now */
+	show_Surface( 0, 0, sheet, screen, &clip[0]);
+	show_Surface( 540, 0, sheet, screen, &clip[1]);
+	show_Surface( 0, 380, sheet, screen, &clip[2]);
+	show_Surface( 540, 380, sheet, screen, &clip[3]);
 
 	/* Function so that the screen is constantly updated
 	Think of a old motion picture; old picture gets replaced
 	with new picture to show new things happening */
+	SDL_Flip(screen);
 	/* Another way to look at it would be frames: if this
 	function is not used the game would basically run at 0
 	frames per second.  You would see no movemnt or anything. */
-	SDL_Flip(screen);
 
 	//The window will stay open for 2000/1000 sec a.k.a. 2 seconds.
-	//SDL takes time in milliseconds.
 	//SDL_Delay (2000);
+	//SDL takes time in milliseconds.
 
+	/* This is the gameloop, where things happen.  If you're coming from Unity,
+	think of this as FixedUpdate, where things happen every time.  It runs continously
+	waiting for user input, updating to show things happening, rendering, and tracking
+	the passage of time.  It allows the game to continously run.  It is a basic state
+	machine. I can't think of any other way to describe it; without it you have 
+	no game. */
+	
+	/* GAME ------------------------------------------------------------------------- */
 	do
 	{
-		//while there is still things to do
+		//While there is still things to do
 		while (SDL_PollEvent (&event))
 		{
-			//do them
+			//Do them
+			//Unless, the user presses Quit (the x button on the window)
 
 			if(event.type == SDL_QUIT)
 			{
+				//Game is done
 				done = true;
 			}
 		}
 	}
 	
-	while(!done);
+	while(!done); //Part of the do-while loop "Do game things while done is false (!done)"
+	
+	//When done equals true, the game escape the do-while loop (gameloop) and should reach the next line.
+	//Free up the memory the game is using
 	clear();
+
+	//These last two lines fully exit the game.
 	exit(0);
 	return 0;
+
+	/* GAME -------------------------------------------------------------------------- */
 }

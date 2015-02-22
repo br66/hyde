@@ -1,0 +1,7 @@
+#include <SDL.h>
+
+/* Header file for game functions (loading, clearing, etc.) */
+
+bool init();
+bool load_Files();
+void clear();

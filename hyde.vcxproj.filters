@@ -27,7 +27,7 @@
     <ClInclude Include="src\boolean.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game.h">
+    <ClInclude Include="src\gfunc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gfunc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
