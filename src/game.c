@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
 	SDL_Surface *message = NULL; //image for loading/showing
-	//SDL_Surface *background = NULL; //image visible
+	SDL_Surface *background = NULL; //image visible
 	SDL_Surface *screen = NULL;
 
 	/*SDL'S subsystems (video, audio, timers, engine components) are started up */
@@ -20,12 +20,29 @@ int main(int argc, char *argv[])
 	SDL_WM_SetCaption ("Game", NULL);
 	
 	/*LOADING IMAGE ONE */
-	message = load_Image("pass.bmp");
+	background = load_Image("sprite/tree.bmp");
+	if (background == NULL)
+	{
+		printf("error: %s\n", SDL_GetError());
+	}
+
+	/*LOADING IMAGE TWO */
+	message = load_Image("sprite/pass.bmp");
 	if (message == NULL)
 	{
 		printf("error: %s\n", SDL_GetError());
 	}
 
+	/* Efficiency: Instead of loading the image 4 times,
+	we just show it four times. */
+
+	/* Presenting the background to the screen */
+	show_Surface( 0, 0, background, screen);
+	show_Surface( 0, 375, background, screen);
+	show_Surface( 500, 0, background, screen);
+	show_Surface( 500, 375, background, screen);
+
+	/* Showing the pass image now */
 	show_Surface( 0, 0, message, screen);
 
 	SDL_Flip(screen);
