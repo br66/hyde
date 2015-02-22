@@ -24,6 +24,12 @@
     <ClInclude Include="src\sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\boolean.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entity.c">
