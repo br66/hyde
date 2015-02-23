@@ -8,20 +8,24 @@
 #include "graphics.h"
 #include "gfunc.h"
 
-SDL_Surface *screen = NULL; //application window
-SDL_Surface *background = NULL; //image visible
-SDL_Surface *message = NULL; //image for loading/showing
+/* These SDL instances already exist in gfunc.c. I am 
+grabbing them from there because I need it here. */
+extern SDL_Surface *screen;
+extern SDL_Surface *background;
+
+extern SDL_Surface *upMessage;
+extern SDL_Surface *downMessage;
+extern SDL_Surface *leftMessage;
+extern SDL_Surface *rightMessage;
+
+extern SDL_Surface *message;
+
+extern TTF_Font *font;
+extern SDL_Color textColor;
 
 //SDL_Rect clip[ 4 ]; //rectangle for breaking the image into sections
 
-/* For events (ex. key presses) */
-SDL_Event event;
-
-/* Telling the game that we will be using a font, defined in gfunc.c */
-TTF_Font *font = NULL;
-
-/* Telling the game what font the color will be  In this case, white */
-SDL_Color textColor = {255, 255, 255 };
+extern SDL_Event event;
 
 //create main or else (error LNK2001: unresolved external symbol _SDL_main)
 int main(int argc, char *argv[])
@@ -37,6 +41,31 @@ int main(int argc, char *argv[])
 
 	/* This func. loads all the sprites and checks that I did it correctly */
 	if ( load_Files() == false)
+	{
+		return 1;
+	}
+
+	//Telling the game what the messages will say, what color, and what font to use
+	upMessage = TTF_RenderText_Solid(font, "Up", textColor);
+	if ( upMessage == NULL)
+	{
+		return 1;
+	}
+
+	downMessage = TTF_RenderText_Solid(font, "Down", textColor);
+	if ( upMessage == NULL)
+	{
+		return 1;
+	}
+
+	leftMessage = TTF_RenderText_Solid(font, "Left", textColor);
+	if ( upMessage == NULL)
+	{
+		return 1;
+	}
+
+	rightMessage = TTF_RenderText_Solid(font, "Right", textColor);
+	if ( upMessage == NULL)
 	{
 		return 1;
 	}
@@ -68,8 +97,7 @@ int main(int argc, char *argv[])
 	*/
 
 	/* Fills the application window with the color white (0xFF, 0xFF, 0xFF) */
-	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
-
+	//SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
 
 	//Instead of loading the image 4 times, we just show it four times.
 	/* Presenting the background to the screen */
@@ -78,22 +106,13 @@ int main(int argc, char *argv[])
 	show_Surface( 500, 0, background, screen, NULL);
 	show_Surface( 500, 375, background, screen, NULL);
 
-	/* Showing the text */
-	show_Surface(10, 10, message, screen, NULL);
+	//show_Surface(10, 10, upMessage, screen, NULL);
 
 	/* Showing the spreadsheet now */
 	//show_Surface( 0, 0, sheet, screen, &clip[0]);
 	//show_Surface( 540, 0, sheet, screen, &clip[1]);
 	//show_Surface( 0, 380, sheet, screen, &clip[2]);
 	//show_Surface( 540, 380, sheet, screen, &clip[3]);
-
-	/* Function so that the screen is constantly updated
-	Think of a old motion picture; old picture gets replaced
-	with new picture to show new things happening */
-	SDL_Flip(screen);
-	/* Another way to look at it would be frames: if this
-	function is not used the game would basically run at 0
-	frames per second.  You would see no movemnt or anything. */
 
 	//The window will stay open for 2000/1000 sec a.k.a. 2 seconds.
 	//SDL_Delay (2000);
@@ -113,14 +132,39 @@ int main(int argc, char *argv[])
 		while (SDL_PollEvent (&event))
 		{
 			//Do them
-			//Unless, the user presses Quit (the x button on the window)
-
-			if(event.type == SDL_QUIT)
+			//In the event that a key has been pressed...
+			if ( event.type == SDL_KEYDOWN )
+			{
+				//system for checking what key has been pressed
+				switch ( event.key.keysym.sym )
+				{
+					case SDLK_UP: message = upMessage; break;
+					case SDLK_DOWN: message = downMessage; break;
+					case SDLK_LEFT: message = leftMessage; break;
+					case SDLK_RIGHT: message = rightMessage; break;
+				}
+			}
+			//If the user presses Quit (the x button on the window)
+			else if(event.type == SDL_QUIT)
 			{
 				//Game is done
 				done = true;
 			}
 		}
+
+		/* Showing the text only when a message needs to be displayed */
+		if (message != NULL)
+		{
+			/* Text keeps overlapping each other, recreate bg to fix problem */
+			show_Surface (0, 0, background, screen, NULL);
+			/* Show message in the middle of the screen" */
+			show_Surface( (SCREEN_WIDTH - message->w) / 2, (SCREEN_HEIGHT - message->h)/2, message, screen, NULL );
+			/* Resets message */
+			message = NULL;
+		}
+
+		/* Function so that the screen is constantly updated so you can see things happening as they happen */
+		SDL_Flip(screen);
 	}
 	
 	while(!done); //Part of the do-while loop "Do game things while done is false (!done)"

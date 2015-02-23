@@ -5,18 +5,26 @@
 #include "gfunc.h"
 #include "graphics.h"
 
-//These SDL surfaces already exist in game.c
-//I am grabbing them from that file because
-//I need it here.
-extern SDL_Surface *screen;
-extern SDL_Surface *message;
-extern SDL_Surface *background;
+SDL_Surface *screen = NULL;		// application window
+SDL_Surface *background = NULL; // surface that will be background
 
-extern TTF_Font *font;
-extern SDL_Color textColor;
+SDL_Surface *upMessage = NULL;	// surfaces for loading/showing a notice on the screen that a key has been pressed
+SDL_Surface *downMessage = NULL;
+SDL_Surface *leftMessage = NULL;
+SDL_Surface *rightMessage = NULL;
 
-// Start everything
-bool init()
+SDL_Surface *message = NULL;
+
+/* Telling the game that we will be using a font, defined in gfunc.c */
+TTF_Font *font = NULL;
+
+/* Telling the game what font the color will be  In this case, white */
+SDL_Color textColor = { 255, 255, 255 };
+
+/* For events (ex. key presses) */
+SDL_Event event;
+
+bool init() // Start everything
 {
 	//Initialize SDL and checks if it did it successfully
 	/*SDL's subsystems (video, audio, timers, engine components) are started up */
@@ -46,7 +54,7 @@ bool init()
 	return true;
 }
 
-/* for loading the files all at once, foreshadow to precaching? */
+/* For loading the files all at once, foreshadow to precaching? */
 bool load_Files()
 {
 	/*LOADING BACKGROUND */
@@ -74,14 +82,6 @@ bool load_Files()
 		return false;
 	}
 
-	//Telling the game what the message will say, what color, and what font to use
-	//Puts the font on the surface
-	message = TTF_RenderText_Solid(font, "Success", textColor);
-	if ( message == NULL)
-	{
-		return 1;
-	}
-
 	return true;
 }
 
@@ -89,6 +89,10 @@ bool load_Files()
 void clear()
 {
 	/* Freeing up memory by getting rid of these surfaces (images) */
+	SDL_FreeSurface (upMessage);
+	SDL_FreeSurface (downMessage);
+	SDL_FreeSurface (leftMessage);
+	SDL_FreeSurface (rightMessage);
 	SDL_FreeSurface (message);
 	SDL_FreeSurface (background);
 
