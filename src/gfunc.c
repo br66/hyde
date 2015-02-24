@@ -5,6 +5,11 @@
 #include "gfunc.h"
 #include "graphics.h"
 
+#define CLIP_MOUSEOVER	0 //for buttons
+#define CLIP_MOUSEOUT	1
+#define CLIP_MOUSEDOWN	2
+#define CLIP_MOUSEUP	3
+
 SDL_Surface *screen = NULL;		// application window
 SDL_Surface *background = NULL; // surface that will be background
 
@@ -14,6 +19,8 @@ SDL_Surface *leftMessage = NULL;
 SDL_Surface *rightMessage = NULL;
 
 SDL_Surface *message = NULL;
+
+SDL_Rect clips[ 4 ]; //rectangle for breaking the image into sections
 
 /* Telling the game that we will be using a font, defined in gfunc.c */
 TTF_Font *font = NULL;
@@ -83,6 +90,29 @@ bool load_Files()
 	}
 
 	return true;
+}
+
+void set_Clips() // for buttons
+{
+	clips[CLIP_MOUSEOVER].x = 0;
+	clips[CLIP_MOUSEOVER].y = 0;
+	clips[CLIP_MOUSEOVER].w = 320;
+	clips[CLIP_MOUSEOVER].h = 240;
+
+	clips[CLIP_MOUSEOUT].x = 320;
+	clips[CLIP_MOUSEOUT].y = 0;
+	clips[CLIP_MOUSEOUT].w = 320;
+	clips[CLIP_MOUSEOUT].h = 240;
+
+	clips[CLIP_MOUSEDOWN].x = 0;
+	clips[CLIP_MOUSEDOWN].y = 240;
+	clips[CLIP_MOUSEDOWN].w = 320;
+	clips[CLIP_MOUSEDOWN].h = 240;
+
+	clips[CLIP_MOUSEUP].x = 320;
+	clips[CLIP_MOUSEUP].y = 240;
+	clips[CLIP_MOUSEUP].w = 320;
+	clips[CLIP_MOUSEUP].h = 240;
 }
 
 /* for program exiting, cleaning and freeing up memory */

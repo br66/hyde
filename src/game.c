@@ -22,10 +22,13 @@ extern SDL_Surface *message;
 
 extern TTF_Font *font;
 extern SDL_Color textColor;
-
-//SDL_Rect clip[ 4 ]; //rectangle for breaking the image into sections
+extern SDL_Rect clips[4];
 
 extern SDL_Event event;
+
+Uint8 *keystates;
+
+
 
 //create main or else (error LNK2001: unresolved external symbol _SDL_main)
 int main(int argc, char *argv[])
@@ -38,13 +41,13 @@ int main(int argc, char *argv[])
 	{
 		return 1;
 	}
-
+	
 	/* This func. loads all the sprites and checks that I did it correctly */
 	if ( load_Files() == false)
 	{
 		return 1;
 	}
-
+	
 	//Telling the game what the messages will say, what color, and what font to use
 	upMessage = TTF_RenderText_Solid(font, "Up", textColor);
 	if ( upMessage == NULL)
@@ -69,32 +72,6 @@ int main(int argc, char *argv[])
 	{
 		return 1;
 	}
-
-	/*
-	//top left position on the window
-	clip[0].x = 0;
-	clip[0].y = 0;
-	clip[0].w = 100;
-	clip[0].h = 100;
-
-	//top right position on the window
-	clip[1].x = 100;
-	clip[1].y = 0;
-	clip[1].w = 100;
-	clip[1].h = 100;
-
-	//botttom left position on the window
-	clip[2].x = 0;
-	clip[2].y = 100;
-	clip[2].w = 100;
-	clip[2].h = 100;
-
-	//bottom right position on the window
-	clip[3].x = 100;
-	clip[3].y = 100;
-	clip[3].w = 100;
-	clip[3].h = 100;
-	*/
 
 	/* Fills the application window with the color white (0xFF, 0xFF, 0xFF) */
 	//SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
@@ -132,7 +109,7 @@ int main(int argc, char *argv[])
 		while (SDL_PollEvent (&event))
 		{
 			//Do them
-			//In the event that a key has been pressed...
+			/*In the event that a key has been pressed...
 			if ( event.type == SDL_KEYDOWN )
 			{
 				//system for checking what key has been pressed
@@ -143,24 +120,49 @@ int main(int argc, char *argv[])
 					case SDLK_LEFT: message = leftMessage; break;
 					case SDLK_RIGHT: message = rightMessage; break;
 				}
-			}
+			}*/
+
+
 			//If the user presses Quit (the x button on the window)
-			else if(event.type == SDL_QUIT)
+			if(event.type == SDL_QUIT)
 			{
 				//Game is done
 				done = true;
 			}
 		}
-
+		keystates = SDL_GetKeyState( NULL );
 		/* Showing the text only when a message needs to be displayed */
-		if (message != NULL)
-		{
+		//if (message != NULL)
+		//{
+
 			/* Text keeps overlapping each other, recreate bg to fix problem */
 			show_Surface (0, 0, background, screen, NULL);
+
 			/* Show message in the middle of the screen" */
-			show_Surface( (SCREEN_WIDTH - message->w) / 2, (SCREEN_HEIGHT - message->h)/2, message, screen, NULL );
+			//show_Surface( (SCREEN_WIDTH - message->w) / 2, (SCREEN_HEIGHT - message->h)/2, message, screen, NULL );
 			/* Resets message */
-			message = NULL;
+			//message = NULL;
+		//}
+
+		
+
+		//When up is pressed
+		if ( keystates[SDLK_UP] )
+		{
+			show_Surface ( (SCREEN_WIDTH - upMessage->w ) / 2, ( SCREEN_HEIGHT / 2 - upMessage->h ) / 2, upMessage, screen, NULL );
+		}
+		//when down is pressed
+		if (keystates [SDLK_DOWN] )
+		{
+			show_Surface ( (SCREEN_WIDTH - downMessage->w ) / 2, (SCREEN_HEIGHT / 2 - downMessage->h ) / 2 + (SCREEN_HEIGHT / 2), downMessage, screen, NULL);
+		}
+		if (keystates [SDLK_LEFT] )
+		{
+			show_Surface ( (SCREEN_WIDTH /2 - leftMessage->w ) / 2, (SCREEN_HEIGHT - leftMessage->h ) / 2, leftMessage, screen, NULL);
+		}
+		if (keystates [SDLK_RIGHT] )
+		{
+			show_Surface ( (SCREEN_WIDTH /2 - rightMessage->w ) / 2 + (SCREEN_WIDTH / 2), (SCREEN_HEIGHT - rightMessage->h) / 2, rightMessage, screen, NULL);
 		}
 
 		/* Function so that the screen is constantly updated so you can see things happening as they happen */
