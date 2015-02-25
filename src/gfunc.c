@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 #include "boolean.h"
 #include "gfunc.h"
@@ -28,6 +29,15 @@ TTF_Font *font = NULL;
 /* Telling the game what font the color will be  In this case, white */
 SDL_Color textColor = { 255, 255, 255 };
 
+/* Telling the game I will have a music file */
+Mix_Music *music= NULL;
+
+/* Telling the game I will have sound effects */
+Mix_Chunk *scratch = NULL;
+Mix_Chunk *high = NULL;
+Mix_Chunk *med = NULL;
+Mix_Chunk *low = NULL;
+
 /* For events (ex. key presses) */
 SDL_Event event;
 
@@ -40,8 +50,14 @@ bool init() // Start everything
 		return false;
 	}
 
-	/* If this loads correctly, we can use TrurType Fonts (TTF). */
+	/* If this loads correctly, we can use TrueType Fonts (TTF). */
 	if ( TTF_Init() == -1 )
+	{
+		return false;
+	}
+
+	/* If this loads correctly, we can have music */
+	if (Mix_OpenAudio ( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
 	{
 		return false;
 	}
@@ -89,9 +105,27 @@ bool load_Files()
 		return false;
 	}
 
+	/* Telling the game what the music will be */
+	music = Mix_LoadMUS ("sound/beat.wav");
+	if (music == NULL )
+	{
+		return false;
+	}
+
+	/* Telling the game what the sound effects will actually be */
+	scratch = Mix_LoadWAV ( "sound/scratch.wav" );
+	high = Mix_LoadWAV ( "sound/high.wav" );
+	med = Mix_LoadWAV ( "sound/medium.wav" );
+	low = Mix_LoadWAV ( "sound/low.wav" );
+	if ((scratch == NULL) || (high == NULL) || (med == NULL) || (low == NULL))
+	{
+		return false;
+	}
+
 	return true;
 }
 
+/*
 void set_Clips() // for buttons
 {
 	clips[CLIP_MOUSEOVER].x = 0;
@@ -106,14 +140,15 @@ void set_Clips() // for buttons
 
 	clips[CLIP_MOUSEDOWN].x = 0;
 	clips[CLIP_MOUSEDOWN].y = 240;
-	clips[CLIP_MOUSEDOWN].w = 320;
-	clips[CLIP_MOUSEDOWN].h = 240;
+	clips[CLIP_MOMOUUSEDOWN].w = 320;
+	clips[CLIP_SEDOWN].h = 240;
 
 	clips[CLIP_MOUSEUP].x = 320;
 	clips[CLIP_MOUSEUP].y = 240;
 	clips[CLIP_MOUSEUP].w = 320;
 	clips[CLIP_MOUSEUP].h = 240;
 }
+*/
 
 /* for program exiting, cleaning and freeing up memory */
 void clear()
@@ -129,6 +164,17 @@ void clear()
 	/* Closing the fonts and text engine */
 	TTF_CloseFont (font);
 	TTF_Quit();
+
+	/* Getting the audio out of memory */
+	Mix_FreeChunk (scratch);
+	Mix_FreeChunk (high);
+	Mix_FreeChunk (med);
+	Mix_FreeChunk (low);
+
+	Mix_FreeMusic (music);
+
+	/* Close Audio engine */
+	Mix_CloseAudio();
 
 	//Will free the screen surface and close SDL
 	SDL_Quit();

@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 //Include header files I made
 #include "boolean.h"
@@ -24,8 +25,15 @@ extern TTF_Font *font;
 extern SDL_Color textColor;
 extern SDL_Rect clips[4];
 
+extern Mix_Music *music;
+extern Mix_Chunk *scratch;
+extern Mix_Chunk *high;
+extern Mix_Chunk *med;
+extern Mix_Chunk *low;
+
 extern SDL_Event event;
 
+/* I will be making an unsigned integer */
 Uint8 *keystates;
 
 
@@ -109,18 +117,63 @@ int main(int argc, char *argv[])
 		while (SDL_PollEvent (&event))
 		{
 			//Do them
-			/*In the event that a key has been pressed...
+			//In the event that a key has been pressed...
 			if ( event.type == SDL_KEYDOWN )
 			{
 				//system for checking what key has been pressed
 				switch ( event.key.keysym.sym )
 				{
-					case SDLK_UP: message = upMessage; break;
-					case SDLK_DOWN: message = downMessage; break;
-					case SDLK_LEFT: message = leftMessage; break;
-					case SDLK_RIGHT: message = rightMessage; break;
+					case SDLK_UP: //in the case the up button has been pressed
+						if (Mix_PlayChannel (-1, scratch, 0) == -1) //arg. 1- -1 means looking for the nxt sound channel available to play sound
+						{											//arg. 2- the sound that will be played
+							return 1;								//arg. 3- how many times sound will loop
+						}
+						break;
+					case SDLK_DOWN:
+						if (Mix_PlayChannel (-1, high, 0) == -1)
+						{
+							return 1;
+						}
+						break;
+					case SDLK_LEFT:
+						if (Mix_PlayChannel (-1, med, 0) == -1)
+						{
+							return 1;
+						}
+						break;
+					case SDLK_RIGHT:
+						if (Mix_PlayChannel (-1, low, 0) == -1)
+						{
+							return 1;
+						}
+						break;
+					case SDLK_9:
+						if (Mix_PlayingMusic() == 0)
+						{
+							if (Mix_PlayMusic (music, -1) == -1)
+							{
+								return 1;
+							}
+						}
+						else
+						{
+							// if music paused
+							if (Mix_PausedMusic() == 1)
+							{
+								//Resume
+								Mix_ResumeMusic();
+							}
+							else
+							{
+								//Pause
+								Mix_PauseMusic();
+							}
+						}
+						break;
+					case SDLK_0: //Completely stops music
+						Mix_HaltMusic();
+					}
 				}
-			}*/
 
 
 			//If the user presses Quit (the x button on the window)
@@ -130,25 +183,17 @@ int main(int argc, char *argv[])
 				done = true;
 			}
 		}
+
+		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );
-		/* Showing the text only when a message needs to be displayed */
-		//if (message != NULL)
-		//{
-
-			/* Text keeps overlapping each other, recreate bg to fix problem */
-			show_Surface (0, 0, background, screen, NULL);
-
-			/* Show message in the middle of the screen" */
-			//show_Surface( (SCREEN_WIDTH - message->w) / 2, (SCREEN_HEIGHT - message->h)/2, message, screen, NULL );
-			/* Resets message */
-			//message = NULL;
-		//}
-
 		
+		/* Text keeps overlapping each other, recreate bg to fix problem */
+		show_Surface (0, 0, background, screen, NULL);
 
+		/*
 		//When up is pressed
 		if ( keystates[SDLK_UP] )
-		{
+		{	//show surface at designated location on screen
 			show_Surface ( (SCREEN_WIDTH - upMessage->w ) / 2, ( SCREEN_HEIGHT / 2 - upMessage->h ) / 2, upMessage, screen, NULL );
 		}
 		//when down is pressed
@@ -164,6 +209,7 @@ int main(int argc, char *argv[])
 		{
 			show_Surface ( (SCREEN_WIDTH /2 - rightMessage->w ) / 2 + (SCREEN_WIDTH / 2), (SCREEN_HEIGHT - rightMessage->h) / 2, rightMessage, screen, NULL);
 		}
+		*/
 
 		/* Function so that the screen is constantly updated so you can see things happening as they happen */
 		SDL_Flip(screen);
