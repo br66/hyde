@@ -5,4 +5,6 @@
 bool init();
 bool load_Files();
 void clear();
+char* FormatTimeString(Uint32 offset);
+char* timeString(Uint32 offset);
 //void set_Clips();

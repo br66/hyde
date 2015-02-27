@@ -25,6 +25,8 @@ extern TTF_Font *font;
 extern SDL_Color textColor;
 extern SDL_Rect clips[4];
 
+extern SDL_Surface *seconds;
+
 extern Mix_Music *music;
 extern Mix_Chunk *scratch;
 extern Mix_Chunk *high;
@@ -35,14 +37,18 @@ extern SDL_Event event;
 
 /* I will be making an unsigned integer */
 Uint8 *keystates;
-
-
-
+Uint32 currentTime = 0;
 //create main or else (error LNK2001: unresolved external symbol _SDL_main)
 int main(int argc, char *argv[])
 {	
 	//boolean created for making sure the application stays active until this boolean equals true
 	bool done = false;
+
+	/* Starting time for the timer */
+	Uint32 start = 0;
+
+	/* Flag for if the timer is running or not */
+	bool running = true;
 	
 	/* Start everything (SDL, open a window, etc.) and make sure it did it successfully */
 	if ( init() == false)
@@ -86,10 +92,10 @@ int main(int argc, char *argv[])
 
 	//Instead of loading the image 4 times, we just show it four times.
 	/* Presenting the background to the screen */
-	show_Surface( 0, 0, background, screen, NULL);
-	show_Surface( 0, 375, background, screen, NULL);
-	show_Surface( 500, 0, background, screen, NULL);
-	show_Surface( 500, 375, background, screen, NULL);
+	//show_Surface( 0, 0, background, screen, NULL);
+	//show_Surface( 0, 375, background, screen, NULL);
+	//show_Surface( 500, 0, background, screen, NULL);
+	//show_Surface( 500, 375, background, screen, NULL);
 
 	//show_Surface(10, 10, upMessage, screen, NULL);
 
@@ -110,6 +116,9 @@ int main(int argc, char *argv[])
 	machine. I can't think of any other way to describe it; without it you have 
 	no game. */
 	
+	//Start the timer right before the gameloop starts, will start at 0 and increment
+	start = SDL_GetTicks();
+
 	/* GAME ------------------------------------------------------------------------- */
 	do
 	{
@@ -171,10 +180,22 @@ int main(int argc, char *argv[])
 						}
 						break;
 					case SDLK_0: //Completely stops music
-						Mix_HaltMusic();
+						Mix_HaltMusic(); break;
+					case SDLK_s:
+						if (running == true) //if the timer is running
+						{
+							//STAHP
+							running = false;
+							start = 0; //restart the timer
+						}
+						else
+						{
+							//or maybe the timer never started
+							running = true;
+							start = SDL_GetTicks();
+						}
 					}
 				}
-
 
 			//If the user presses Quit (the x button on the window)
 			if(event.type == SDL_QUIT)
@@ -184,11 +205,23 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
-		keystates = SDL_GetKeyState( NULL );
-		
 		/* Text keeps overlapping each other, recreate bg to fix problem */
 		show_Surface (0, 0, background, screen, NULL);
+
+			if (running == true)
+			{
+				char msg[20];
+				sprintf( msg, "%s", FormatTimeString(start));
+
+				seconds = TTF_RenderText_Solid (font, msg, textColor);
+				show_Surface ((SCREEN_WIDTH - seconds->w ) / 2, 50, seconds, screen, NULL);
+
+				SDL_FreeSurface( seconds );
+			}
+
+
+		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
+		keystates = SDL_GetKeyState( NULL );
 
 		/*
 		//When up is pressed
@@ -211,8 +244,12 @@ int main(int argc, char *argv[])
 		}
 		*/
 
+		/* Constantly getting the raw time from SDL */
+		currentTime = SDL_GetTicks();
+
 		/* Function so that the screen is constantly updated so you can see things happening as they happen */
 		SDL_Flip(screen);
+		
 	}
 	
 	while(!done); //Part of the do-while loop "Do game things while done is false (!done)"

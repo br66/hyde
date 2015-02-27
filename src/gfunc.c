@@ -6,10 +6,10 @@
 #include "gfunc.h"
 #include "graphics.h"
 
-#define CLIP_MOUSEOVER	0 //for buttons
-#define CLIP_MOUSEOUT	1
-#define CLIP_MOUSEDOWN	2
-#define CLIP_MOUSEUP	3
+//#define CLIP_MOUSEOVER	0 //for buttons
+//#define CLIP_MOUSEOUT	1
+//#define CLIP_MOUSEDOWN	2
+//#define CLIP_MOUSEUP	3
 
 SDL_Surface *screen = NULL;		// application window
 SDL_Surface *background = NULL; // surface that will be background
@@ -20,6 +20,8 @@ SDL_Surface *leftMessage = NULL;
 SDL_Surface *rightMessage = NULL;
 
 SDL_Surface *message = NULL;
+
+SDL_Surface *seconds = NULL;
 
 SDL_Rect clips[ 4 ]; //rectangle for breaking the image into sections
 
@@ -124,6 +126,74 @@ bool load_Files()
 
 	return true;
 }
+
+
+char *FormatNumber(Uint32 number, int min)
+{
+	Uint32 value = number;
+	static char array[10][20];  //making an array of arrays
+	static int buffer = 0; //creating a buffer, saving the numbers
+	int count, x;
+
+	buffer = (buffer + 1) % 10; //moves to the next spot in array? makes sure it doesn't go outside of 0-9?f
+
+	/* Unsigned integers should not be converted into char,
+	therefore, we will count.  Everytime we get a number, we
+	will increment the count */
+	for (count = 0; value != 0; count++)
+		value /= 10;
+	if(count < min)
+		count = min;
+	for (x = count; x > 0; x--) // we will count 9 times 
+	{
+		array[buffer][x-1] = '0' + number % 10; //array length - 1 is entry in array, we find last number in uint32 ticks;
+		number /= 10; //move on to the next number in uint32 ticks, keep doing this until x = 0;
+	}
+	if(count == 0){
+		array[buffer][count] = '0';
+		count++;
+	}
+	array[buffer][count] = '\0'; //use length of array to find end of array, make it \0, will signify end of array
+	return array[buffer];
+}
+
+#define TIMEUNIT_HOURS		3
+#define TIMEUNIT_MINUTES	2
+#define TIMEUNIT_SECONDS	1
+#define TIMEUNIT_HUNDRETHS	0
+
+char* FormatTimeString(Uint32 offset) //creates result var, converts raw time into h/m/s time and retruns it
+{
+	static char result[80];
+	int i;
+	char *hundreths, *seconds, *minutes, *hours;
+	Uint32 ticks = SDL_GetTicks() - offset;
+	Uint32 num = ticks;
+	for(i = 0;i <= TIMEUNIT_HOURS;i++){
+		switch(i){
+		case TIMEUNIT_HUNDRETHS:
+			hundreths = FormatNumber((ticks / 10) % 100,2);
+			break;
+		case TIMEUNIT_SECONDS:
+			seconds = FormatNumber((ticks / 1000) % 60,2);
+			break;
+		case TIMEUNIT_MINUTES:
+			minutes = FormatNumber((ticks / 60000) % 60,2);
+			break;
+		case TIMEUNIT_HOURS:
+			hours = FormatNumber(ticks / 3600000,2);
+			break;
+		}
+	}
+	sprintf(result, "%s:%s:%s:%s'", hours, minutes, seconds, hundreths);
+	return result;
+}
+char* timeString(Uint32 offset) //not used
+{
+	Uint32 ticks = SDL_GetTicks() - offset;
+	return FormatNumber(ticks, 0);
+}
+
 
 /*
 void set_Clips() // for buttons
