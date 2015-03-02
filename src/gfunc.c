@@ -40,6 +40,15 @@ Mix_Chunk *high = NULL;
 Mix_Chunk *med = NULL;
 Mix_Chunk *low = NULL;
 
+//objects
+SDL_Surface *dot = NULL;
+
+//Keep track of the frame count
+int frameCount;
+
+//Timer that calculates fps
+//Timer fps;
+
 /* For events (ex. key presses) */
 SDL_Event event;
 
@@ -90,6 +99,11 @@ bool load_Files()
 		printf("error: %s\n", SDL_GetError());
 	}
 
+	dot = load_Image("sprite/dots.png");
+	if (dot == NULL)
+	{
+		return false;
+	}
 	/* LOADING SPRITESHEET
 	sheet = load_Image("sprite/dots.png");
 	if (sheet == NULL)
@@ -127,34 +141,43 @@ bool load_Files()
 	return true;
 }
 
+/* Rough translation of timecode, will attempt to better clarify later */
 
 char *FormatNumber(Uint32 number, int min)
 {
-	Uint32 value = number;
-	static char array[10][20];  //making an array of arrays
+	Uint32 value = number;  //The number we get from the raw time (which is in U32 form)
+	static char array[10][20];  //Array w/ 3 10 rows & 20 columns
 	static int buffer = 0; //creating a buffer, saving the numbers
-	int count, x;
+	int count, x; // for counting
 
-	buffer = (buffer + 1) % 10; //moves to the next spot in array? makes sure it doesn't go outside of 0-9?f
+	buffer = (buffer + 1) % 10; //moves to the next spot in array? makes sure it doesn't go outside of 0-9?
 
 	/* Unsigned integers should not be converted into char,
 	therefore, we will count.  Everytime we get a number, we
 	will increment the count */
+
+	/* Everytime we count, we take the raw time and divide it by 10
+	which gets rid of the number at the end. */
+
 	for (count = 0; value != 0; count++)
 		value /= 10;
-	if(count < min)
+	if(count < min) //???
 		count = min;
-	for (x = count; x > 0; x--) // we will count 9 times 
+	for (x = count; x > 0; x--) // The number of our count is equal to the number of integers that make up the raw time. 
 	{
-		array[buffer][x-1] = '0' + number % 10; //array length - 1 is entry in array, we find last number in uint32 ticks;
-		number /= 10; //move on to the next number in uint32 ticks, keep doing this until x = 0;
+		/* Array length - 1 = entry in array. We will take the last number in uint32 ticks,
+		 add it to the buffer and modulate it */
+		array[buffer][x-1] = '0' + number % 10;
+		// move on to the next number in uint32 ticks, keep doing this until x <= 0;
+		number /= 10; 
 	}
 	if(count == 0){
+		//if there is no number to count, then there is nothing there, therefore 0
 		array[buffer][count] = '0';
 		count++;
 	}
 	array[buffer][count] = '\0'; //use length of array to find end of array, make it \0, will signify end of array
-	return array[buffer];
+	return array[buffer]; //???
 }
 
 #define TIMEUNIT_HOURS		3
@@ -164,24 +187,24 @@ char *FormatNumber(Uint32 number, int min)
 
 char* FormatTimeString(Uint32 offset) //creates result var, converts raw time into h/m/s time and retruns it
 {
-	static char result[80];
-	int i;
+	static char result[80]; /* ??? */
+	int i; // for counting
 	char *hundreths, *seconds, *minutes, *hours;
-	Uint32 ticks = SDL_GetTicks() - offset;
-	Uint32 num = ticks;
+	Uint32 ticks = SDL_GetTicks() - offset; /* we dont start the time automatically, we wait a few milsecs to have something to compare the time to */
+	Uint32 num = ticks; // raw time
 	for(i = 0;i <= TIMEUNIT_HOURS;i++){
 		switch(i){
 		case TIMEUNIT_HUNDRETHS:
-			hundreths = FormatNumber((ticks / 10) % 100,2);
+			hundreths = FormatNumber((ticks / 10) % 100,2); //conversion in hundredths
 			break;
 		case TIMEUNIT_SECONDS:
-			seconds = FormatNumber((ticks / 1000) % 60,2);
+			seconds = FormatNumber((ticks / 1000) % 60,2); //conversion into seconds
 			break;
 		case TIMEUNIT_MINUTES:
-			minutes = FormatNumber((ticks / 60000) % 60,2);
+			minutes = FormatNumber((ticks / 60000) % 60,2); //conversion into minutes
 			break;
 		case TIMEUNIT_HOURS:
-			hours = FormatNumber(ticks / 3600000,2);
+			hours = FormatNumber(ticks / 3600000, 2); //conversion into hours
 			break;
 		}
 	}

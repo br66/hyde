@@ -8,6 +8,7 @@
 #include "boolean.h"
 #include "graphics.h"
 #include "gfunc.h"
+#include "entity.h"
 
 /* These SDL instances already exist in gfunc.c. I am 
 grabbing them from there because I need it here. */
@@ -33,6 +34,9 @@ extern Mix_Chunk *high;
 extern Mix_Chunk *med;
 extern Mix_Chunk *low;
 
+//objects
+extern SDL_Surface *dot;
+
 extern SDL_Event event;
 
 /* I will be making an unsigned integer */
@@ -41,6 +45,8 @@ Uint32 currentTime = 0;
 //create main or else (error LNK2001: unresolved external symbol _SDL_main)
 int main(int argc, char *argv[])
 {	
+	entity_t *dot_ent;
+
 	//boolean created for making sure the application stays active until this boolean equals true
 	bool done = false;
 
@@ -109,6 +115,15 @@ int main(int argc, char *argv[])
 	//SDL_Delay (2000);
 	//SDL takes time in milliseconds.
 
+	
+	//dot_ent->x = 0;
+	//dot_ent->y = 0;
+	//dot->inuse = 1;
+	//dot_ent->resetPosition = reset_Position;
+	//dot->handle_Input = handle_Input;
+	//dot->move = move;
+	//dot->show = show;
+	
 	/* This is the gameloop, where things happen.  If you're coming from Unity,
 	think of this as FixedUpdate, where things happen every time.  It runs continously
 	waiting for user input, updating to show things happening, rendering, and tracking
@@ -119,12 +134,22 @@ int main(int argc, char *argv[])
 	//Start the timer right before the gameloop starts, will start at 0 and increment
 	start = SDL_GetTicks();
 
+	dot_ent = Init_Ent();
+	dot_ent->resetPosition = reset_Position;
+	dot_ent->handle_Input = handle_Input;
+	dot_ent->move = move;
+	dot_ent->show = show;
+
+	reset_Position(dot_ent);
+
 	/* GAME ------------------------------------------------------------------------- */
 	do
 	{
 		//While there is still things to do
 		while (SDL_PollEvent (&event))
 		{
+			handle_Input(dot_ent);
+
 			//Do them
 			//In the event that a key has been pressed...
 			if ( event.type == SDL_KEYDOWN )
@@ -139,10 +164,11 @@ int main(int argc, char *argv[])
 						}
 						break;
 					case SDLK_DOWN:
-						if (Mix_PlayChannel (-1, high, 0) == -1)
-						{
-							return 1;
-						}
+						//if (Mix_PlayChannel (-1, high, 0) == -1)
+						//{
+							//return 1;
+						//}
+						//dot_ent->yVel += dot_ent->height / 2;
 						break;
 					case SDLK_LEFT:
 						if (Mix_PlayChannel (-1, med, 0) == -1)
@@ -203,6 +229,8 @@ int main(int argc, char *argv[])
 				//Game is done
 				done = true;
 			}
+
+			move(dot_ent);
 		}
 
 		/* Text keeps overlapping each other, recreate bg to fix problem */
@@ -219,6 +247,7 @@ int main(int argc, char *argv[])
 				SDL_FreeSurface( seconds );
 			}
 
+			show(dot_ent);
 
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );
