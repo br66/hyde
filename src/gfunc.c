@@ -5,11 +5,11 @@
 #include "boolean.h"
 #include "gfunc.h"
 #include "graphics.h"
+#include "entity.h"
 
-//#define CLIP_MOUSEOVER	0 //for buttons
-//#define CLIP_MOUSEOUT	1
-//#define CLIP_MOUSEDOWN	2
-//#define CLIP_MOUSEUP	3
+//finds all entities, runs think functions
+//(*entity_tList[i].think)(ent);
+//EntityList[i].think(&EnittyIst[i]);
 
 SDL_Surface *screen = NULL;		// application window
 SDL_Surface *background = NULL; // surface that will be background
@@ -23,7 +23,8 @@ SDL_Surface *message = NULL;
 
 SDL_Surface *seconds = NULL;
 
-SDL_Rect clips[ 4 ]; //rectangle for breaking the image into sections
+SDL_Rect health;
+SDL_Rect anger;
 
 /* Telling the game that we will be using a font, defined in gfunc.c */
 TTF_Font *font = NULL;
@@ -46,8 +47,7 @@ SDL_Surface *dot = NULL;
 //Keep track of the frame count
 int frameCount;
 
-//Timer that calculates fps
-//Timer fps;
+SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
 /* For events (ex. key presses) */
 SDL_Event event;
@@ -92,26 +92,18 @@ bool init() // Start everything
 bool load_Files()
 {
 	/*LOADING BACKGROUND */
-	background = load_Image("sprite/tree.bmp");
+	background = load_Image("sprite/sky1.png");
 	if (background == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
 
-	dot = load_Image("sprite/dots.png");
+	dot = load_Image("sprite/square.bmp");
 	if (dot == NULL)
 	{
 		return false;
 	}
-	/* LOADING SPRITESHEET
-	sheet = load_Image("sprite/dots.png");
-	if (sheet == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	} 
-	*/
 
 	/* LOAD TEH FONT */
 	// Telling the game what the font is and the font size
@@ -217,31 +209,23 @@ char* timeString(Uint32 offset) //not used
 	return FormatNumber(ticks, 0);
 }
 
-
-/*
-void set_Clips() // for buttons
+void set_Camera (entity_t *ent)
 {
-	clips[CLIP_MOUSEOVER].x = 0;
-	clips[CLIP_MOUSEOVER].y = 0;
-	clips[CLIP_MOUSEOVER].w = 320;
-	clips[CLIP_MOUSEOVER].h = 240;
+	int xmargin;
+	xmargin = 1000;
 
-	clips[CLIP_MOUSEOUT].x = 320;
-	clips[CLIP_MOUSEOUT].y = 0;
-	clips[CLIP_MOUSEOUT].w = 320;
-	clips[CLIP_MOUSEOUT].h = 240;
+	camera.x = ( ent->bBox.x + ent->width + xmargin / 2) - L_WIDTH / 2;
+	camera.y = ( ent->bBox.y + ent->height / 2) - L_HEIGHT / 2;
 
-	clips[CLIP_MOUSEDOWN].x = 0;
-	clips[CLIP_MOUSEDOWN].y = 240;
-	clips[CLIP_MOMOUUSEDOWN].w = 320;
-	clips[CLIP_SEDOWN].h = 240;
-
-	clips[CLIP_MOUSEUP].x = 320;
-	clips[CLIP_MOUSEUP].y = 240;
-	clips[CLIP_MOUSEUP].w = 320;
-	clips[CLIP_MOUSEUP].h = 240;
+	if ( camera.x < 0 )
+		camera.x = 0;
+	if ( camera.y < 0 )
+		camera.y = 0;
+	if ( camera.x > L_WIDTH - camera.w)
+		camera.x = L_WIDTH - camera.w;
+	if ( camera.y > L_HEIGHT - camera.h )
+		camera.y = L_HEIGHT - camera.h;
 }
-*/
 
 /* for program exiting, cleaning and freeing up memory */
 void clear()

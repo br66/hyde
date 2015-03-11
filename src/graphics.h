@@ -2,7 +2,11 @@
 
 #define	SCREEN_WIDTH	640
 #define	SCREEN_HEIGHT	480
+
 #define	BITSPERPIXEL	32
+
+#define L_WIDTH			1920
+#define	L_HEIGHT		1200
 
 /*
 typedef struct button_s

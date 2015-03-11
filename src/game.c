@@ -10,8 +10,7 @@
 #include "gfunc.h"
 #include "entity.h"
 
-/* These SDL instances already exist in gfunc.c. I am 
-grabbing them from there because I need it here. */
+/* from gfunc.c */
 extern SDL_Surface *screen;
 extern SDL_Surface *background;
 
@@ -34,19 +33,34 @@ extern Mix_Chunk *high;
 extern Mix_Chunk *med;
 extern Mix_Chunk *low;
 
+extern SDL_Rect camera;
+extern SDL_Rect health;
+extern SDL_Rect anger;
+
 //objects
 extern SDL_Surface *dot;
 
 extern SDL_Event event;
 
+entity_t *wall;
+
 /* I will be making an unsigned integer */
 Uint8 *keystates;
 Uint32 currentTime = 0;
+
 //create main or else (error LNK2001: unresolved external symbol _SDL_main)
 int main(int argc, char *argv[])
 {	
 	entity_t *dot_ent;
 
+	entity_t *enemy1;
+	entity_t *enemy2;
+	entity_t *enemy3;
+
+//	entity_t *boss;
+
+	//don't forget barhud
+	
 	//boolean created for making sure the application stays active until this boolean equals true
 	bool done = false;
 
@@ -68,72 +82,22 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	
-	//Telling the game what the messages will say, what color, and what font to use
-	upMessage = TTF_RenderText_Solid(font, "Up", textColor);
-	if ( upMessage == NULL)
-	{
-		return 1;
-	}
-
-	downMessage = TTF_RenderText_Solid(font, "Down", textColor);
-	if ( upMessage == NULL)
-	{
-		return 1;
-	}
-
-	leftMessage = TTF_RenderText_Solid(font, "Left", textColor);
-	if ( upMessage == NULL)
-	{
-		return 1;
-	}
-
-	rightMessage = TTF_RenderText_Solid(font, "Right", textColor);
-	if ( upMessage == NULL)
-	{
-		return 1;
-	}
-
-	/* Fills the application window with the color white (0xFF, 0xFF, 0xFF) */
-	//SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
-
-	//Instead of loading the image 4 times, we just show it four times.
-	/* Presenting the background to the screen */
-	//show_Surface( 0, 0, background, screen, NULL);
-	//show_Surface( 0, 375, background, screen, NULL);
-	//show_Surface( 500, 0, background, screen, NULL);
-	//show_Surface( 500, 375, background, screen, NULL);
-
-	//show_Surface(10, 10, upMessage, screen, NULL);
-
-	/* Showing the spreadsheet now */
-	//show_Surface( 0, 0, sheet, screen, &clip[0]);
-	//show_Surface( 540, 0, sheet, screen, &clip[1]);
-	//show_Surface( 0, 380, sheet, screen, &clip[2]);
-	//show_Surface( 540, 380, sheet, screen, &clip[3]);
-
-	//The window will stay open for 2000/1000 sec a.k.a. 2 seconds.
-	//SDL_Delay (2000);
-	//SDL takes time in milliseconds.
-
-	
-	//dot_ent->x = 0;
-	//dot_ent->y = 0;
-	//dot->inuse = 1;
-	//dot_ent->resetPosition = reset_Position;
-	//dot->handle_Input = handle_Input;
-	//dot->move = move;
-	//dot->show = show;
-	
-	/* This is the gameloop, where things happen.  If you're coming from Unity,
-	think of this as FixedUpdate, where things happen every time.  It runs continously
-	waiting for user input, updating to show things happening, rendering, and tracking
-	the passage of time.  It allows the game to continously run.  It is a basic state
-	machine. I can't think of any other way to describe it; without it you have 
-	no game. */
-	
 	//Start the timer right before the gameloop starts, will start at 0 and increment
 	start = SDL_GetTicks();
 
+	/* HUD */
+	health.x = 10;
+	health.y = 10;
+	health.w = 100;
+	health.h = 35;
+
+	anger.x = 115;
+	anger.y = 10;
+	anger.w = 100;
+	anger.h = 35;
+	/* --- */
+
+	/* PLAYER */
 	dot_ent = Init_Ent();
 	dot_ent->resetPosition = reset_Position;
 	dot_ent->handle_Input = handle_Input;
@@ -141,6 +105,69 @@ int main(int argc, char *argv[])
 	dot_ent->show = show;
 
 	reset_Position(dot_ent);
+	/* ------- */
+
+	/* Enemy 1 */
+	enemy1 = Init_Ent();
+	
+	enemy1->x = 600;
+	enemy1->y = 350;
+
+	enemy1->bBox.x = enemy1->x;
+	enemy1->bBox.y = enemy1->y;
+
+	enemy1->sprite = load_Image("sprite/red.png");
+
+	enemy1->bBox.w = 64;
+	enemy1->bBox.h = 64;
+	
+	enemy1->show = show_Enemy;
+	/* ------- */
+
+	/* Enemy 2 */
+	enemy2 = Init_Ent();
+
+	enemy2->sprite = load_Image("sprite/bluepng.png");
+
+	enemy2->x = 770;
+	enemy2->y = 350;
+
+	enemy2->bBox.x = enemy2->x;
+	enemy2->bBox.y = enemy2->y;
+
+	enemy2->bBox.w = 64;
+	enemy2->bBox.h = 64;
+	/* ------- */
+
+	/* Enemy 3 */
+	enemy3 = Init_Ent();
+
+	enemy3->sprite = load_Image("sprite/green.png");
+
+	enemy3->x = 900;
+	enemy3->y = 350;
+
+	enemy3->bBox.x = enemy3->x;
+	enemy3->bBox.y = enemy3->y;
+
+	enemy3->bBox.w = 64;
+	enemy3->bBox.h = 64;
+	/* ------- */
+
+	/* Wall */
+	wall = Init_Ent();
+
+	wall->sprite = load_Image("sprite/wall.jpg");
+
+	wall->x = 400;
+	wall->y = 40;
+
+	wall->bBox.w = 40;
+	wall->bBox.h = 400;
+
+	wall->bBox.x = wall->x;
+	wall->bBox.y = wall->y;
+	/* ------- */
 
 	/* GAME ------------------------------------------------------------------------- */
 	do
@@ -163,46 +190,14 @@ int main(int argc, char *argv[])
 							return 1;								//arg. 3- how many times sound will loop
 						}
 						break;
-					case SDLK_DOWN:
-						//if (Mix_PlayChannel (-1, high, 0) == -1)
-						//{
-							//return 1;
-						//}
-						//dot_ent->yVel += dot_ent->height / 2;
-						break;
-					case SDLK_LEFT:
-						if (Mix_PlayChannel (-1, med, 0) == -1)
-						{
-							return 1;
-						}
+					case SDLK_9:
+						camera.x += 20;
+						printf("camera ( %d, %d )\n", camera.x, camera.y);
 						break;
 					case SDLK_RIGHT:
 						if (Mix_PlayChannel (-1, low, 0) == -1)
 						{
 							return 1;
-						}
-						break;
-					case SDLK_9:
-						if (Mix_PlayingMusic() == 0)
-						{
-							if (Mix_PlayMusic (music, -1) == -1)
-							{
-								return 1;
-							}
-						}
-						else
-						{
-							// if music paused
-							if (Mix_PausedMusic() == 1)
-							{
-								//Resume
-								Mix_ResumeMusic();
-							}
-							else
-							{
-								//Pause
-								Mix_PauseMusic();
-							}
 						}
 						break;
 					case SDLK_0: //Completely stops music
@@ -233,10 +228,14 @@ int main(int argc, char *argv[])
 			move(dot_ent);
 		}
 
-		/* Text keeps overlapping each other, recreate bg to fix problem */
-		show_Surface (0, 0, background, screen, NULL);
+		enemy1->bBox.x -= .1;
 
-			if (running == true)
+		set_Camera(dot_ent);
+
+		/* Text keeps overlapping each other, recreate bg to fix problem */
+		show_Surface (0, 0, background, screen, &camera);
+
+		if (running == true)
 			{
 				char msg[20];
 				sprintf( msg, "%s", FormatTimeString(start));
@@ -247,31 +246,19 @@ int main(int argc, char *argv[])
 				SDL_FreeSurface( seconds );
 			}
 
-			show(dot_ent);
+		show(dot_ent);
+
+		show_Enemy(enemy1);
+		show_Enemy(enemy2);
+		show_Enemy(enemy3);
+
+		show_Enemy(wall);
+
+		SDL_FillRect ( screen, &health, SDL_MapRGB ( screen->format, 0, 0xFF, 0 ) );
+		SDL_FillRect ( screen, &anger, SDL_MapRGB ( screen->format, 0x77, 0x77, 0x77 ) );
 
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );
-
-		/*
-		//When up is pressed
-		if ( keystates[SDLK_UP] )
-		{	//show surface at designated location on screen
-			show_Surface ( (SCREEN_WIDTH - upMessage->w ) / 2, ( SCREEN_HEIGHT / 2 - upMessage->h ) / 2, upMessage, screen, NULL );
-		}
-		//when down is pressed
-		if (keystates [SDLK_DOWN] )
-		{
-			show_Surface ( (SCREEN_WIDTH - downMessage->w ) / 2, (SCREEN_HEIGHT / 2 - downMessage->h ) / 2 + (SCREEN_HEIGHT / 2), downMessage, screen, NULL);
-		}
-		if (keystates [SDLK_LEFT] )
-		{
-			show_Surface ( (SCREEN_WIDTH /2 - leftMessage->w ) / 2, (SCREEN_HEIGHT - leftMessage->h ) / 2, leftMessage, screen, NULL);
-		}
-		if (keystates [SDLK_RIGHT] )
-		{
-			show_Surface ( (SCREEN_WIDTH /2 - rightMessage->w ) / 2 + (SCREEN_WIDTH / 2), (SCREEN_HEIGHT - rightMessage->h) / 2, rightMessage, screen, NULL);
-		}
-		*/
 
 		/* Constantly getting the raw time from SDL */
 		currentTime = SDL_GetTicks();
