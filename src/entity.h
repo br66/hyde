@@ -17,13 +17,19 @@ typedef struct entity_s
 
 	int				width;
 	int				height;
+	int				projectiles;
 
 	bool			onGround;
+
+	Uint32			nextThink;
+	int				thinkflags;
+	int				thinknums[20];
 
 	//int				health;
 	//int				max_health;
 
 	//int				deadflag;
+	struct entity_s	*owner;
 
 	void			(*resetPosition) (struct entity_s *ent);
 	void			(*handle_Input)(struct entity_s *ent);
@@ -31,22 +37,34 @@ typedef struct entity_s
 	void			(*show)(struct entity_s *ent);
 
 	void			(*setCamera)(void);
+
+	void			(*think) (struct entity_s *self);
+	void			(*collide) (struct entity_s *self);
+
 } entity_t;
 
 entity_t listEntities [MAX_ENTITIES];
 
 /* create/remove entity */
 entity_t *Init_Ent (void);		// adds entity into memory
-void (*think)(entity_t *self);	// *NEW* entity actions for every frame
 void Free_Ent(entity_t *self);	// entity is ready to be replaced
+void EntityAlive ();			// calls all think functions
+void EntityShow();
 
 /* edit entity */
-void reset_Position( entity_t *ent );
+void init_Position( entity_t *ent );
 void handle_Input( entity_t *ent );
 void move( entity_t *ent );
 void show( entity_t *ent );
 void show_Enemy( entity_t *ent );
+void show_Relative (entity_t *ent);
 
 /* technical */
 void set_Camera( entity_t *ent);
-bool check_Col (SDL_Rect A, SDL_Rect B);
+bool isCollide (SDL_Rect A, SDL_Rect B);
+
+/* thinks */
+void projThink (entity_t *ent);
+void alphaThink (entity_t *self);
+void betaThink (entity_t *self);
+void gammaThink (entity_t *self);

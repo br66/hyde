@@ -7,12 +7,8 @@
 #include "graphics.h"
 #include "entity.h"
 
-//finds all entities, runs think functions
-//(*entity_tList[i].think)(ent);
-//EntityList[i].think(&EnittyIst[i]);
-
 SDL_Surface *screen = NULL;		// application window
-SDL_Surface *background = NULL; // surface that will be background
+SDL_Surface *bgSprite = NULL; // surface that will be background
 
 SDL_Surface *upMessage = NULL;	// surfaces for loading/showing a notice on the screen that a key has been pressed
 SDL_Surface *downMessage = NULL;
@@ -25,6 +21,9 @@ SDL_Surface *seconds = NULL;
 
 SDL_Rect health;
 SDL_Rect anger;
+
+/* object sprites */
+SDL_Surface *bombSprite = NULL;
 
 /* Telling the game that we will be using a font, defined in gfunc.c */
 TTF_Font *font = NULL;
@@ -91,9 +90,8 @@ bool init() // Start everything
 /* For loading the files all at once, foreshadow to precaching? */
 bool load_Files()
 {
-	/*LOADING BACKGROUND */
-	background = load_Image("sprite/sky1.png");
-	if (background == NULL)
+	bgSprite = load_Image("sprite/sky1.png");
+	if (bgSprite == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
@@ -105,15 +103,12 @@ bool load_Files()
 		return false;
 	}
 
-	/* LOAD TEH FONT */
-	// Telling the game what the font is and the font size
 	font = TTF_OpenFont ("font/lazy.ttf", 28);
 	if (font == NULL)
 	{
 		return false;
 	}
 
-	/* Telling the game what the music will be */
 	music = Mix_LoadMUS ("sound/beat.wav");
 	if (music == NULL )
 	{
@@ -129,6 +124,8 @@ bool load_Files()
 	{
 		return false;
 	}
+
+	bombSprite = load_Image("sprite/bomb.png");
 
 	return true;
 }
@@ -236,7 +233,7 @@ void clear()
 	SDL_FreeSurface (leftMessage);
 	SDL_FreeSurface (rightMessage);
 	SDL_FreeSurface (message);
-	SDL_FreeSurface (background);
+	SDL_FreeSurface (bgSprite);
 
 	/* Closing the fonts and text engine */
 	TTF_CloseFont (font);

@@ -27,6 +27,9 @@
     <ClInclude Include="src\gfunc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\weapon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entity.c">
@@ -39,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\gfunc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="weapon.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

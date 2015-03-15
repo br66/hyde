@@ -12,7 +12,7 @@
 
 /* from gfunc.c */
 extern SDL_Surface *screen;
-extern SDL_Surface *background;
+extern SDL_Surface *bgSprite;
 
 extern SDL_Surface *upMessage;
 extern SDL_Surface *downMessage;
@@ -37,31 +37,29 @@ extern SDL_Rect camera;
 extern SDL_Rect health;
 extern SDL_Rect anger;
 
-//objects
 extern SDL_Surface *dot;
 
 extern SDL_Event event;
 
+/* entities */
 entity_t *wall;
+entity_t *player;
+entity_t *background;
 
-/* I will be making an unsigned integer */
+/* time */
 Uint8 *keystates;
 Uint32 currentTime = 0;
+Uint32 delta = 0;
 
-//create main or else (error LNK2001: unresolved external symbol _SDL_main)
+/* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
 {	
-	entity_t *dot_ent;
-
 	entity_t *enemy1;
 	entity_t *enemy2;
 	entity_t *enemy3;
 
-//	entity_t *boss;
-
-	//don't forget barhud
+	//entity_t *boss;
 	
-	//boolean created for making sure the application stays active until this boolean equals true
 	bool done = false;
 
 	/* Starting time for the timer */
@@ -82,8 +80,14 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	
-	//Start the timer right before the gameloop starts, will start at 0 and increment
+	/*Start the timer right now, will start at 0 and increment */
 	start = SDL_GetTicks();
+
+	/* Background */
+	//background = Init_Ent();
+	//background->sprite = bgSprite;
+	//show_Surface (0, 0, background, screen, &camera);
+
 
 	/* HUD */
 	health.x = 10;
@@ -98,13 +102,13 @@ int main(int argc, char *argv[])
 	/* --- */
 
 	/* PLAYER */
-	dot_ent = Init_Ent();
-	dot_ent->resetPosition = reset_Position;
-	dot_ent->handle_Input = handle_Input;
-	dot_ent->move = move;
-	dot_ent->show = show;
+	player = Init_Ent();
+	player->resetPosition = init_Position;
+	player->handle_Input = handle_Input;
+	player->move = move;
+	player->show = show;
 
-	reset_Position(dot_ent);
+	init_Position(player);
 	/* ------- */
 
 	/* Enemy 1 */
@@ -116,7 +120,10 @@ int main(int argc, char *argv[])
 	enemy1->bBox.x = enemy1->x;
 	enemy1->bBox.y = enemy1->y;
 
-	enemy1->sprite = load_Image("sprite/red.png");
+	enemy1->sprite = load_Image("sprite/bomb.png");
+
+	enemy1->think = alphaThink;
+	enemy1->nextThink = currentTime + 5000;
 
 	enemy1->bBox.w = 64;
 	enemy1->bBox.h = 64;
@@ -137,6 +144,11 @@ int main(int argc, char *argv[])
 
 	enemy2->bBox.w = 64;
 	enemy2->bBox.h = 64;
+
+	enemy2->show = show_Enemy;
+
+	enemy2->think = betaThink;
+	enemy2->nextThink = currentTime + 7000;
 	/* ------- */
 
 	/* Enemy 3 */
@@ -152,6 +164,10 @@ int main(int argc, char *argv[])
 
 	enemy3->bBox.w = 64;
 	enemy3->bBox.h = 64;
+	enemy3->show = show_Enemy;
+
+	enemy3->think = gammaThink;
+	enemy3->nextThink = currentTime + 1000;
 	/* ------- */
 
 	/* Wall */
@@ -172,10 +188,14 @@ int main(int argc, char *argv[])
 	/* GAME ------------------------------------------------------------------------- */
 	do
 	{
+		show_Surface (0, 0, bgSprite, screen, &camera);
+		EntityAlive();
+		EntityShow();
+
 		//While there is still things to do
 		while (SDL_PollEvent (&event))
 		{
-			handle_Input(dot_ent);
+			handle_Input(player);
 
 			//Do them
 			//In the event that a key has been pressed...
@@ -225,15 +245,13 @@ int main(int argc, char *argv[])
 				done = true;
 			}
 
-			move(dot_ent);
+			move(player);
 		}
 
-		enemy1->bBox.x -= .1;
-
-		set_Camera(dot_ent);
+		set_Camera(player);
 
 		/* Text keeps overlapping each other, recreate bg to fix problem */
-		show_Surface (0, 0, background, screen, &camera);
+		//show_Surface (0, 0, background, screen, &camera);
 
 		if (running == true)
 			{
@@ -246,11 +264,11 @@ int main(int argc, char *argv[])
 				SDL_FreeSurface( seconds );
 			}
 
-		show(dot_ent);
+		show(player);
 
-		show_Enemy(enemy1);
-		show_Enemy(enemy2);
-		show_Enemy(enemy3);
+		//show_Enemy(enemy1);
+		//show_Enemy(enemy2);
+		//show_Enemy(enemy3);
 
 		show_Enemy(wall);
 
@@ -260,21 +278,19 @@ int main(int argc, char *argv[])
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );
 
+		delta = SDL_GetTicks() - currentTime;
 		/* Constantly getting the raw time from SDL */
 		currentTime = SDL_GetTicks();
 
+
 		/* Function so that the screen is constantly updated so you can see things happening as they happen */
 		SDL_Flip(screen);
-		
 	}
 	
-	while(!done); //Part of the do-while loop "Do game things while done is false (!done)"
-	
-	//When done equals true, the game escape the do-while loop (gameloop) and should reach the next line.
-	//Free up the memory the game is using
+	while(!done);
+
 	clear();
 
-	//These last two lines fully exit the game.
 	exit(0);
 	return 0;
 
