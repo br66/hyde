@@ -1,19 +1,14 @@
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
+/* MAY HAVE TO BE COMBINED WITH GAME.C */
+#include "include.h"
 
-#include "boolean.h"
-#include "gfunc.h"
-#include "graphics.h"
-#include "entity.h"
-
+/* unorganized */
 SDL_Surface *screen = NULL;		// application window
-SDL_Surface *bgSprite = NULL; // surface that will be background
+SDL_Surface *bgSprite = NULL;	// surface that will be background
 
-SDL_Surface *upMessage = NULL;	// surfaces for loading/showing a notice on the screen that a key has been pressed
-SDL_Surface *downMessage = NULL;
-SDL_Surface *leftMessage = NULL;
-SDL_Surface *rightMessage = NULL;
+//SDL_Surface *upMessage = NULL;	// surfaces for loading/showing a notice on the screen that a key has been pressed
+//SDL_Surface *downMessage = NULL;
+//SDL_Surface *leftMessage = NULL;
+//SDL_Surface *rightMessage = NULL;
 
 SDL_Surface *message = NULL;
 
@@ -22,8 +17,9 @@ SDL_Surface *seconds = NULL;
 SDL_Rect health;
 SDL_Rect anger;
 
-/* object sprites */
+/* object sprites, unorganized */
 SDL_Surface *bombSprite = NULL;
+SDL_Surface *bossSprite = NULL;
 
 /* Telling the game that we will be using a font, defined in gfunc.c */
 TTF_Font *font = NULL;
@@ -40,7 +36,7 @@ Mix_Chunk *high = NULL;
 Mix_Chunk *med = NULL;
 Mix_Chunk *low = NULL;
 
-//objects
+//objects, unorganized
 SDL_Surface *dot = NULL;
 
 //Keep track of the frame count
@@ -51,45 +47,44 @@ SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 /* For events (ex. key presses) */
 SDL_Event event;
 
-bool init() // Start everything
+bool init()
 {
-	//Initialize SDL and checks if it did it successfully
-	/*SDL's subsystems (video, audio, timers, engine components) are started up */
+	/* start SDL 1.2 */
 	if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 )
 	{
 		return false;
 	}
 
-	/* If this loads correctly, we can use TrueType Fonts (TTF). */
+	/* fonts for text */
 	if ( TTF_Init() == -1 )
 	{
 		return false;
 	}
 
-	/* If this loads correctly, we can have music */
+	/* music */
 	if (Mix_OpenAudio ( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
 	{
 		return false;
 	}
 
-	//Set up the screen and check if it did it successfully
-	/*Fourth argument creates the screens surface in system memory */
+	/* Fourth argument creates the screens surface in system memory */
 	screen = SDL_SetVideoMode (SCREEN_WIDTH, SCREEN_HEIGHT, BITSPERPIXEL, SDL_SWSURFACE);
 	if (screen == NULL)
 	{
 		return false;
 	}
 
-	/* Setting the window title */
+	/* Window title */
 	SDL_WM_SetCaption ("Game", NULL);
 
-	/* If I didn't screw up anything, return true. */
+	/* If nothing's wrong, return true. */
 	return true;
 }
 
-/* For loading the files all at once, foreshadow to precaching? */
+/* Loads all files in one function, foreshadow to precaching? */
 bool load_Files()
 {
+	/* sprites */
 	bgSprite = load_Image("sprite/sky1.png");
 	if (bgSprite == NULL)
 	{
@@ -101,21 +96,40 @@ bool load_Files()
 	if (dot == NULL)
 	{
 		return false;
+		printf("error: %s\n", SDL_GetError());
 	}
 
+	bombSprite = load_Image("sprite/bomb.png");
+	if (bombSprite == NULL)
+	{
+		return false;
+		printf("error: %s\n", SDL_GetError());
+	}
+
+	bossSprite = load_Image("sprite/boss.png");
+	if (bossSprite == NULL)
+	{
+		return false;
+		printf("error: %s\n", SDL_GetError());
+	}
+
+	/* font */
 	font = TTF_OpenFont ("font/lazy.ttf", 28);
 	if (font == NULL)
 	{
 		return false;
+		printf("error: %s\n", SDL_GetError());
 	}
 
+	/* audio */
 	music = Mix_LoadMUS ("sound/beat.wav");
 	if (music == NULL )
 	{
 		return false;
+		printf("error: %s\n", SDL_GetError());
 	}
 
-	/* Telling the game what the sound effects will actually be */
+	/* sound effects */
 	scratch = Mix_LoadWAV ( "sound/scratch.wav" );
 	high = Mix_LoadWAV ( "sound/high.wav" );
 	med = Mix_LoadWAV ( "sound/medium.wav" );
@@ -123,18 +137,26 @@ bool load_Files()
 	if ((scratch == NULL) || (high == NULL) || (med == NULL) || (low == NULL))
 	{
 		return false;
+		printf("error: %s\n", SDL_GetError());
 	}
-
-	bombSprite = load_Image("sprite/bomb.png");
-
 	return true;
+}
+
+/* Check level function - show corresponding level */
+void CheckLevel ()
+{
+	/* define the levels here including start func
+	when game starts, level 1 is drawn
+	
+	in gameloop if 1 is pressed, variable will be equal to 1
+	checklevel will check if var is equal to 2, show lvl 2 */
 }
 
 /* Rough translation of timecode, will attempt to better clarify later */
 
 char *FormatNumber(Uint32 number, int min)
 {
-	Uint32 value = number;  //The number we get from the raw time (which is in U32 form)
+	Uint32 value = number;  //The number we get from the raw time (which is in Uint32 form)
 	static char array[10][20];  //Array w/ 3 10 rows & 20 columns
 	static int buffer = 0; //creating a buffer, saving the numbers
 	int count, x; // for counting
@@ -211,8 +233,8 @@ void set_Camera (entity_t *ent)
 	int xmargin;
 	xmargin = 1000;
 
-	camera.x = ( ent->bBox.x + ent->width + xmargin / 2) - L_WIDTH / 2;
-	camera.y = ( ent->bBox.y + ent->height / 2) - L_HEIGHT / 2;
+	camera.x = ( ent->x + ent->width + xmargin / 2) - L_WIDTH / 2;
+	camera.y = ( ent->y + ent->height / 2) - L_HEIGHT / 2;
 
 	if ( camera.x < 0 )
 		camera.x = 0;
@@ -228,10 +250,10 @@ void set_Camera (entity_t *ent)
 void clear()
 {
 	/* Freeing up memory by getting rid of these surfaces (images) */
-	SDL_FreeSurface (upMessage);
-	SDL_FreeSurface (downMessage);
-	SDL_FreeSurface (leftMessage);
-	SDL_FreeSurface (rightMessage);
+	//SDL_FreeSurface (upMessage);
+	//SDL_FreeSurface (downMessage);
+	//SDL_FreeSurface (leftMessage);
+	//SDL_FreeSurface (rightMessage);
 	SDL_FreeSurface (message);
 	SDL_FreeSurface (bgSprite);
 

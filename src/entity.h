@@ -8,8 +8,8 @@ typedef struct entity_s
 {
 	int				inuse;
 
-	int				x,y;
-	int				xVel, yVel;
+	float			x,y;
+	float			xVel, yVel;
 
 	SDL_Rect		bBox;
 
@@ -68,3 +68,4 @@ void projThink (entity_t *ent);
 void alphaThink (entity_t *self);
 void betaThink (entity_t *self);
 void gammaThink (entity_t *self);
+void bossThink (entity_t *self);

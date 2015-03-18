@@ -30,6 +30,12 @@
     <ClInclude Include="src\weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entity.c">
@@ -44,8 +50,16 @@
     <ClCompile Include="src\gfunc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="weapon.c">
+    <ClCompile Include="src\weapon.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\level.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level.txt">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

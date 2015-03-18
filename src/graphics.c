@@ -58,34 +58,14 @@ SDL_Surface *load_Image (char *filename)
 }
 
 /* Displaying Image function */
-void show_Surface (int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
+void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
-	/*
-	The SDL_BlitSurface function takes 4 parameters, the image we're going to display,
-	what we're displaying it to, a rect. cropping the image (other than for a spritesheet, 
-	you might not want to, therefore you would put NULL) and a rect. to tell the image 
-	exactly where to display itself on the given surface (ex. screen).
-
-	SDL_BlitSurface(SDL_Surface* src, const SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect)
-
-	"show_Surface" will take in a surface (image) to be displayed, and a surface to display
-	it to just like SDL_BlitSurface.  However, just so that we won't have to constantly make
-	a rect. to tell the image where exactly to display, "show_Surface" will also take in 2
-	parameters (x and y positions) which will be given to a temporary rect. made inside 
-	this function.
-
-	Additionally, we will have s 5th parameter for cropping (or clipping) the image (think cutting
-	a image into pieces) which will primarly be used for spritesheets.
-
-	Now we won't have to consistently make new rect. every time we want to display a (surface).
-	*/
-
 	//Temporary rectangle used to tell function where to display source surface on screen
 	SDL_Rect offset;
 
 	//Taking in the positions given to the function
-	offset.x = x;
-	offset.y = y;
+	offset.x = (int)x;
+	offset.y = (int)y;
 
 	//Displaying the surface
 	SDL_BlitSurface( source, clip, destination, &offset);

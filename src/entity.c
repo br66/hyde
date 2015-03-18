@@ -1,6 +1,4 @@
-#include "entity.h"
-#include "graphics.h"
-#include "weapon.h"
+#include "include.h"
 
 extern SDL_Event event;
 
@@ -68,10 +66,10 @@ void EntityAlive()
 			}
 			if (e->xVel != 0)
 			{
-				e->bBox.x += (e->xVel * delta) >> 10;
+				e->x += e->xVel;
 			}
 			if (e->yVel != 0)
-			{ e->bBox.y += (e->yVel * delta) >> 10;}
+			{ e->y += e->yVel;}
 		}
 		e++;
 	}
@@ -106,11 +104,11 @@ void init_Position (entity_t *ent)
 	ent->width = 20;
 	ent->height = 20;
 
-	ent->bBox.x = ent->x;
-	ent->bBox.y = ent->y;
+//	ent->bBox.x = ent->x;
+//	ent->bBox.y = ent->y;
 
-	ent->bBox.w = 20;
-	ent->bBox.h = 20;
+	//ent->bBox.w = 20;
+	//ent->bBox.h = 20;
 }
 
 void handle_Input ( entity_t *ent )
@@ -142,35 +140,34 @@ void handle_Input ( entity_t *ent )
 
 void move ( entity_t *ent )
 {
-	ent->bBox.x += ent->xVel;
+	ent->x += ent->xVel;
 
-	if ( ( ent->bBox.x < 0 ) || ( ent->bBox.x + ent->width > L_WIDTH ) || (isCollide(ent->bBox, wall->bBox) ) )
+	if ( ( ent->x < 0 ) || ( ent->x + ent->width > L_WIDTH ) )
 	{
-		ent->bBox.x -= ent->xVel;
+		ent->x -= ent->xVel;
 	}
 
-	ent->bBox.y += ent->yVel;
+	ent->y += ent->yVel;
 	
-	if ( ( ent->bBox.y < 0 ) || ( ent->bBox.y + ent->height > L_HEIGHT ) || (isCollide(ent->bBox, wall->bBox)) )
+	if ( ( ent->y < 0 ) || ( ent->y + ent->height > L_HEIGHT ) )
 	{
-		ent->bBox.y -= ent->xVel;
+		ent->y -= ent->xVel;
 	}
 }
 
 void show (entity_t *ent)
 {
-	show_Surface (ent->bBox.x - camera.x, ent->bBox.y - camera.y, dot, screen, NULL);
+	show_Surface (ent->x - camera.x, ent->y - camera.y, dot, screen, NULL);
 }
 
 void show_Enemy (entity_t *ent)
 {
-	show_Surface (ent->bBox.x - camera.x, ent->bBox.y - camera.y, ent->sprite, screen, NULL);
+	show_Surface (ent->x - camera.x, ent->y - camera.y, ent->sprite, screen, NULL);
 }
  
 void show_Relative (entity_t *ent)
 {
-	show_Surface(ent->bBox.x - camera.x, ent->bBox.y - camera.y, ent->sprite, screen, NULL);
-	//printf("test");
+	show_Surface(ent->x - camera.x, ent->y - camera.y, ent->sprite, screen, NULL);
 }
 void show_Background (entity_t *ent)
 {
@@ -248,9 +245,9 @@ void projThink (entity_t *ent)
 
 void alphaThink (entity_t *self)
 {
-	SDL_Rect b1, b2;
+	//SDL_Rect b1, b2;
 
-	b2.x = player->x + player->bBox.x;
+	/*b2.x = player->x + player->bBox.x;
 	b2.y = player->y + player->bBox.y;
 	b2.w = player->bBox.w;
 	b2.h = player->bBox.h;
@@ -258,7 +255,7 @@ void alphaThink (entity_t *self)
 	b1.x = self->x + self->bBox.x;
 	b1.y = self->y + self->bBox.y;
 	b1.w = self->bBox.w;
-	b1.h = self->bBox.h;
+	b1.h = self->bBox.h;*/
 
 	if (self->thinkflags == 10)
 	{
@@ -266,7 +263,7 @@ void alphaThink (entity_t *self)
 		fire_Bomb(self);
 	}
 	else
-		self->xVel -= 10;
+		self->xVel -= 0.2;
 /*
 	if (isCollide (b1, b2))
 	{
@@ -274,8 +271,10 @@ void alphaThink (entity_t *self)
 		self->yVel = 0;
 	}
 */
+	printf("%f\n", self->x);
+
 	self->thinkflags++;
-	self->nextThink = currentTime + 300;
+	self->nextThink = currentTime + 310;
 }
 
 void betaThink (entity_t *self)
@@ -288,7 +287,7 @@ void betaThink (entity_t *self)
 	}
 	else
 	{
-		self->xVel -= 8;
+		self->xVel -= .8;
 	}
 
 	self->thinkflags++;
@@ -299,13 +298,131 @@ void gammaThink (entity_t *self)
 {
 	int accel = 10;
 
-	if (self->bBox.y > 200 && self->bBox.y < 400)
-	{self->yVel += -accel;}
+	if (self->y > 200 && self->y < 400)
+	{ self->yVel += -accel; }
 	
-	if (self->bBox.y > 400 || self->bBox.y < 200)
-	{ self->yVel += accel; printf("wtf");}
-
+	if (self->y > 400 || self->y < 200)
+	{ self->yVel += accel; }
 
 	self->thinkflags++;
 	self->nextThink = currentTime + 400;
+}
+//Thinknum[0] - the boss's walk quadrant
+void bossThink (entity_t *self)
+{
+	int accel = 1;
+
+	int idleState = 1;
+	//int quad1, quad2, quad3, quad4;
+	//if y=0 , quad 2
+
+	printf("%d\n", self->thinknums[0]);
+
+	switch (self->thinknums[0])
+	{
+		case 1:
+			if (self->yVel == 0)
+			{
+				self->thinknums[0] = 2;
+			}
+			else
+			{
+				self->yVel++;
+				self->xVel--;
+			}
+			break;
+		case 2:
+			if (self->xVel == 0)
+			{
+				self->thinknums[0] = 3;
+			}
+			else
+			{
+				self->yVel++;
+				self->xVel++;
+			}
+			break;
+		case 3:
+			if (self->yVel == 0)
+			{
+				self->thinknums[0] = 4;
+			}
+			else
+			{
+				self->yVel--;
+				self->xVel++;
+			}
+			break;
+
+		case 4:
+			if (self->xVel == 0)
+			{
+				self->thinknums[0] = 1;
+			}
+			else
+			{
+				self->yVel--;
+				self->xVel--;
+			}
+			break;
+
+		default:
+			self->yVel = -5;
+			self->xVel = 0;
+			self->thinknums[0] = 1;
+			break;
+	}
+	
+	/*if ( (self->bBox.x <= 980) && (self->bBox.y <= 300) )
+	{
+		printf("995 and 305\n");
+		self->xVel = 0;
+		//self->yVel = 0;
+		self->xVel += accel * 150; //right
+		self->yVel += -accel; //up
+	}
+	else if ( (self->bBox.x >= 1000) && (self->bBox.y <= 80) )
+	{
+		printf("1000, 290\n");
+		self->xVel = 0;
+		self->yVel = 0;
+		self->xVel += accel * 150; //right
+		self->yVel += accel *150; //down
+	}
+	else if ( (self->bBox.x >= 1005) && (self->bBox.y <= 130) ) //ignore
+	{
+		//printf("%d\n", self->bBox.y);
+		printf("1005, 295\n");
+		self->xVel = 0;
+		self->yVel = 0;
+		self->xVel += accel * 150; 
+		self->yVel += accel * 150;
+	}
+	else if ( (self->bBox.x >= 1100) && (self->bBox.y >= 330) )
+	{
+		printf("1005, XXX\n");
+		self->xVel = 0;
+		self->yVel = 0;
+		self->xVel += -accel * 150;
+		self->yVel += accel * 150;
+	}
+	else if ( (self->bBox.x <= 900) && (self->bBox.y >= 400) )
+	{
+		self->xVel = 0;
+		self->yVel = 0;
+		self->xVel += -accel; //left
+		self->yVel += -accel; //up
+	}
+	else if ( (self->bBox.x == 1000) && (self->bBox.y == 300) )
+	{
+		printf("1000, 300");
+		self->xVel = 0;
+		self->yVel = 0;
+		self->xVel += -accel; //left
+		self->yVel += -accel; //up
+	}
+	printf("%d\n", self->bBox.y);*/
+
+	//self->thinkflags++;
+	self->nextThink = currentTime + 50;
 }

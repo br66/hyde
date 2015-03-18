@@ -1,23 +1,14 @@
-//Include SDL to use... SDL
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-
-//Include header files I made
-#include "boolean.h"
-#include "graphics.h"
-#include "gfunc.h"
-#include "entity.h"
+/* MAY HAVE TO BE COMBINED WITH GFUNC.C */
+#include "include.h"
 
 /* from gfunc.c */
 extern SDL_Surface *screen;
 extern SDL_Surface *bgSprite;
 
-extern SDL_Surface *upMessage;
-extern SDL_Surface *downMessage;
-extern SDL_Surface *leftMessage;
-extern SDL_Surface *rightMessage;
+//extern SDL_Surface *upMessage;
+//extern SDL_Surface *downMessage;
+//extern SDL_Surface *leftMessage;
+//extern SDL_Surface *rightMessage;
 
 extern SDL_Surface *message;
 
@@ -39,6 +30,8 @@ extern SDL_Rect anger;
 
 extern SDL_Surface *dot;
 
+extern SDL_Surface *bossSprite;
+
 extern SDL_Event event;
 
 /* entities */
@@ -53,12 +46,16 @@ Uint32 delta = 0;
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
-{	
+{
+	//check level function
+	/* if level one, show these things */
+	/* if level two, show these things */
+
 	entity_t *enemy1;
 	entity_t *enemy2;
 	entity_t *enemy3;
 
-	//entity_t *boss;
+	entity_t *boss;
 	
 	bool done = false;
 
@@ -68,26 +65,20 @@ int main(int argc, char *argv[])
 	/* Flag for if the timer is running or not */
 	bool running = true;
 	
-	/* Start everything (SDL, open a window, etc.) and make sure it did it successfully */
+	/* Start everything (SDL, open window, etc.), make sure done successfully */
 	if ( init() == false)
 	{
 		return 1;
 	}
 	
-	/* This func. loads all the sprites and checks that I did it correctly */
+	/* Load all the file, check if done successfully */
 	if ( load_Files() == false)
 	{
 		return 1;
 	}
 	
-	/*Start the timer right now, will start at 0 and increment */
+	/* Might move this */
 	start = SDL_GetTicks();
-
-	/* Background */
-	//background = Init_Ent();
-	//background->sprite = bgSprite;
-	//show_Surface (0, 0, background, screen, &camera);
-
 
 	/* HUD */
 	health.x = 10;
@@ -117,16 +108,16 @@ int main(int argc, char *argv[])
 	enemy1->x = 600;
 	enemy1->y = 350;
 
-	enemy1->bBox.x = enemy1->x;
-	enemy1->bBox.y = enemy1->y;
+	//enemy1->bBox.x = enemy1->x;
+	//enemy1->bBox.y = enemy1->y;
 
-	enemy1->sprite = load_Image("sprite/bomb.png");
+	enemy1->sprite = load_Image("sprite/red.png"); //sprites will later be loaded in sprite.c // declared in sprite.h
 
 	enemy1->think = alphaThink;
 	enemy1->nextThink = currentTime + 5000;
 
-	enemy1->bBox.w = 64;
-	enemy1->bBox.h = 64;
+	//enemy1->bBox.w = 64;
+	//enemy1->bBox.h = 64;
 	
 	enemy1->show = show_Enemy;
 	/* ------- */
@@ -139,11 +130,11 @@ int main(int argc, char *argv[])
 	enemy2->x = 770;
 	enemy2->y = 350;
 
-	enemy2->bBox.x = enemy2->x;
-	enemy2->bBox.y = enemy2->y;
+	//enemy2->bBox.x = enemy2->x;
+	//enemy2->bBox.y = enemy2->y;
 
-	enemy2->bBox.w = 64;
-	enemy2->bBox.h = 64;
+	//enemy2->bBox.w = 64;
+	//enemy2->bBox.h = 64;
 
 	enemy2->show = show_Enemy;
 
@@ -159,15 +150,33 @@ int main(int argc, char *argv[])
 	enemy3->x = 900;
 	enemy3->y = 350;
 
-	enemy3->bBox.x = enemy3->x;
-	enemy3->bBox.y = enemy3->y;
+	//enemy3->bBox.x = enemy3->x;
+	//enemy3->bBox.y = enemy3->y;
 
-	enemy3->bBox.w = 64;
-	enemy3->bBox.h = 64;
+	//enemy3->bBox.w = 64;
+	//enemy3->bBox.h = 64;
 	enemy3->show = show_Enemy;
 
 	enemy3->think = gammaThink;
 	enemy3->nextThink = currentTime + 1000;
+	/* ------- */
+
+	/*  Boss  */
+	boss = Init_Ent();
+
+	boss->sprite = bossSprite;
+
+	boss->x = 1000;
+	boss->y = 300;
+
+	//boss->bBox.x = boss->x;
+	//boss->bBox.y = boss->y;
+
+	boss->show = show_Enemy;
+
+	boss->think = bossThink;
+	boss->nextThink = currentTime + 9000;
+
 	/* ------- */
 
 	/* Wall */
@@ -181,8 +190,8 @@ int main(int argc, char *argv[])
 	wall->bBox.w = 40;
 	wall->bBox.h = 400;
 
-	wall->bBox.x = wall->x;
-	wall->bBox.y = wall->y;
+	wall->bBox.x = (int)wall->x; //?
+	wall->bBox.y = (int)wall->y;
 	/* ------- */
 
 	/* GAME ------------------------------------------------------------------------- */
@@ -192,16 +201,12 @@ int main(int argc, char *argv[])
 		EntityAlive();
 		EntityShow();
 
-		//While there is still things to do
 		while (SDL_PollEvent (&event))
 		{
 			handle_Input(player);
 
-			//Do them
-			//In the event that a key has been pressed...
 			if ( event.type == SDL_KEYDOWN )
 			{
-				//system for checking what key has been pressed
 				switch ( event.key.keysym.sym )
 				{
 					case SDLK_UP: //in the case the up button has been pressed
@@ -210,10 +215,10 @@ int main(int argc, char *argv[])
 							return 1;								//arg. 3- how many times sound will loop
 						}
 						break;
-					case SDLK_9:
-						camera.x += 20;
-						printf("camera ( %d, %d )\n", camera.x, camera.y);
-						break;
+					//case SDLK_9:
+						//camera.x += 20;
+						//printf("camera ( %d, %d )\n", camera.x, camera.y);
+						//break;
 					case SDLK_RIGHT:
 						if (Mix_PlayChannel (-1, low, 0) == -1)
 						{
@@ -250,16 +255,13 @@ int main(int argc, char *argv[])
 
 		set_Camera(player);
 
-		/* Text keeps overlapping each other, recreate bg to fix problem */
-		//show_Surface (0, 0, background, screen, &camera);
-
 		if (running == true)
 			{
 				char msg[20];
 				sprintf( msg, "%s", FormatTimeString(start));
 
 				seconds = TTF_RenderText_Solid (font, msg, textColor);
-				show_Surface ((SCREEN_WIDTH - seconds->w ) / 2, 50, seconds, screen, NULL);
+				show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, screen, NULL);
 
 				SDL_FreeSurface( seconds );
 			}

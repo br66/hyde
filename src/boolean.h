@@ -1,3 +1,4 @@
+
 /* Visual Studio 2010 C programming does not have booleans
 defined.  Boolean is created below. */
 

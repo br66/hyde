@@ -91,6 +91,8 @@
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\gfunc.h" />
     <ClInclude Include="src\graphics.h" />
+    <ClInclude Include="src\include.h" />
+    <ClInclude Include="src\level.h" />
     <ClInclude Include="src\weapon.h" />
   </ItemGroup>
   <ItemGroup>
@@ -98,7 +100,11 @@
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\gfunc.c" />
     <ClCompile Include="src\graphics.c" />
-    <ClCompile Include="weapon.c" />
+    <ClCompile Include="src\level.c" />
+    <ClCompile Include="src\weapon.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
