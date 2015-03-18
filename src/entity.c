@@ -1,18 +1,7 @@
 #include "include.h"
 
-extern SDL_Event event;
-
-extern SDL_Surface *screen;
-extern SDL_Surface *dot;
-
-extern SDL_Rect camera;
-
 extern entity_t *wall;
 extern entity_t *player;
-
-extern Uint32 delta;
-
-extern Uint32 currentTime;
 
 /* Entity in memory */
 entity_t *Init_Ent (void)
@@ -271,7 +260,6 @@ void alphaThink (entity_t *self)
 		self->yVel = 0;
 	}
 */
-	printf("%f\n", self->x);
 
 	self->thinkflags++;
 	self->nextThink = currentTime + 310;
@@ -282,7 +270,6 @@ void betaThink (entity_t *self)
 	if (self->thinkflags == 7)
 	{
 		self->xVel = 0;
-		//printf("reacehd 20");
 		fire_Projectile(self);
 	}
 	else
@@ -313,10 +300,9 @@ void bossThink (entity_t *self)
 	int accel = 1;
 
 	int idleState = 1;
-	//int quad1, quad2, quad3, quad4;
 	//if y=0 , quad 2
 
-	printf("%d\n", self->thinknums[0]);
+	//printf("%d\n", self->thinknums[0]);
 
 	switch (self->thinknums[0])
 	{
@@ -372,56 +358,6 @@ void bossThink (entity_t *self)
 			self->thinknums[0] = 1;
 			break;
 	}
-	
-	/*if ( (self->bBox.x <= 980) && (self->bBox.y <= 300) )
-	{
-		printf("995 and 305\n");
-		self->xVel = 0;
-		//self->yVel = 0;
-		self->xVel += accel * 150; //right
-		self->yVel += -accel; //up
-	}
-	else if ( (self->bBox.x >= 1000) && (self->bBox.y <= 80) )
-	{
-		printf("1000, 290\n");
-		self->xVel = 0;
-		self->yVel = 0;
-		self->xVel += accel * 150; //right
-		self->yVel += accel *150; //down
-	}
-	else if ( (self->bBox.x >= 1005) && (self->bBox.y <= 130) ) //ignore
-	{
-		//printf("%d\n", self->bBox.y);
-		printf("1005, 295\n");
-		self->xVel = 0;
-		self->yVel = 0;
-		self->xVel += accel * 150; 
-		self->yVel += accel * 150;
-	}
-	else if ( (self->bBox.x >= 1100) && (self->bBox.y >= 330) )
-	{
-		printf("1005, XXX\n");
-		self->xVel = 0;
-		self->yVel = 0;
-		self->xVel += -accel * 150;
-		self->yVel += accel * 150;
-	}
-	else if ( (self->bBox.x <= 900) && (self->bBox.y >= 400) )
-	{
-		self->xVel = 0;
-		self->yVel = 0;
-		self->xVel += -accel; //left
-		self->yVel += -accel; //up
-	}
-	else if ( (self->bBox.x == 1000) && (self->bBox.y == 300) )
-	{
-		printf("1000, 300");
-		self->xVel = 0;
-		self->yVel = 0;
-		self->xVel += -accel; //left
-		self->yVel += -accel; //up
-	}
-	printf("%d\n", self->bBox.y);*/
 
 	//self->thinkflags++;
 	self->nextThink = currentTime + 50;

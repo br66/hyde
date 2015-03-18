@@ -1,48 +1,11 @@
-/* MAY HAVE TO BE COMBINED WITH GFUNC.C */
+/* The game loop file */
+
 #include "include.h"
-
-/* from gfunc.c */
-extern SDL_Surface *screen;
-extern SDL_Surface *bgSprite;
-
-//extern SDL_Surface *upMessage;
-//extern SDL_Surface *downMessage;
-//extern SDL_Surface *leftMessage;
-//extern SDL_Surface *rightMessage;
-
-extern SDL_Surface *message;
-
-extern TTF_Font *font;
-extern SDL_Color textColor;
-extern SDL_Rect clips[4];
-
-extern SDL_Surface *seconds;
-
-extern Mix_Music *music;
-extern Mix_Chunk *scratch;
-extern Mix_Chunk *high;
-extern Mix_Chunk *med;
-extern Mix_Chunk *low;
-
-extern SDL_Rect camera;
-extern SDL_Rect health;
-extern SDL_Rect anger;
-
-extern SDL_Surface *dot;
-
-extern SDL_Surface *bossSprite;
-
-extern SDL_Event event;
 
 /* entities */
 entity_t *wall;
 entity_t *player;
 entity_t *background;
-
-/* time */
-Uint8 *keystates;
-Uint32 currentTime = 0;
-Uint32 delta = 0;
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
@@ -194,10 +157,13 @@ int main(int argc, char *argv[])
 	wall->bBox.y = (int)wall->y;
 	/* ------- */
 
+	level = 1; // when the game starts, we will be at level 1
+
 	/* GAME ------------------------------------------------------------------------- */
 	do
 	{
-		show_Surface (0, 0, bgSprite, screen, &camera);
+		CheckLevel();
+		//show_Surface (0, 0, bgSprite, screen, &camera);
 		EntityAlive();
 		EntityShow();
 
@@ -209,34 +175,34 @@ int main(int argc, char *argv[])
 			{
 				switch ( event.key.keysym.sym )
 				{
-					case SDLK_UP: //in the case the up button has been pressed
-						if (Mix_PlayChannel (-1, scratch, 0) == -1) //arg. 1- -1 means looking for the nxt sound channel available to play sound
-						{											//arg. 2- the sound that will be played
-							return 1;								//arg. 3- how many times sound will loop
+					case SDLK_UP: 
+						if (Mix_PlayChannel (-1, scratch, 0) == -1) //arg. 1, -1 means looking for the next sound channel available
+						{											//arg. 2, sound that will be played
+							return 1;								//arg. 3, how many times sound will loop
 						}
 						break;
-					//case SDLK_9:
-						//camera.x += 20;
-						//printf("camera ( %d, %d )\n", camera.x, camera.y);
-						//break;
+					case SDLK_1:
+						level = 1;
+						break;
+					case SDLK_2:
+						level = 2;
+						break;
 					case SDLK_RIGHT:
 						if (Mix_PlayChannel (-1, low, 0) == -1)
 						{
 							return 1;
 						}
 						break;
-					case SDLK_0: //Completely stops music
+					case SDLK_0:
 						Mix_HaltMusic(); break;
 					case SDLK_s:
-						if (running == true) //if the timer is running
+						if (running == true)
 						{
-							//STAHP
 							running = false;
-							start = 0; //restart the timer
+							start = 0;
 						}
 						else
 						{
-							//or maybe the timer never started
 							running = true;
 							start = SDL_GetTicks();
 						}
@@ -267,10 +233,6 @@ int main(int argc, char *argv[])
 			}
 
 		show(player);
-
-		//show_Enemy(enemy1);
-		//show_Enemy(enemy2);
-		//show_Enemy(enemy3);
 
 		show_Enemy(wall);
 

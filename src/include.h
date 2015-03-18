@@ -10,3 +10,4 @@
 #include "gfunc.h"
 #include "weapon.h"
 #include "level.h"
+#include "assets.h"

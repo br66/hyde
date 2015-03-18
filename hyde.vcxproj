@@ -87,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\assets.h" />
     <ClInclude Include="src\boolean.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\gfunc.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="src\weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\assets.c" />
     <ClCompile Include="src\entity.c" />
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\gfunc.c" />

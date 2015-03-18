@@ -1,51 +1,6 @@
-/* MAY HAVE TO BE COMBINED WITH GAME.C */
+/* Functions called in the game loop */
+
 #include "include.h"
-
-/* unorganized */
-SDL_Surface *screen = NULL;		// application window
-SDL_Surface *bgSprite = NULL;	// surface that will be background
-
-//SDL_Surface *upMessage = NULL;	// surfaces for loading/showing a notice on the screen that a key has been pressed
-//SDL_Surface *downMessage = NULL;
-//SDL_Surface *leftMessage = NULL;
-//SDL_Surface *rightMessage = NULL;
-
-SDL_Surface *message = NULL;
-
-SDL_Surface *seconds = NULL;
-
-SDL_Rect health;
-SDL_Rect anger;
-
-/* object sprites, unorganized */
-SDL_Surface *bombSprite = NULL;
-SDL_Surface *bossSprite = NULL;
-
-/* Telling the game that we will be using a font, defined in gfunc.c */
-TTF_Font *font = NULL;
-
-/* Telling the game what font the color will be  In this case, white */
-SDL_Color textColor = { 255, 255, 255 };
-
-/* Telling the game I will have a music file */
-Mix_Music *music= NULL;
-
-/* Telling the game I will have sound effects */
-Mix_Chunk *scratch = NULL;
-Mix_Chunk *high = NULL;
-Mix_Chunk *med = NULL;
-Mix_Chunk *low = NULL;
-
-//objects, unorganized
-SDL_Surface *dot = NULL;
-
-//Keep track of the frame count
-int frameCount;
-
-SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-
-/* For events (ex. key presses) */
-SDL_Event event;
 
 bool init()
 {
@@ -84,7 +39,7 @@ bool init()
 /* Loads all files in one function, foreshadow to precaching? */
 bool load_Files()
 {
-	/* sprites */
+	/* lvl 1 sprites */
 	bgSprite = load_Image("sprite/sky1.png");
 	if (bgSprite == NULL)
 	{
@@ -92,6 +47,14 @@ bool load_Files()
 		printf("error: %s\n", SDL_GetError());
 	}
 
+	bgSprite2 = load_Image("sprite/sky2.png");
+	if (bgSprite2 == NULL)
+	{
+		return false;
+		printf("error: %s\n", SDL_GetError());
+	}
+
+	/* player sprite */
 	dot = load_Image("sprite/square.bmp");
 	if (dot == NULL)
 	{
@@ -99,6 +62,7 @@ bool load_Files()
 		printf("error: %s\n", SDL_GetError());
 	}
 
+	/* enemy sprites */
 	bombSprite = load_Image("sprite/bomb.png");
 	if (bombSprite == NULL)
 	{
@@ -145,11 +109,28 @@ bool load_Files()
 /* Check level function - show corresponding level */
 void CheckLevel ()
 {
+	level_t *stage1;
+	level_t *stage2;
+
+	stage1 = &levels[0];
+	sprintf(stage1->level, "stage 1");
+	stage1->surfaces[0] = bgSprite;
+	
+	stage2 = &levels[1];
+	sprintf(stage2->level, "stage 2");
+	stage2->surfaces[0] = bgSprite2;
+
 	/* define the levels here including start func
 	when game starts, level 1 is drawn
 	
 	in gameloop if 1 is pressed, variable will be equal to 1
 	checklevel will check if var is equal to 2, show lvl 2 */
+
+	if (level == 1)
+		//printf("level = %i\n", level);
+		show_Surface (0, 0, stage1->surfaces[0], screen, &camera);
+	if (level == 2)
+		show_Surface (0, 0, stage2->surfaces[0], screen, &camera);
 }
 
 /* Rough translation of timecode, will attempt to better clarify later */
@@ -222,7 +203,7 @@ char* FormatTimeString(Uint32 offset) //creates result var, converts raw time in
 	sprintf(result, "%s:%s:%s:%s'", hours, minutes, seconds, hundreths);
 	return result;
 }
-char* timeString(Uint32 offset) //not used
+char* timeString(Uint32 offset)
 {
 	Uint32 ticks = SDL_GetTicks() - offset;
 	return FormatNumber(ticks, 0);
@@ -233,8 +214,8 @@ void set_Camera (entity_t *ent)
 	int xmargin;
 	xmargin = 1000;
 
-	camera.x = ( ent->x + ent->width + xmargin / 2) - L_WIDTH / 2;
-	camera.y = ( ent->y + ent->height / 2) - L_HEIGHT / 2;
+	camera.x = ( (int)ent->x + ent->width + xmargin / 2) - L_WIDTH / 2;
+	camera.y = ( (int)ent->y + ent->height / 2) - L_HEIGHT / 2;
 
 	if ( camera.x < 0 )
 		camera.x = 0;

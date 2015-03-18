@@ -1,5 +1,4 @@
-#include <SDL.h>
-#include <SDL_image.h>
+#include "include.h"
 
 /* Load Image from file function */
 SDL_Surface *load_Image (char *filename)

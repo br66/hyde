@@ -1,11 +1,4 @@
-#include <SDL.h>
-#include "entity.h"
-#include "weapon.h"
-#include "graphics.h"
-
-extern SDL_Surface *screen;
-extern SDL_Surface *bombSprite;
-extern Uint32 currentTime;
+#include "include.h"
 
 void fire_Bomb (entity_t *ent)
 {

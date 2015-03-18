@@ -8,5 +8,6 @@ void CheckLevel();
 void clear();
 char* FormatTimeString(Uint32 offset);
 char* timeString(Uint32 offset);
+int level;
 
 //void set_Clips();
