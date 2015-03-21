@@ -248,7 +248,7 @@ void alphaThink (entity_t *self)
 		fire_Bomb(self);
 	}
 	else
-		self->xVel -= .2;
+		self->xVel -= 0.2;
 
 	self->thinkflags++;
 	self->nextThink = currentTime + 310;
@@ -272,7 +272,7 @@ void betaThink (entity_t *self)
 
 void gammaThink (entity_t *self)
 {
-	int accel = 10;
+	int accel = 2;
 
 	if (self->y > 200 && self->y < 400)
 	{ self->yVel += -accel; }
@@ -281,7 +281,7 @@ void gammaThink (entity_t *self)
 	{ self->yVel += accel; }
 
 	self->thinkflags++;
-	self->nextThink = currentTime + 400;
+	self->nextThink = currentTime + 600;
 }
 //Thinknum[0] - the boss's walk quadrant
 void bossThink (entity_t *self)

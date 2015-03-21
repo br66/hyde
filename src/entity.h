@@ -52,7 +52,7 @@ void Free_Ent(entity_t *self);	// entity is ready to be replaced
 void EntityAlive ();			// calls all think functions
 void EntityShow();
 void CheckCollisions();
-void CheckCollision(entity_t *ent);
+void CheckCollision (entity_t *ent, entity_t *targ, int max);
 
 /* edit entity */
 void init_Position( entity_t *ent );

@@ -58,6 +58,8 @@ int main(int argc, char *argv[])
 
 	init_Position(player);
 
+	//init player function????
+
 	SET_FLAG(player->flags, ENT_SOLID);
 	/* ------- */
 
@@ -66,9 +68,6 @@ int main(int argc, char *argv[])
 	
 	enemy1->x = 600;
 	enemy1->y = 350;
-
-	//enemy1->bBox.x = enemy1->x;
-	//enemy1->bBox.y = enemy1->y;
 
 	enemy1->sprite = load_Image("sprite/red.png"); //sprites will later be loaded in sprite.c // declared in sprite.h
 
@@ -89,9 +88,6 @@ int main(int argc, char *argv[])
 	enemy2->x = 770;
 	enemy2->y = 350;
 
-	//enemy2->bBox.x = enemy2->x;
-	//enemy2->bBox.y = enemy2->y;
-
 	//enemy2->bBox.w = 64;
 	//enemy2->bBox.h = 64;
 
@@ -109,11 +105,9 @@ int main(int argc, char *argv[])
 	enemy3->x = 900;
 	enemy3->y = 350;
 
-	//enemy3->bBox.x = enemy3->x;
-	//enemy3->bBox.y = enemy3->y;
-
 	//enemy3->bBox.w = 64;
 	//enemy3->bBox.h = 64;
+
 	enemy3->show = show_Enemy;
 
 	enemy3->think = gammaThink;
@@ -128,13 +122,10 @@ int main(int argc, char *argv[])
 	boss->x = 1000;
 	boss->y = 300;
 
-	//boss->bBox.x = boss->x;
-	//boss->bBox.y = boss->y;
-
 	boss->show = show_Enemy;
 
 	boss->think = bossThink;
-	boss->nextThink = currentTime + 9000;
+	boss->nextThink = currentTime + 800;
 
 	/* ------- */
 
@@ -148,9 +139,6 @@ int main(int argc, char *argv[])
 
 	wall->bBox.w = 75;
 	wall->bBox.h = 100;
-
-	//wall->bBox.x = (int)wall->x; //?
-	//wall->bBox.y = (int)wall->y;
 
 	wall->think = wallThink;
 	wall->nextThink = currentTime + 10;
@@ -176,32 +164,77 @@ int main(int argc, char *argv[])
 				switch ( event.key.keysym.sym )
 				{
 					case SDLK_UP: 
-						if (Mix_PlayChannel (-1, scratch, 0) == -1) //arg. 1, -1 means looking for the next sound channel available
-						{											//arg. 2, sound that will be played
+						if (Mix_PlayChannel (-1, scratch, 0) == -1) //arg. 1, -1 means looking for the next sound channel available		//arg. 2, sound that will be played
 							return 1;								//arg. 3, how many times sound will loop
-						}
 						break;
 					case SDLK_1:
 						if (level != 1)
 						{
 							level = 1;
+
+							//enemy 1 initial position
 							enemy1->x = 600;
 							enemy1->y = 350;
 							enemy1->thinkflags = 0;
 							enemy1->xVel = 0;
+
+							//enemy 2 initial position
+							enemy2->x = 770;
+							enemy2->y = 350;
+							enemy2->thinkflags = 0;
+							enemy2->xVel = 0;
+
+							//enemy 3 initial position
+							enemy3->x = 900;
+							enemy3->y = 350;
+							enemy3->thinkflags = 0;
+							enemy3->xVel = 0;
+							enemy3->yVel = 0;
+
+							//boss 3 initial position
+							//boss->x = 1000;
+							//boss->y = 300;
+							//boss->thinkflags = 0;
+							//boss->xVel = 0;
+							//boss->yVel = 0;
 						}
 						break;
 					case SDLK_2:
-						level = 2;
+						if (level != 2)
+						{
+							level = 2;
+
+							//enemy 1 initial position, just in case
+							enemy1->x = 600;
+							enemy1->y = 350;
+							enemy1->thinkflags = 0;
+							enemy1->xVel = 0;
+
+							//enemy 2 initial position, just in case
+							enemy2->x = 770;
+							enemy2->y = 350;
+							enemy2->thinkflags = 0;
+							enemy2->xVel = 0;
+
+							//enemy 3 initial position, just in case
+							enemy3->x = 900;
+							enemy3->y = 350;
+							enemy3->thinkflags = 0;
+							enemy3->xVel = 0;
+							enemy3->yVel = 0;
+
+							//boss 3 initial position
+							//boss->x = 1000;
+							//boss->y = 300;
+							//boss->thinkflags = 0;
+							//boss->xVel = 0;
+							//boss->yVel = 0;
+						}
 						break;
 					case SDLK_RIGHT:
 						if (Mix_PlayChannel (-1, low, 0) == -1)
-						{
 							return 1;
-						}
 						break;
-					case SDLK_0:
-						Mix_HaltMusic(); break;
 					case SDLK_s:
 						if (running == true)
 						{
