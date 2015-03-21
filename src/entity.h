@@ -26,10 +26,13 @@ typedef struct entity_s
 
 	int				solid;
 
+	char			classname[25];
+
 	//int				health;
 	//int				max_health;
 
 	//int				deadflag;
+
 	struct entity_s	*owner;
 
 	void			(*resetPosition) (struct entity_s *ent);

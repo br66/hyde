@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
 
 	/* Enemy 1 */
 	enemy1 = Init_Ent();
+	sprintf(enemy1->classname, "enemy");
 	
 	enemy1->x = 600;
 	enemy1->y = 350;
@@ -74,14 +75,15 @@ int main(int argc, char *argv[])
 	enemy1->think = alphaThink;
 	enemy1->nextThink = currentTime + 5000;
 
-	//enemy1->bBox.w = 64;
-	//enemy1->bBox.h = 64;
+	enemy1->bBox.w = 64;
+	enemy1->bBox.h = 64;
 	
 	enemy1->show = show_Enemy;
 	/* ------- */
 
 	/* Enemy 2 */
 	enemy2 = Init_Ent();
+	sprintf(enemy2->classname, "enemy");
 
 	enemy2->sprite = load_Image("sprite/bluepng.png");
 
@@ -99,6 +101,7 @@ int main(int argc, char *argv[])
 
 	/* Enemy 3 */
 	enemy3 = Init_Ent();
+	sprintf(enemy2->classname, "enemy");
 
 	enemy3->sprite = load_Image("sprite/green.png");
 
@@ -144,6 +147,55 @@ int main(int argc, char *argv[])
 	wall->nextThink = currentTime + 10;
 
 	/* ------- */
+
+	/* Define platforms */
+	platform1 = Init_Ent();
+	platform1->sprite = platformSprite1;
+	platform1->x = 0;
+	platform1->y = 410;
+	platform1->bBox.w = 271;
+	platform1->bBox.h = 56;
+	platform1->show = show_Enemy;
+
+	platform2 = Init_Ent();
+	platform2->sprite = platformSprite1;
+	platform2->x = 271;
+	platform2->y = 410;
+	platform2->bBox.w = 271;
+	platform2->bBox.h = 56;
+	platform2->show = show_Enemy;
+
+	platform3 = Init_Ent();
+	platform3->sprite = platformSprite1;
+	platform3->x = 600;
+	platform3->y = 410;
+	platform3->bBox.w = 271;
+	platform3->bBox.h = 56;
+	platform3->show = show_Enemy;
+
+	platformA1 = Init_Ent();
+	platformA1->sprite = platformSpriteA1;
+	platformA1->x = 0;
+	platformA1->y = 410;
+	platformA1->bBox.w = 271;
+	platformA1->bBox.h = 56;
+	platformA1->show = show_Enemy;
+
+	platformA2 = Init_Ent();
+	platformA2->sprite = platformSpriteA1;
+	platformA2->x = 271;
+	platformA2->y = 410;
+	platformA2->bBox.w = 271;
+	platformA2->bBox.h = 56;
+	platformA2->show = show_Enemy;
+
+	platformA3 = Init_Ent();
+	platformA3->sprite = platformSpriteA1;
+	platformA3->x = 600;
+	platformA3->y = 410;
+	platformA3->bBox.w = 271;
+	platformA3->bBox.h = 56;
+	platformA3->show = show_Enemy;
 
 	level = 1; // when the game starts, we will be at level 1
 

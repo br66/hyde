@@ -13,8 +13,10 @@ extern SDL_Surface *seconds;
 extern SDL_Surface *bombSprite;
 extern SDL_Surface *bossSprite;
 extern SDL_Surface *dot;
-extern SDL_Surface *platform1;
-extern SDL_Surface *platform2;
+extern SDL_Surface *platformSprite1;
+extern SDL_Surface *platformSpriteA1;
+extern SDL_Surface *platformSprite2;
+extern SDL_Surface *platformSpriteA2;
 
 extern SDL_Rect health;
 extern SDL_Rect anger;
@@ -51,6 +53,16 @@ extern entity_t *player;
 
 extern level_t *stage1;
 extern level_t *stage2;
+
+extern entity_t *platform1;
+extern entity_t *platform2;
+extern entity_t *platform3;
+extern entity_t *platform4;
+
+extern entity_t *platformA1;
+extern entity_t *platformA2;
+extern entity_t *platformA3;
+extern entity_t *platformA4;
 
 #define REMOVE_FLAG(x, y) (x &= ~y)
 #define SET_FLAG(x, y) (x |= y)

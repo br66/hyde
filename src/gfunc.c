@@ -53,15 +53,15 @@ bool load_Files()
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
-	platform1 = load_Image("sprite/lvl/platform1.png");
-	if (platform1 == NULL)
+	platformSprite1 = load_Image("sprite/lvl/platform1.png");
+	if (platformSprite1 == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
 
-	platform2 = load_Image("sprite/lvl/platform2.png");
-	if (platform2 == NULL)
+	platformSpriteA1 = load_Image("sprite/lvl/platform2.png");
+	if (platformSpriteA1 == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
@@ -125,20 +125,22 @@ void CheckLevel ()
 	stage1 = &levels[0];
 
 	sprintf(stage1->level, "stage 1");
-	stage1->surfaces[0] = bgSprite;
-	stage1->surfaces[1] = platform1;
-	//stage1->surfaces[2] = platform3;
-	//stage1->surfaces[3] = platform5;
-	//stage1->surfaces[4] = platform7;
+	stage1->backgrounds[0] = bgSprite;
+
+	stage1->lvlEntities[0] = platform1;
+	stage1->lvlEntities[2] = platform1;
+	stage1->lvlEntities[3] = platform2;
+	stage1->lvlEntities[4] = platform2;
 
 	stage2 = &levels[1];
 
 	sprintf(stage2->level, "stage 2");
-	stage2->surfaces[0] = bgSprite2;
-	stage2->surfaces[1] = platform2;
-	//stage1->surfaces[2] = platform4;
-	//stage1->surfaces[3] = platform6;
-	//stage1->surfaces[4] = platform8;
+	stage2->backgrounds[0] = bgSprite2;
+
+	stage2->lvlEntities[1] = platformA1;
+	stage1->lvlEntities[2] = platformA1;
+	stage1->lvlEntities[3] = platformA2;
+	stage1->lvlEntities[4] = platformA2;
 
 	if (level == 1)
 	{

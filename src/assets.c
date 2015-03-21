@@ -3,8 +3,10 @@
 SDL_Surface *screen = NULL;	
 SDL_Surface *bgSprite = NULL;
 SDL_Surface *bgSprite2 = NULL;
-SDL_Surface *platform1 = NULL;
-SDL_Surface *platform2 = NULL;
+SDL_Surface *platformSprite1 = NULL;
+SDL_Surface *platformSpriteA1 = NULL;
+SDL_Surface *platformSprite2 = NULL;
+SDL_Surface *platformSpriteA2 = NULL;
 
 SDL_Surface *message = NULL;
 

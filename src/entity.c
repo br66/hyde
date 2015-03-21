@@ -117,8 +117,16 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	{
 		if (isCollide (targ, ent))
 		{
-			ent->x -= ent->xVel;
-			ent->y -= ent->yVel;
+			//if (targ->classname != "enemy")
+			if (strcmp(targ->classname, "enemy"))
+			{
+				ent->x -= ent->xVel;
+				ent->y -= ent->yVel;
+			}
+			else
+			{
+				health.w -= 1;
+			}
 		}
 		targ++;
 	}
@@ -220,7 +228,8 @@ bool isCollide (entity_t *otherent, entity_t *ent) /* example: A = Enemy, B = Pl
 
 	//combine bbox and players pos together check that in if statement
 	if((A.x + A.w >= B.x) && (A.x <= B.x + B.w) && (A.y + A.h >= B.y) && (A.y <= B.y + B.h))
-		return true;
+		return true; 
+		//printf("sssssssssssssssss");
 
 	return false;
 }
@@ -352,18 +361,10 @@ void bossThink (entity_t *self)
 	self->nextThink = currentTime + 50;
 }
 
+/* wall think is obsolete */
 void wallThink (entity_t *self)
 {
-	//printf("0");
-
-	//if (!isCollide(wall, player))
-		//	printf("0");
-		//else{
-			//player->xVel = 0;
-			//player->yVel = 0;
-		//}
-
 	self->nextThink = currentTime + 50;
 
-	printf("%f || %f\n", player->x, player->y);
+	//printf("%f || %f\n", player->x, player->y);
 }
