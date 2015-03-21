@@ -1,6 +1,3 @@
-#include <SDL.h>
-#include "boolean.h" // WTF
-
 #define MAX_ENTITIES  255 //max number that can be created
 int max_ents; //max number of ents that have been created in game
 
@@ -22,8 +19,12 @@ typedef struct entity_s
 	bool			onGround;
 
 	Uint32			nextThink;
+
+	int				flags;
 	int				thinkflags;
 	int				thinknums[20];
+
+	int				solid;
 
 	//int				health;
 	//int				max_health;
@@ -39,7 +40,7 @@ typedef struct entity_s
 	void			(*setCamera)(void);
 
 	void			(*think) (struct entity_s *self);
-	void			(*collide) (struct entity_s *self);
+	void			(*touch) (struct entity_s *self);
 
 } entity_t;
 
@@ -50,6 +51,8 @@ entity_t *Init_Ent (void);		// adds entity into memory
 void Free_Ent(entity_t *self);	// entity is ready to be replaced
 void EntityAlive ();			// calls all think functions
 void EntityShow();
+void CheckCollisions();
+void CheckCollision(entity_t *ent);
 
 /* edit entity */
 void init_Position( entity_t *ent );
@@ -61,7 +64,7 @@ void show_Relative (entity_t *ent);
 
 /* technical */
 void set_Camera( entity_t *ent);
-bool isCollide (SDL_Rect A, SDL_Rect B);
+bool isCollide (entity_t *otherent, entity_t *ent);
 
 /* thinks */
 void projThink (entity_t *ent);
@@ -69,3 +72,4 @@ void alphaThink (entity_t *self);
 void betaThink (entity_t *self);
 void gammaThink (entity_t *self);
 void bossThink (entity_t *self);
+void wallThink (entity_t *self);

@@ -6,4 +6,7 @@ typedef struct level_s
 	SDL_Surface		*surfaces[20];
 }level_t;
 
+void show_LevelOne();
+void show_LevelTwo();
+
 level_t levels[10];

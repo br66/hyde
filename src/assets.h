@@ -1,5 +1,9 @@
 /* All assets (surfaces, entities, levels, etc */
 
+#define ENTFLAG_SHOW	0x00000001
+#define ENTFLAG_THINK	0x00000002
+#define ENT_SOLID		0x00000004
+
 extern SDL_Surface *screen;	
 extern SDL_Rect camera;
 extern SDL_Surface *bgSprite;
@@ -9,6 +13,8 @@ extern SDL_Surface *seconds;
 extern SDL_Surface *bombSprite;
 extern SDL_Surface *bossSprite;
 extern SDL_Surface *dot;
+extern SDL_Surface *platform1;
+extern SDL_Surface *platform2;
 
 extern SDL_Rect health;
 extern SDL_Rect anger;
@@ -32,3 +38,20 @@ extern Uint8 *keystates;
 
 extern Uint32 currentTime;
 extern Uint32 delta;
+
+extern entity_t *enemy1;
+extern entity_t *enemy2;
+extern entity_t *enemy3;
+
+extern entity_t *boss;
+
+extern entity_t *wall;
+
+extern entity_t *player;
+
+extern level_t *stage1;
+extern level_t *stage2;
+
+#define REMOVE_FLAG(x, y) (x &= ~y)
+#define SET_FLAG(x, y) (x |= y)
+#define IS_SET(x, y) (x & y)

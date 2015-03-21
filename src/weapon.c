@@ -10,6 +10,9 @@ void fire_Bomb (entity_t *ent)
 
 	bomb->x = ent->x;
 	bomb->y = ent->y;
+
+	SET_FLAG(bomb->flags, ENTFLAG_SHOW);
+
 	//bomb->bBox.x = bomb->x;
 	//bomb->bBox.y = bomb->y;
 	//bomb->bBox.w = 20;
@@ -28,6 +31,10 @@ void fire_Projectile (entity_t *shooter)
 
 	projectile->x = shooter->x;
 	projectile->y = shooter->y;
+
+	SET_FLAG(projectile->flags, ENTFLAG_SHOW);
+	SET_FLAG(projectile->flags, ENTFLAG_THINK);
+
 	//projectile->bBox.x = projectile->x;
 	//projectile->bBox.y = projectile->y;
 	//projectile->bBox.h = 64;

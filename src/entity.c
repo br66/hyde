@@ -47,9 +47,9 @@ void EntityAlive()
 	entity_t *e = listEntities;
 	for (i = 0; i < MAX_ENTITIES; i++)
 	{
-		if (listEntities[i].inuse)
+		if (listEntities[i].inuse && IS_SET(listEntities[i].flags, ENTFLAG_THINK) )
 		{
-			if (listEntities[i].nextThink <= currentTime && listEntities[i].think != NULL)
+			if (listEntities[i].nextThink <= currentTime)
 			{
 				listEntities[i].think(&listEntities[i]);
 			}
@@ -72,12 +72,55 @@ void EntityShow ()
 	{
 		if (listEntities[i].inuse)
 		{
-			if (listEntities[i].show != NULL)
+			if (IS_SET(listEntities[i].flags, ENTFLAG_SHOW))
 			{
-				(*listEntities[i].show)(&listEntities[i]);
+				if (listEntities[i].show != NULL)
+				{
+					(*listEntities[i].show)(&listEntities[i]);
+				}
 			}
 		}
 		e++;
+	}
+}
+
+void CheckCollisions()
+{
+	int i = 0;
+	entity_t *e = listEntities;
+
+	for (i = 0; i < MAX_ENTITIES; i++)
+	{
+	if (listEntities[i].inuse)
+		{
+			if (IS_SET(listEntities[i].flags, ENT_SOLID))
+			{
+				if (listEntities[i].xVel != 0 || listEntities[i].yVel != 0)
+				{
+					CheckCollision(&listEntities[i], &listEntities[i+1], MAX_ENTITIES-i);
+					//ent is the cur, target is next, how many people are left
+					//you checked in one direction, don't check in the other
+				}
+
+			}
+		}
+	}
+	//if entity exists, is solid and has a velocity...
+}
+
+void CheckCollision (entity_t *ent, entity_t *targ, int max)
+{
+	int i = 0;
+	entity_t *e = listEntities;
+
+	for (i = 0; i < max; i++)
+	{
+		if (isCollide (targ, ent))
+		{
+			ent->x -= ent->xVel;
+			ent->y -= ent->yVel;
+		}
+		targ++;
 	}
 }
 
@@ -85,7 +128,7 @@ void EntityShow ()
 void init_Position (entity_t *ent)
 {
 	ent->x = 0;
-	ent->y = 400;
+	ent->y = 380;
 	
 	ent->xVel = 0;
 	ent->yVel = 0;
@@ -93,11 +136,11 @@ void init_Position (entity_t *ent)
 	ent->width = 20;
 	ent->height = 20;
 
-//	ent->bBox.x = ent->x;
-//	ent->bBox.y = ent->y;
+	//ent->bBox.x = 20;
+	//ent->bBox.y = 20;
 
-	//ent->bBox.w = 20;
-	//ent->bBox.h = 20;
+	ent->bBox.w = 20;
+	ent->bBox.h = 20;
 }
 
 void handle_Input ( entity_t *ent )
@@ -108,20 +151,20 @@ void handle_Input ( entity_t *ent )
 		{
 			switch (event.key.keysym.sym )
 			{
-				case SDLK_UP: ent->yVel -= ent->height / 2; break;
-				case SDLK_DOWN: ent->yVel += ent->height / 2; break;
-				case SDLK_LEFT: ent->xVel -= ent->width / 2; break;
-				case SDLK_RIGHT: ent->xVel += ent->width / 2; break;
+				case SDLK_UP: ent->yVel -= ent->height >> 1; break;
+				case SDLK_DOWN: ent->yVel += ent->height >> 1; break;
+				case SDLK_LEFT: ent->xVel -= ent->width >> 1; break;
+				case SDLK_RIGHT: ent->xVel += ent->width >> 1; break;
 			}
 		}
 		else if ( event.type == SDL_KEYUP )
 		{
 			switch ( event.key.keysym.sym)
 			{
-				case SDLK_UP: ent->yVel += ent->height / 2; break;
-				case SDLK_DOWN: ent->yVel -= ent->height / 2; break;
-				case SDLK_LEFT: ent->xVel += ent->width / 2; break;
-				case SDLK_RIGHT: ent->xVel -= ent->width / 2; break;
+				case SDLK_UP: ent->yVel += ent->height >> 1; break;
+				case SDLK_DOWN: ent->yVel -= ent->height >> 1; break;
+				case SDLK_LEFT: ent->xVel += ent->width >> 1; break;
+				case SDLK_RIGHT: ent->xVel -= ent->width >> 1; break;
 			}
 		}
 	}
@@ -158,75 +201,40 @@ void show_Relative (entity_t *ent)
 {
 	show_Surface(ent->x - camera.x, ent->y - camera.y, ent->sprite, screen, NULL);
 }
-void show_Background (entity_t *ent)
-{
-	//show_Surface (0, 0, background, screen, &camera);
-}
 
 /* Check Collision */
-bool isCollide (SDL_Rect A, SDL_Rect B)
+bool isCollide (entity_t *otherent, entity_t *ent) /* example: A = Enemy, B = Player */
 {
-	int leftA, leftB;
-	int rightA, rightB;
-	int topA, topB;
-	int bottomA, bottomB;
+	SDL_Rect A;
+	SDL_Rect B;
 
-	leftA = A.x;
-	rightA = A.x + A.w;
-	topA = A.y;
-	bottomA = A.y + A.h;
+	B.x = ent->x + ent->bBox.x;
+	B.y = ent->y + ent->bBox.y;
+	B.w = ent->bBox.w;
+	B.h = ent->bBox.h;
 
-	leftB = B.x;
-	rightB = B.x + B.w;
-	topB = B.y;
-	bottomB = B.y + B.h;
+	A.x = otherent->x + otherent->bBox.x;
+	A.y = otherent->y + otherent->bBox.y;
+	A.w = otherent->bBox.w;
+	A.h = otherent->bBox.h;
 
-	//if (bottomA <= topB)
-	//	return false;
-	//if(topA >= bottomB)
-	//	return false;
-	//if (rightA <= leftB)
-	//	return false;
-	//if (leftA >= rightB)
-	//	return false;
-
-	//if (A.x <= B.x) && (B.x <= A.x + A.w) && (A.x <= B.y) && (B.y <= A.y + h)
-	//{
-	//	COLLIDE
-	//}
-
-	
-	if (A.x >= B.x && A.x <= rightB && bottomA <= B.y)
+	//combine bbox and players pos together check that in if statement
+	if((A.x + A.w >= B.x) && (A.x <= B.x + B.w) && (A.y + A.h >= B.y) && (A.y <= B.y + B.h))
 		return true;
-	if (A.x <= B.x && A.x <= rightB && bottomA <= B.y)
-		return true;
-	if (A.x <= rightB && bottomA <= B.y && A.y >= B.y)
-		return true;
-	if (A.x <= rightB && bottomA >= B.y && A.y >= B.y)
-		return true;
-	if (A.x <= rightB && bottomA <= B.y && A.y <= B.y)
-		return true;
-	
-	// combine bbox and players pos together check that in if statement
-	//if((box1.x + box1.w >= box2.x) && (box1.x <= box2.x+box2.w) && (box1.y + box1.h >= box2.y) && (box1.y <= box2.y+box2.h))
-   // return true;
 
 	return false;
 }
 
 /* Thinking */
 void projThink (entity_t *ent)
-{
-	//ent->xVel -= 100;
-	
+{	
 	if (ent->thinkflags == 10)
 	{
 		ent->xVel = 0;
 	}
 	else
 	{
-		ent->xVel -= 100;
-	//	ent->x -= 10;
+		ent->xVel -= 1;
 	}
 	ent->thinkflags++;
 	ent->nextThink = currentTime + 300;
@@ -234,32 +242,13 @@ void projThink (entity_t *ent)
 
 void alphaThink (entity_t *self)
 {
-	//SDL_Rect b1, b2;
-
-	/*b2.x = player->x + player->bBox.x;
-	b2.y = player->y + player->bBox.y;
-	b2.w = player->bBox.w;
-	b2.h = player->bBox.h;
-
-	b1.x = self->x + self->bBox.x;
-	b1.y = self->y + self->bBox.y;
-	b1.w = self->bBox.w;
-	b1.h = self->bBox.h;*/
-
 	if (self->thinkflags == 10)
 	{
 		self->xVel = 0;
 		fire_Bomb(self);
 	}
 	else
-		self->xVel -= 0.2;
-/*
-	if (isCollide (b1, b2))
-	{
-		self->xVel = 0;
-		self->yVel = 0;
-	}
-*/
+		self->xVel -= .2;
 
 	self->thinkflags++;
 	self->nextThink = currentTime + 310;
@@ -274,7 +263,7 @@ void betaThink (entity_t *self)
 	}
 	else
 	{
-		self->xVel -= .8;
+		self->xVel -= .25;
 	}
 
 	self->thinkflags++;
@@ -361,4 +350,20 @@ void bossThink (entity_t *self)
 
 	//self->thinkflags++;
 	self->nextThink = currentTime + 50;
+}
+
+void wallThink (entity_t *self)
+{
+	//printf("0");
+
+	//if (!isCollide(wall, player))
+		//	printf("0");
+		//else{
+			//player->xVel = 0;
+			//player->yVel = 0;
+		//}
+
+	self->nextThink = currentTime + 50;
+
+	printf("%f || %f\n", player->x, player->y);
 }

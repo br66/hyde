@@ -1,11 +1,10 @@
-#include	<SDL.h>
-#include	<SDL_ttf.h>
-#include	<SDL_mixer.h>
-#include	"graphics.h"
+#include	"include.h"
 
 SDL_Surface *screen = NULL;	
 SDL_Surface *bgSprite = NULL;
 SDL_Surface *bgSprite2 = NULL;
+SDL_Surface *platform1 = NULL;
+SDL_Surface *platform2 = NULL;
 
 SDL_Surface *message = NULL;
 
@@ -39,3 +38,16 @@ SDL_Event event;
 Uint8 *keystates;
 Uint32 currentTime = 0;
 Uint32 delta = 0;
+
+entity_t *enemy1 = NULL;
+entity_t *enemy2 = NULL;
+entity_t *enemy3 = NULL;
+
+entity_t *boss = NULL;
+
+entity_t *wall = NULL;
+
+entity_t *player = NULL;
+
+level_t *stage1 = NULL;
+level_t *stage2 = NULL;

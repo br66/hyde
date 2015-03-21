@@ -3,8 +3,8 @@
 #include "include.h"
 
 /* entities */
-entity_t *wall;
-entity_t *player;
+//entity_t *wall;
+//entity_t *player;
 entity_t *background;
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
@@ -13,12 +13,6 @@ int main(int argc, char *argv[])
 	//check level function
 	/* if level one, show these things */
 	/* if level two, show these things */
-
-	entity_t *enemy1;
-	entity_t *enemy2;
-	entity_t *enemy3;
-
-	entity_t *boss;
 	
 	bool done = false;
 
@@ -63,6 +57,8 @@ int main(int argc, char *argv[])
 	player->show = show;
 
 	init_Position(player);
+
+	SET_FLAG(player->flags, ENT_SOLID);
 	/* ------- */
 
 	/* Enemy 1 */
@@ -150,11 +146,15 @@ int main(int argc, char *argv[])
 	wall->x = 400;
 	wall->y = 40;
 
-	wall->bBox.w = 40;
-	wall->bBox.h = 400;
+	wall->bBox.w = 75;
+	wall->bBox.h = 100;
 
-	wall->bBox.x = (int)wall->x; //?
-	wall->bBox.y = (int)wall->y;
+	//wall->bBox.x = (int)wall->x; //?
+	//wall->bBox.y = (int)wall->y;
+
+	wall->think = wallThink;
+	wall->nextThink = currentTime + 10;
+
 	/* ------- */
 
 	level = 1; // when the game starts, we will be at level 1
@@ -163,9 +163,9 @@ int main(int argc, char *argv[])
 	do
 	{
 		CheckLevel();
-		//show_Surface (0, 0, bgSprite, screen, &camera);
 		EntityAlive();
 		EntityShow();
+		CheckCollisions();
 
 		while (SDL_PollEvent (&event))
 		{
@@ -182,7 +182,14 @@ int main(int argc, char *argv[])
 						}
 						break;
 					case SDLK_1:
-						level = 1;
+						if (level != 1)
+						{
+							level = 1;
+							enemy1->x = 600;
+							enemy1->y = 350;
+							enemy1->thinkflags = 0;
+							enemy1->xVel = 0;
+						}
 						break;
 					case SDLK_2:
 						level = 2;
@@ -215,10 +222,8 @@ int main(int argc, char *argv[])
 				//Game is done
 				done = true;
 			}
-
-			move(player);
 		}
-
+		move(player);
 		set_Camera(player);
 
 		if (running == true)
@@ -243,9 +248,9 @@ int main(int argc, char *argv[])
 		keystates = SDL_GetKeyState( NULL );
 
 		delta = SDL_GetTicks() - currentTime;
+
 		/* Constantly getting the raw time from SDL */
 		currentTime = SDL_GetTicks();
-
 
 		/* Function so that the screen is constantly updated so you can see things happening as they happen */
 		SDL_Flip(screen);

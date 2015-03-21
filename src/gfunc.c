@@ -53,9 +53,22 @@ bool load_Files()
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
+	platform1 = load_Image("sprite/lvl/platform1.png");
+	if (platform1 == NULL)
+	{
+		return false;
+		printf("error: %s\n", SDL_GetError());
+	}
+
+	platform2 = load_Image("sprite/lvl/platform2.png");
+	if (platform2 == NULL)
+	{
+		return false;
+		printf("error: %s\n", SDL_GetError());
+	}
 
 	/* player sprite */
-	dot = load_Image("sprite/square.bmp");
+	dot = load_Image("sprite/test.png");
 	if (dot == NULL)
 	{
 		return false;
@@ -109,32 +122,36 @@ bool load_Files()
 /* Check level function - show corresponding level */
 void CheckLevel ()
 {
-	level_t *stage1;
-	level_t *stage2;
-
 	stage1 = &levels[0];
+
 	sprintf(stage1->level, "stage 1");
 	stage1->surfaces[0] = bgSprite;
-	
+	stage1->surfaces[1] = platform1;
+	//stage1->surfaces[2] = platform3;
+	//stage1->surfaces[3] = platform5;
+	//stage1->surfaces[4] = platform7;
+
 	stage2 = &levels[1];
+
 	sprintf(stage2->level, "stage 2");
 	stage2->surfaces[0] = bgSprite2;
-
-	/* define the levels here including start func
-	when game starts, level 1 is drawn
-	
-	in gameloop if 1 is pressed, variable will be equal to 1
-	checklevel will check if var is equal to 2, show lvl 2 */
+	stage2->surfaces[1] = platform2;
+	//stage1->surfaces[2] = platform4;
+	//stage1->surfaces[3] = platform6;
+	//stage1->surfaces[4] = platform8;
 
 	if (level == 1)
-		//printf("level = %i\n", level);
-		show_Surface (0, 0, stage1->surfaces[0], screen, &camera);
+	{
+		show_LevelOne();
+	}
 	if (level == 2)
-		show_Surface (0, 0, stage2->surfaces[0], screen, &camera);
+	{
+		show_LevelTwo();
+	}
 }
+/* put iscollide in all think functions except player */
 
 /* Rough translation of timecode, will attempt to better clarify later */
-
 char *FormatNumber(Uint32 number, int min)
 {
 	Uint32 value = number;  //The number we get from the raw time (which is in Uint32 form)
