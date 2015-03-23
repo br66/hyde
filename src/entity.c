@@ -117,16 +117,25 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	{
 		if (isCollide (targ, ent))
 		{
-			//if (targ->classname != "enemy")
-			if (strcmp(targ->classname, "enemy"))
+			if (strcmp(targ->classname, "trigger") == 0)
+			{
+				level = 2;
+
+				player->x = 0;
+				player->y = 380;
+			}
+			if (strcmp(targ->classname, "enemy") == 0)
+				health.w -= 1;
+			else
 			{
 				ent->x -= ent->xVel;
 				ent->y -= ent->yVel;
 			}
-			else
+
+			/*if (strcmp(targ->classname, "enemy") == 0)
 			{
-				health.w -= 1;
-			}
+				printf("dsfsdfsdg");
+			}*/
 		}
 		targ++;
 	}
@@ -159,20 +168,20 @@ void handle_Input ( entity_t *ent )
 		{
 			switch (event.key.keysym.sym )
 			{
-				case SDLK_UP: ent->yVel -= ent->height >> 1; break;
-				case SDLK_DOWN: ent->yVel += ent->height >> 1; break;
-				case SDLK_LEFT: ent->xVel -= ent->width >> 1; break;
-				case SDLK_RIGHT: ent->xVel += ent->width >> 1; break;
+				case SDLK_UP: ent->yVel -= ent->height >> 3; break;
+				case SDLK_DOWN: ent->yVel += ent->height >> 3; break;
+				case SDLK_LEFT: ent->xVel -= ent->width >> 3; break;
+				case SDLK_RIGHT: ent->xVel += ent->width >> 3; break;
 			}
 		}
 		else if ( event.type == SDL_KEYUP )
 		{
 			switch ( event.key.keysym.sym)
 			{
-				case SDLK_UP: ent->yVel += ent->height >> 1; break;
-				case SDLK_DOWN: ent->yVel -= ent->height >> 1; break;
-				case SDLK_LEFT: ent->xVel += ent->width >> 1; break;
-				case SDLK_RIGHT: ent->xVel -= ent->width >> 1; break;
+				case SDLK_UP: ent->yVel += ent->height >> 3; break;
+				case SDLK_DOWN: ent->yVel -= ent->height >> 3; break;
+				case SDLK_LEFT: ent->xVel += ent->width >> 3; break;
+				case SDLK_RIGHT: ent->xVel -= ent->width >> 3; break;
 			}
 		}
 	}
@@ -207,7 +216,7 @@ void show_Enemy (entity_t *ent)
  
 void show_Relative (entity_t *ent)
 {
-	show_Surface(ent->x - camera.x, ent->y - camera.y, ent->sprite, screen, NULL);
+	show_Surface(ent->fill.x - camera.x, ent->fill.y - camera.y, ent->sprite, screen, NULL);
 }
 
 /* Check Collision */
@@ -240,6 +249,11 @@ void projThink (entity_t *ent)
 	if (ent->thinkflags == 10)
 	{
 		ent->xVel = 0;
+	}
+	else if (ent->thinkflags == 12)
+	{
+		//printf("ent has been freed");
+		Free_Ent(ent);
 	}
 	else
 	{
@@ -319,6 +333,7 @@ void bossThink (entity_t *self)
 			if (self->xVel == 0)
 			{
 				self->thinknums[0] = 3;
+				fire_Projectile(self);
 			}
 			else
 			{

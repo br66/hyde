@@ -64,6 +64,8 @@ extern entity_t *platformA2;
 extern entity_t *platformA3;
 extern entity_t *platformA4;
 
+extern entity_t *lvlTrigger;
+
 #define REMOVE_FLAG(x, y) (x &= ~y)
 #define SET_FLAG(x, y) (x |= y)
 #define IS_SET(x, y) (x & y)

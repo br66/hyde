@@ -145,6 +145,7 @@ void CheckLevel ()
 	if (level == 1)
 	{
 		show_LevelOne();
+
 	}
 	if (level == 2)
 	{

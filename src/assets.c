@@ -45,6 +45,8 @@ entity_t *enemy1 = NULL;
 entity_t *enemy2 = NULL;
 entity_t *enemy3 = NULL;
 
+entity_t *lvlTrigger = NULL;
+
 entity_t *boss = NULL;
 
 entity_t *wall = NULL;

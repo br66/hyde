@@ -173,6 +173,14 @@ int main(int argc, char *argv[])
 	platform3->bBox.h = 56;
 	platform3->show = show_Enemy;
 
+	platform4 = Init_Ent();
+	platform4->sprite = platformSprite1;
+	platform4->x = 871;
+	platform4->y = 410;
+	platform4->bBox.w = 271;
+	platform4->bBox.h = 56;
+	platform4->show = show_Enemy;
+
 	platformA1 = Init_Ent();
 	platformA1->sprite = platformSpriteA1;
 	platformA1->x = 0;
@@ -196,6 +204,25 @@ int main(int argc, char *argv[])
 	platformA3->bBox.w = 271;
 	platformA3->bBox.h = 56;
 	platformA3->show = show_Enemy;
+
+	platformA4 = Init_Ent();
+	platformA4->sprite = platformSpriteA1;
+	platformA4->x = 900;
+	platformA4->y = 410;
+	platformA4->bBox.w = 271;
+	platformA4->bBox.h = 56;
+	platformA4->show = show_Enemy;
+
+	lvlTrigger = Init_Ent();
+	sprintf(lvlTrigger->classname, "trigger");
+	lvlTrigger->x = 1100;
+	lvlTrigger->y = 380;
+	lvlTrigger->sprite = dot;
+	//lvlTrigger->fill.x = lvlTrigger->x;
+	//lvlTrigger->fill.y = lvlTrigger->y;
+	lvlTrigger->bBox.w = 20;
+	lvlTrigger->bBox.h = 20;
+	lvlTrigger->show = show_Enemy;
 
 	level = 1; // when the game starts, we will be at level 1
 
@@ -328,6 +355,12 @@ int main(int argc, char *argv[])
 
 		SDL_FillRect ( screen, &health, SDL_MapRGB ( screen->format, 0, 0xFF, 0 ) );
 		SDL_FillRect ( screen, &anger, SDL_MapRGB ( screen->format, 0x77, 0x77, 0x77 ) );
+
+		if (IS_SET(lvlTrigger->flags, ENTFLAG_SHOW))
+		{
+			SDL_FillRect ( screen, &lvlTrigger->fill, SDL_MapRGB ( screen->format, 0x77, 0x77, 0x77 ) );
+		}
+		
 
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );

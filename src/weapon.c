@@ -18,7 +18,7 @@ void fire_Bomb (entity_t *ent)
 	//bomb->bBox.w = 20;
 	//bomb->bBox.h = 20;
 	bomb->sprite = bombSprite;
-	bomb->show = show_Relative;
+	bomb->show = show_Enemy;
 }
 
 void fire_Projectile (entity_t *shooter)
@@ -28,6 +28,7 @@ void fire_Projectile (entity_t *shooter)
 	projectile = Init_Ent(); /* put into memory */
 
 	projectile->owner = shooter; /* owner of this projectile is whoever shot it (whoever called this function) */
+	sprintf(projectile->classname, "enemy");
 
 	projectile->x = shooter->x;
 	projectile->y = shooter->y;
@@ -39,8 +40,9 @@ void fire_Projectile (entity_t *shooter)
 	//projectile->bBox.y = projectile->y;
 	//projectile->bBox.h = 64;
 	//projectile->bBox.w = 64;
+
 	projectile->sprite = bombSprite;
-	projectile->show = show_Relative;
+	projectile->show = show_Enemy;
 
 	projectile->think = projThink;
 	projectile->nextThink = currentTime + 100;

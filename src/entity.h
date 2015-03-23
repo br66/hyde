@@ -9,6 +9,7 @@ typedef struct entity_s
 	float			xVel, yVel;
 
 	SDL_Rect		bBox;
+	SDL_Rect		fill;
 
 	SDL_Surface		*sprite;
 

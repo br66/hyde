@@ -76,6 +76,12 @@ void show_LevelOne()
 		REMOVE_FLAG(platformA4->flags, ENTFLAG_SHOW);
 		REMOVE_FLAG(platformA4->flags, ENT_SOLID);
 	}
+	if(lvlTrigger)
+	{
+		SET_FLAG(lvlTrigger->flags, ENT_SOLID);
+		SET_FLAG(lvlTrigger->flags, ENTFLAG_SHOW);
+	}
+
 }
 
 void show_LevelTwo()
@@ -143,5 +149,10 @@ void show_LevelTwo()
 	{
 		SET_FLAG(platformA4->flags, ENTFLAG_SHOW);
 		SET_FLAG(platformA4->flags, ENT_SOLID);
+	}
+	if(lvlTrigger)
+	{
+		REMOVE_FLAG(lvlTrigger->flags, ENTFLAG_SHOW);
+		REMOVE_FLAG(lvlTrigger->flags, ENT_SOLID);
 	}
 }
