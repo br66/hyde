@@ -1,6 +1,6 @@
 #include <SDL.h>
 
-#define	SCREEN_WIDTH	640
+#define	SCREEN_WIDTH	640 
 #define	SCREEN_HEIGHT	480
 
 #define	BITSPERPIXEL	32

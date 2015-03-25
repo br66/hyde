@@ -68,15 +68,15 @@ bool load_Files()
 	}
 
 	/* player sprite */
-	dot = load_Image("sprite/test.png");
-	if (dot == NULL)
+	plyrSprite = load_Image("sprite/stand.png");
+	if (plyrSprite == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
 
 	/* enemy sprites */
-	bombSprite = load_Image("sprite/bomb.png");
+	bombSprite = load_Image("sprite/laserRed09.png");
 	if (bombSprite == NULL)
 	{
 		return false;

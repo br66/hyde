@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
 	sprintf(lvlTrigger->classname, "trigger");
 	lvlTrigger->x = 1100;
 	lvlTrigger->y = 380;
-	lvlTrigger->sprite = dot;
+	lvlTrigger->sprite = plyrSprite;
 	//lvlTrigger->fill.x = lvlTrigger->x;
 	//lvlTrigger->fill.y = lvlTrigger->y;
 	lvlTrigger->bBox.w = 20;

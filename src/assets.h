@@ -12,7 +12,7 @@ extern SDL_Surface *message;
 extern SDL_Surface *seconds;
 extern SDL_Surface *bombSprite;
 extern SDL_Surface *bossSprite;
-extern SDL_Surface *dot;
+extern SDL_Surface *plyrSprite;
 extern SDL_Surface *platformSprite1;
 extern SDL_Surface *platformSpriteA1;
 extern SDL_Surface *platformSprite2;

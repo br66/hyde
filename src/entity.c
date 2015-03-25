@@ -4,6 +4,15 @@ extern entity_t *wall;
 extern entity_t *player;
 
 /* Entity in memory */
+
+/**********************************************************************************************//**
+ * @fn	entity_t *Init_Ent (void)
+ *
+ * @brief	Initialises the ent.
+ *
+ * @return	null if it fails, else an entity_t*.
+ **************************************************************************************************/
+
 entity_t *Init_Ent (void)
 {
 	int i;
@@ -122,7 +131,7 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 				level = 2;
 
 				player->x = 0;
-				player->y = 380;
+				player->y = 340;
 			}
 			if (strcmp(targ->classname, "enemy") == 0)
 				health.w -= 1;
@@ -145,19 +154,16 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 void init_Position (entity_t *ent)
 {
 	ent->x = 0;
-	ent->y = 380;
+	ent->y = 340;
 	
 	ent->xVel = 0;
 	ent->yVel = 0;
 
-	ent->width = 20;
-	ent->height = 20;
+	ent->width = 40;
+	ent->height = 55;
 
-	//ent->bBox.x = 20;
-	//ent->bBox.y = 20;
-
-	ent->bBox.w = 20;
-	ent->bBox.h = 20;
+	ent->bBox.w = 40;
+	ent->bBox.h = 55;
 }
 
 void handle_Input ( entity_t *ent )
@@ -168,20 +174,20 @@ void handle_Input ( entity_t *ent )
 		{
 			switch (event.key.keysym.sym )
 			{
-				case SDLK_UP: ent->yVel -= ent->height >> 3; break;
-				case SDLK_DOWN: ent->yVel += ent->height >> 3; break;
-				case SDLK_LEFT: ent->xVel -= ent->width >> 3; break;
-				case SDLK_RIGHT: ent->xVel += ent->width >> 3; break;
+				case SDLK_UP: ent->yVel -= ent->height >> 4; break;
+				case SDLK_DOWN: ent->yVel += ent->height >> 4; break;
+				case SDLK_LEFT: ent->xVel -= ent->width >> 4; break;
+				case SDLK_RIGHT: ent->xVel += ent->width >> 4; break;
 			}
 		}
 		else if ( event.type == SDL_KEYUP )
 		{
 			switch ( event.key.keysym.sym)
 			{
-				case SDLK_UP: ent->yVel += ent->height >> 3; break;
-				case SDLK_DOWN: ent->yVel -= ent->height >> 3; break;
-				case SDLK_LEFT: ent->xVel += ent->width >> 3; break;
-				case SDLK_RIGHT: ent->xVel -= ent->width >> 3; break;
+				case SDLK_UP: ent->yVel += ent->height >> 4; break;
+				case SDLK_DOWN: ent->yVel -= ent->height >> 4; break;
+				case SDLK_LEFT: ent->xVel += ent->width >> 4; break;
+				case SDLK_RIGHT: ent->xVel -= ent->width >> 4; break;
 			}
 		}
 	}
@@ -206,7 +212,7 @@ void move ( entity_t *ent )
 
 void show (entity_t *ent)
 {
-	show_Surface (ent->x - camera.x, ent->y - camera.y, dot, screen, NULL);
+	show_Surface (ent->x - camera.x, ent->y - camera.y, plyrSprite, screen, NULL);
 }
 
 void show_Enemy (entity_t *ent)

@@ -1,32 +1,55 @@
 #define MAX_ENTITIES  255 //max number that can be created
 int max_ents; //max number of ents that have been created in game
 
+/**********************************************************************************************//**
+ * @typedef	struct entity_s
+ *
+ * @brief	Defines an alias representing the entity s.
+ **************************************************************************************************/
+
 typedef struct entity_s
 {
+	/** @brief	The inuse. */
 	int				inuse;
+
+	/**********************************************************************************************//**
+	 * @property	float x,y
+	 *
+	 * @brief	Gets the y coordinate.
+	 *
+	 * @return	The y coordinate.
+	 **************************************************************************************************/
 
 	float			x,y;
 	float			xVel, yVel;
 
+	/** @brief	The box. */
 	SDL_Rect		bBox;
 	SDL_Rect		fill;
 
+	/** @brief	The sprite. */
 	SDL_Surface		*sprite;
 
+	/** @brief	The width. */
 	int				width;
 	int				height;
+	/** @brief	The projectiles. */
 	int				projectiles;
 
+	/** @brief	true to on ground. */
 	bool			onGround;
 
+	/** @brief	The next think. */
 	Uint32			nextThink;
 
 	int				flags;
 	int				thinkflags;
 	int				thinknums[20];
 
+	/** @brief	The solid. */
 	int				solid;
 
+	/** @brief	The classname[ 25]. */
 	char			classname[25];
 
 	//int				health;
@@ -34,7 +57,16 @@ typedef struct entity_s
 
 	//int				deadflag;
 
-	struct entity_s	*owner;
+	/**********************************************************************************************//**
+	 * @struct	entity_s*
+	 *
+	 * @brief	The entity that owns.
+	 *
+	 * @author	iwh
+	 * @date	3/24/2015
+	 **************************************************************************************************/
+
+	struct entity_s	*owner; 
 
 	void			(*resetPosition) (struct entity_s *ent);
 	void			(*handle_Input)(struct entity_s *ent);

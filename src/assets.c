@@ -29,7 +29,7 @@ Mix_Chunk *high = NULL;
 Mix_Chunk *med = NULL;
 Mix_Chunk *low = NULL;
 
-SDL_Surface *dot = NULL;
+SDL_Surface *plyrSprite = NULL;
 
 int frameCount;
 
