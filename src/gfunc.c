@@ -131,7 +131,7 @@ void CheckLevel ()
 	stage1->lvlEntities[2] = platform1;
 	stage1->lvlEntities[3] = platform2;
 	stage1->lvlEntities[4] = platform2;
-
+	//---------------------------------
 	stage2 = &levels[1];
 
 	sprintf(stage2->level, "stage 2");
@@ -152,7 +152,6 @@ void CheckLevel ()
 		show_LevelTwo();
 	}
 }
-/* put iscollide in all think functions except player */
 
 /* Rough translation of timecode, will attempt to better clarify later */
 char *FormatNumber(Uint32 number, int min)
@@ -251,10 +250,6 @@ void set_Camera (entity_t *ent)
 void clear()
 {
 	/* Freeing up memory by getting rid of these surfaces (images) */
-	//SDL_FreeSurface (upMessage);
-	//SDL_FreeSurface (downMessage);
-	//SDL_FreeSurface (leftMessage);
-	//SDL_FreeSurface (rightMessage);
 	SDL_FreeSurface (message);
 	SDL_FreeSurface (bgSprite);
 

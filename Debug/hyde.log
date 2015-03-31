@@ -1,4 +1,4 @@
-﻿Build started 3/24/2015 5:25:37 PM.
+﻿Build started 3/31/2015 1:14:05 PM.
      1>Project "C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\hyde.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -6,23 +6,16 @@
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\assets.c src\entity.c src\game.c src\gfunc.c src\graphics.c src\level.c src\weapon.c
          assets.c
          entity.c
-     1>src\entity.c(225): warning C4244: 'function' : conversion from 'int' to 'float', possible loss of data
-     1>src\entity.c(225): warning C4244: 'function' : conversion from 'int' to 'float', possible loss of data
-     1>src\entity.c(234): warning C4244: '=' : conversion from 'float' to 'Sint16', possible loss of data
-     1>src\entity.c(235): warning C4244: '=' : conversion from 'float' to 'Sint16', possible loss of data
-     1>src\entity.c(239): warning C4244: '=' : conversion from 'float' to 'Sint16', possible loss of data
-     1>src\entity.c(240): warning C4244: '=' : conversion from 'float' to 'Sint16', possible loss of data
-     1>src\entity.c(280): warning C4305: '-=' : truncation from 'double' to 'float'
          game.c
+     1>src\game.c(50): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
      1>src\game.c(68): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
      1>src\game.c(86): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
-     1>src\game.c(104): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>src\game.c(202): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
-     1>src\game.c(217): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
-     1>src\game.c(344): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>src\game.c(329): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
          gfunc.c
      1>src\gfunc.c(127): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -45,7 +38,7 @@
          Debug\level.obj
          Debug\weapon.obj
          Generating code
-     1>c:\users\iwh-pc\documents\college\modern\it276\original\hyde\src\entity.c(46): warning C4715: 'Init_Ent' : not all control paths return a value
+     1>c:\users\iwh-pc\documents\college\modern\it276\original\hyde\src\entity.c(44): warning C4715: 'Init_Ent' : not all control paths return a value
          Finished generating code
          hyde.vcxproj -> C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.exe
        Manifest:
@@ -57,4 +50,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.12
+Time Elapsed 00:00:00.69

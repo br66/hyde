@@ -1,6 +1,6 @@
 /* All assets (surfaces, entities, levels, etc */
 
-#define ENTFLAG_SHOW	0x00000001
+#define ENT_SHOW	0x00000001
 #define ENTFLAG_THINK	0x00000002
 #define ENT_SOLID		0x00000004
 

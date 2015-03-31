@@ -2,41 +2,23 @@
 
 #include "include.h"
 
-/* entities */
-//entity_t *wall;
-//entity_t *player;
 entity_t *background;
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
-{
-	//check level function
-	/* if level one, show these things */
-	/* if level two, show these things */
-	
-	bool done = false;
-
-	/* Starting time for the timer */
+{	
 	Uint32 start = 0;
 
-	/* Flag for if the timer is running or not */
+	bool done = false;
 	bool running = true;
 	
-	/* Start everything (SDL, open window, etc.), make sure done successfully */
 	if ( init() == false)
-	{
 		return 1;
-	}
 	
-	/* Load all the file, check if done successfully */
 	if ( load_Files() == false)
-	{
 		return 1;
-	}
 	
-	/* Might move this */
-	start = SDL_GetTicks();
-
+	
 	/* HUD */
 	health.x = 10;
 	health.y = 10;
@@ -51,14 +33,14 @@ int main(int argc, char *argv[])
 
 	/* PLAYER */
 	player = Init_Ent();
-	player->resetPosition = init_Position;
-	player->handle_Input = handle_Input;
-	player->move = move;
-	player->show = show;
 
-	init_Position(player);
+	player->x = 0;
+	player->y = 340;
+	player->width = 40;
+	player->height = 55;
 
-	//init player function????
+	player->bBox.w = 40;
+	player->bBox.h = 55;
 
 	SET_FLAG(player->flags, ENT_SOLID);
 	/* ------- */
@@ -75,10 +57,10 @@ int main(int argc, char *argv[])
 	enemy1->think = alphaThink;
 	enemy1->nextThink = currentTime + 5000;
 
-	enemy1->bBox.w = 64;
-	enemy1->bBox.h = 64;
+	//enemy1->bBox.w = 64;
+	//enemy1->bBox.h = 64;
 	
-	enemy1->show = show_Enemy;
+	enemy1->show = show_Ent;
 	/* ------- */
 
 	/* Enemy 2 */
@@ -93,7 +75,7 @@ int main(int argc, char *argv[])
 	//enemy2->bBox.w = 64;
 	//enemy2->bBox.h = 64;
 
-	enemy2->show = show_Enemy;
+	enemy2->show = show_Ent;
 
 	enemy2->think = betaThink;
 	enemy2->nextThink = currentTime + 7000;
@@ -111,7 +93,7 @@ int main(int argc, char *argv[])
 	//enemy3->bBox.w = 64;
 	//enemy3->bBox.h = 64;
 
-	enemy3->show = show_Enemy;
+	enemy3->show = show_Ent;
 
 	enemy3->think = gammaThink;
 	enemy3->nextThink = currentTime + 1000;
@@ -125,7 +107,10 @@ int main(int argc, char *argv[])
 	boss->x = 1000;
 	boss->y = 300;
 
-	boss->show = show_Enemy;
+	//boss->bBox.w = 64;
+	//boss->bBox.h = 64;
+
+	boss->show = show_Ent;
 
 	boss->think = bossThink;
 	boss->nextThink = currentTime + 800;
@@ -143,8 +128,8 @@ int main(int argc, char *argv[])
 	wall->bBox.w = 75;
 	wall->bBox.h = 100;
 
-	wall->think = wallThink;
-	wall->nextThink = currentTime + 10;
+	//wall->think = wallThink;
+	//wall->nextThink = currentTime + 10;
 
 	/* ------- */
 
@@ -155,7 +140,7 @@ int main(int argc, char *argv[])
 	platform1->y = 410;
 	platform1->bBox.w = 271;
 	platform1->bBox.h = 56;
-	platform1->show = show_Enemy;
+	platform1->show = show_Ent;
 
 	platform2 = Init_Ent();
 	platform2->sprite = platformSprite1;
@@ -163,7 +148,7 @@ int main(int argc, char *argv[])
 	platform2->y = 410;
 	platform2->bBox.w = 271;
 	platform2->bBox.h = 56;
-	platform2->show = show_Enemy;
+	platform2->show = show_Ent;
 
 	platform3 = Init_Ent();
 	platform3->sprite = platformSprite1;
@@ -171,7 +156,7 @@ int main(int argc, char *argv[])
 	platform3->y = 410;
 	platform3->bBox.w = 271;
 	platform3->bBox.h = 56;
-	platform3->show = show_Enemy;
+	platform3->show = show_Ent;
 
 	platform4 = Init_Ent();
 	platform4->sprite = platformSprite1;
@@ -179,7 +164,7 @@ int main(int argc, char *argv[])
 	platform4->y = 410;
 	platform4->bBox.w = 271;
 	platform4->bBox.h = 56;
-	platform4->show = show_Enemy;
+	platform4->show = show_Ent;
 
 	platformA1 = Init_Ent();
 	platformA1->sprite = platformSpriteA1;
@@ -187,7 +172,7 @@ int main(int argc, char *argv[])
 	platformA1->y = 410;
 	platformA1->bBox.w = 271;
 	platformA1->bBox.h = 56;
-	platformA1->show = show_Enemy;
+	platformA1->show = show_Ent;
 
 	platformA2 = Init_Ent();
 	platformA2->sprite = platformSpriteA1;
@@ -195,7 +180,7 @@ int main(int argc, char *argv[])
 	platformA2->y = 410;
 	platformA2->bBox.w = 271;
 	platformA2->bBox.h = 56;
-	platformA2->show = show_Enemy;
+	platformA2->show = show_Ent;
 
 	platformA3 = Init_Ent();
 	platformA3->sprite = platformSpriteA1;
@@ -203,7 +188,7 @@ int main(int argc, char *argv[])
 	platformA3->y = 410;
 	platformA3->bBox.w = 271;
 	platformA3->bBox.h = 56;
-	platformA3->show = show_Enemy;
+	platformA3->show = show_Ent;
 
 	platformA4 = Init_Ent();
 	platformA4->sprite = platformSpriteA1;
@@ -211,20 +196,18 @@ int main(int argc, char *argv[])
 	platformA4->y = 410;
 	platformA4->bBox.w = 271;
 	platformA4->bBox.h = 56;
-	platformA4->show = show_Enemy;
+	platformA4->show = show_Ent;
 
 	lvlTrigger = Init_Ent();
 	sprintf(lvlTrigger->classname, "trigger");
 	lvlTrigger->x = 1100;
 	lvlTrigger->y = 380;
 	lvlTrigger->sprite = plyrSprite;
-	//lvlTrigger->fill.x = lvlTrigger->x;
-	//lvlTrigger->fill.y = lvlTrigger->y;
-	lvlTrigger->bBox.w = 20;
-	lvlTrigger->bBox.h = 20;
-	lvlTrigger->show = show_Enemy;
+	lvlTrigger->show = show_Ent;
 
-	level = 1; // when the game starts, we will be at level 1
+	start = SDL_GetTicks();
+
+	level = 1;
 
 	/* GAME ------------------------------------------------------------------------- */
 	do
@@ -242,10 +225,6 @@ int main(int argc, char *argv[])
 			{
 				switch ( event.key.keysym.sym )
 				{
-					case SDLK_UP: 
-						if (Mix_PlayChannel (-1, scratch, 0) == -1) //arg. 1, -1 means looking for the next sound channel available		//arg. 2, sound that will be played
-							return 1;								//arg. 3, how many times sound will loop
-						break;
 					case SDLK_1:
 						if (level != 1)
 						{
@@ -310,10 +289,6 @@ int main(int argc, char *argv[])
 							//boss->yVel = 0;
 						}
 						break;
-					case SDLK_RIGHT:
-						if (Mix_PlayChannel (-1, low, 0) == -1)
-							return 1;
-						break;
 					case SDLK_s:
 						if (running == true)
 						{
@@ -328,15 +303,13 @@ int main(int argc, char *argv[])
 					}
 				}
 
-			//If the user presses Quit (the x button on the window)
 			if(event.type == SDL_QUIT)
 			{
-				//Game is done
 				done = true;
 			}
 		}
-		move(player);
-		set_Camera(player);
+
+		PlayerAlive();
 
 		if (running == true)
 			{
@@ -349,14 +322,12 @@ int main(int argc, char *argv[])
 				SDL_FreeSurface( seconds );
 			}
 
-		show(player);
-
-		show_Enemy(wall);
+		show_Ent(wall); //temp
 
 		SDL_FillRect ( screen, &health, SDL_MapRGB ( screen->format, 0, 0xFF, 0 ) );
 		SDL_FillRect ( screen, &anger, SDL_MapRGB ( screen->format, 0x77, 0x77, 0x77 ) );
 
-		if (IS_SET(lvlTrigger->flags, ENTFLAG_SHOW))
+		if (IS_SET(lvlTrigger->flags, ENT_SHOW))
 		{
 			SDL_FillRect ( screen, &lvlTrigger->fill, SDL_MapRGB ( screen->format, 0x77, 0x77, 0x77 ) );
 		}

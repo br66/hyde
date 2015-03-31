@@ -11,14 +11,12 @@ void fire_Bomb (entity_t *ent)
 	bomb->x = ent->x;
 	bomb->y = ent->y;
 
-	SET_FLAG(bomb->flags, ENTFLAG_SHOW);
+	SET_FLAG(bomb->flags, ENT_SHOW);
 
-	//bomb->bBox.x = bomb->x;
-	//bomb->bBox.y = bomb->y;
 	//bomb->bBox.w = 20;
 	//bomb->bBox.h = 20;
 	bomb->sprite = bombSprite;
-	bomb->show = show_Enemy;
+	bomb->show = show_Ent;
 }
 
 void fire_Projectile (entity_t *shooter)
@@ -33,16 +31,14 @@ void fire_Projectile (entity_t *shooter)
 	projectile->x = shooter->x;
 	projectile->y = shooter->y;
 
-	SET_FLAG(projectile->flags, ENTFLAG_SHOW);
+	SET_FLAG(projectile->flags, ENT_SHOW);
 	SET_FLAG(projectile->flags, ENTFLAG_THINK);
 
-	//projectile->bBox.x = projectile->x;
-	//projectile->bBox.y = projectile->y;
 	//projectile->bBox.h = 64;
 	//projectile->bBox.w = 64;
 
 	projectile->sprite = bombSprite;
-	projectile->show = show_Enemy;
+	projectile->show = show_Ent;
 
 	projectile->think = projThink;
 	projectile->nextThink = currentTime + 100;
