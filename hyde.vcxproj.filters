@@ -39,6 +39,12 @@
     <ClInclude Include="src\assets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\glevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\entity.c">
@@ -62,10 +68,8 @@
     <ClCompile Include="src\assets.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="level.txt">
+    <ClCompile Include="src\glevel.c">
       <Filter>Source Files</Filter>
-    </None>
+    </ClCompile>
   </ItemGroup>
 </Project>

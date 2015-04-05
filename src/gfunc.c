@@ -68,7 +68,8 @@ bool load_Files()
 	}
 
 	/* player sprite */
-	plyrSprite = load_Image("sprite/stand.png");
+	//plyrSprite = load_Image("sprite/stand.png");
+	plyrSprite = load_Image("sprite/char/53599.png");
 	if (plyrSprite == NULL)
 	{
 		return false;

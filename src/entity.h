@@ -33,6 +33,7 @@ typedef struct entity_s
 
 	/** @brief	The sprite. */
 	SDL_Surface		*sprite;
+	int				framesperline;
 
 	/** @brief	The width. */
 	int				width;
@@ -85,7 +86,7 @@ typedef struct entity_s
 } entity_t;
 
 /* The list of all the entities using memory */
-entity_t listEntities [MAX_ENTITIES];
+
 
 entity_t *Init_Ent (void);
 void Free_Ent(entity_t *self);

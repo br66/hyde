@@ -32,7 +32,7 @@ void fire_Projectile (entity_t *shooter)
 	projectile->y = shooter->y;
 
 	SET_FLAG(projectile->flags, ENT_SHOW);
-	SET_FLAG(projectile->flags, ENTFLAG_THINK);
+	SET_FLAG(projectile->flags, ENT_THINK);
 
 	//projectile->bBox.h = 64;
 	//projectile->bBox.w = 64;

@@ -10,23 +10,23 @@ void show_LevelOne()
 	if (enemy1)
 	{
 		SET_FLAG(enemy1->flags, ENT_SHOW);
-		SET_FLAG(enemy1->flags, ENTFLAG_THINK);
+		SET_FLAG(enemy1->flags, ENT_THINK);
 	}
 	if (enemy2)
 	{
 		SET_FLAG(enemy2->flags, ENT_SHOW);
-		SET_FLAG(enemy2->flags, ENTFLAG_THINK);
+		SET_FLAG(enemy2->flags, ENT_THINK);
 	}
 	if (enemy3)
 	{
 		SET_FLAG(enemy3->flags, ENT_SHOW);
-		SET_FLAG(enemy3->flags, ENTFLAG_THINK);
+		SET_FLAG(enemy3->flags, ENT_THINK);
 	}
 
 	if (boss)
 	{
 		REMOVE_FLAG(boss->flags, ENT_SHOW);
-		REMOVE_FLAG(boss->flags, ENTFLAG_THINK);
+		REMOVE_FLAG(boss->flags, ENT_THINK);
 		//REMOVE_FLAG(boss->flags, ENT_SOLID);
 	}
 
@@ -91,23 +91,23 @@ void show_LevelTwo()
 	if (enemy1)
 	{
 		REMOVE_FLAG(enemy1->flags, ENT_SHOW);
-		REMOVE_FLAG(enemy1->flags, ENTFLAG_THINK);
+		REMOVE_FLAG(enemy1->flags, ENT_THINK);
 	}
 	if (enemy2)
 	{
 		REMOVE_FLAG(enemy2->flags, ENT_SHOW);
-		REMOVE_FLAG(enemy2->flags, ENTFLAG_THINK);
+		REMOVE_FLAG(enemy2->flags, ENT_THINK);
 	}
 	if (enemy3)
 	{
 		REMOVE_FLAG(enemy3->flags, ENT_SHOW);
-		REMOVE_FLAG(enemy3->flags, ENTFLAG_THINK);
+		REMOVE_FLAG(enemy3->flags, ENT_THINK);
 	}
 
 	if (boss)
 	{
 		SET_FLAG(boss->flags, ENT_SHOW);
-		SET_FLAG(boss->flags, ENTFLAG_THINK);
+		SET_FLAG(boss->flags, ENT_THINK);
 		//SET_FLAG(boss->flags, ENT_SOLID);
 	}
 	if(platform1)

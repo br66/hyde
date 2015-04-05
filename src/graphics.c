@@ -68,4 +68,16 @@ void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destinati
 
 	//Displaying the surface
 	SDL_BlitSurface( source, clip, destination, &offset);
+
+	/*offset.x = frameNum%framesperline*spritewidth;
+	offset.y = frameNum / framesperline*spriteheight;
+	offset.w = sprites w;
+	offset.h = sprites h;
+
+	blit surface(the sprite, the screen, ????, ????)*/
 }
+
+/*void show_Frame (entity_t* ent, SDL_Surface* dest, int sx, int sy, int frame) // to get entity and its framesperline for its sprite
+{
+	
+}*/

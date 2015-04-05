@@ -1,5 +1,7 @@
 #include "include.h"
 
+static entity_t listEntities [MAX_ENTITIES];
+
 /**********************************************************************************************//**
  * @fn	entity_t *Init_Ent (void)
  *
@@ -8,38 +10,20 @@
  * @return	null if it fails, else an entity_t*.
  **************************************************************************************************/
 
+//Function has been simplified
 entity_t *Init_Ent (void)
 {
 	int i;
-
-	entity_t *ent;
-
-	for (i = 0; i < max_ents+1; i++)
+	
+	for (i = 0; i < MAX_ENTITIES; i++)
 	{
-		/* If there is memory/an entity not being used, create a new entity there. */
-		if(listEntities[i].inuse == 0) 
+		if (listEntities[i].inuse == 0)
 		{
-			ent = &listEntities[i];
-			ent->inuse = 1;
-			max_ents++;
+			listEntities[i].inuse = 1;
+			return &listEntities[i];
 		}
-
-		/* We keep a number of entities that have been made, if it is less than the abs. max, create at the end of the list. */
-		else if (max_ents < MAX_ENTITIES) 
-		{
-			ent = &listEntities[max_ents++];
-			ent->inuse = 1;
-		}
-
-		/* There is no memory left, shut this place down. */
-		else if(i == max_ents) 
-		{
-			fprintf(stderr, "No Way! No Way! No Way! No Way?/n No Way! No Way! No Way! No Way?/n No Way! No Way! No Way! No Way?/n No Way! No Way! No Way! No Way?/n: %s\n", SDL_GetError());
-			exit(1);
-			return 0;
-		}
-		return ent;
 	}
+	return NULL;
 
 }
 
@@ -57,6 +41,7 @@ entity_t *Init_Ent (void)
 void Free_Ent(entity_t *self)
 {
 	self->inuse = 0;
+	memset (self, 0, sizeof(*self));
 }
 
 /**********************************************************************************************//**
@@ -74,7 +59,7 @@ void EntityAlive()
 	entity_t *e = listEntities;
 	for (i = 0; i < MAX_ENTITIES; i++)
 	{
-		if (listEntities[i].inuse && IS_SET(listEntities[i].flags, ENTFLAG_THINK) )
+		if (listEntities[i].inuse && IS_SET(listEntities[i].flags, ENT_THINK) )
 		{
 			if (listEntities[i].nextThink <= currentTime)
 			{
@@ -175,6 +160,7 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	{
 		if (isCollide (targ, ent)) //warning boss is solid in level 1
 		{
+			if IS_SET(targ->flags, ENT_SOLID){
 			if (strcmp(targ->classname, "trigger") == 0)
 			{	
 				level = 2;
@@ -188,7 +174,7 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 			{
 				ent->x -= ent->xVel;
 				ent->y -= ent->yVel;
-			}
+			}}
 		}
 		targ++;
 	}
