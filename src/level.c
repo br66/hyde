@@ -1,9 +1,10 @@
+//Nothing changed here
 #include "include.h"
 
 /* level functions */
 void show_LevelOne()
 {
-	show_Surface (0, 0, stage1->backgrounds[0], screen, &camera);
+	show_Surface (0, 0, stage1->backgrounds[0], getScreen(), addrCamera());
 	//show_Surface (0 - (float)camera.x, 410 - (float)camera.y, stage1->lvlEntities[0]->sprite, screen, NULL);
 		
 	//other level 1 assets
@@ -86,7 +87,7 @@ void show_LevelOne()
 
 void show_LevelTwo()
 {
-	show_Surface (0, 0, stage2->backgrounds[0], screen, &camera);
+	show_Surface (0, 0, stage2->backgrounds[0], getScreen(), addrCamera());
 
 	if (enemy1)
 	{

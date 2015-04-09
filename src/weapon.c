@@ -1,3 +1,4 @@
+//Nothing changed here
 #include "include.h"
 
 void fire_Bomb (entity_t *ent)
@@ -41,5 +42,5 @@ void fire_Projectile (entity_t *shooter)
 	projectile->show = show_Ent;
 
 	projectile->think = projThink;
-	projectile->nextThink = currentTime + 100;
+	projectile->nextThink = getCurrentTime() + 100;
 }

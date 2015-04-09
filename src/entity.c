@@ -1,6 +1,21 @@
+/* The list of entites [listEntities] is made here.  Anytime that
+the list needs to be used it will probably be done here from now on.  
+If the need becomes too great, a get function will be made for it.
+
+The player entity is made here; if needed in another file, use getPlayer().
+
+InitEnt and FreeEnt have been edited/simplified.  The player's show function
+now uses showFrame since the player's sprite is now a spritesheet.
+
+getPlayer() and PlayerProperties is defined here at the bottom simplifying
+code. */
+
+
 #include "include.h"
 
 static entity_t listEntities [MAX_ENTITIES];
+
+entity_t *player = NULL; /* cannot be static, have to change its address, will implement playerProperties function to fix this */
 
 /**********************************************************************************************//**
  * @fn	entity_t *Init_Ent (void)
@@ -61,7 +76,7 @@ void EntityAlive()
 	{
 		if (listEntities[i].inuse && IS_SET(listEntities[i].flags, ENT_THINK) )
 		{
-			if (listEntities[i].nextThink <= currentTime)
+			if (listEntities[i].nextThink <= getCurrentTime())
 			{
 				listEntities[i].think(&listEntities[i]);
 			}
@@ -169,7 +184,7 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 				player->y = 340;
 			}
 			if (strcmp(targ->classname, "enemy") == 0) // if IS_SET targ ENT SOLID
-				health.w -= 1;
+				player->health -= 1; //health.w -= 1; 
 			else
 			{
 				ent->x -= ent->xVel;
@@ -185,6 +200,7 @@ void PlayerAlive ()
 	move(player);
 	set_Camera(player);
 	show(player);
+	//showFrame(getPlayer(), getScreen(), 200, getPlayer()->y - getCamera().y, 0);
 }
 
 /**********************************************************************************************//**
@@ -255,12 +271,13 @@ void move ( entity_t *ent )
 
 void show (entity_t *ent)
 {
-	show_Surface (ent->x - camera.x, ent->y - camera.y, plyrSprite, screen, NULL);
+	//show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, plyrSprite, getScreen(), NULL);
+	showFrame(getPlayer(), getScreen(), getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y, 0);
 }
 
 void show_Ent (entity_t *ent)
 {
-	show_Surface (ent->x - camera.x, ent->y - camera.y, ent->sprite, screen, NULL);
+	show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, ent->sprite, getScreen(), NULL);
 }
 
 /* Check Collision */
@@ -303,7 +320,7 @@ void projThink (entity_t *ent)
 		ent->xVel -= 1;
 	}
 	ent->thinkflags++;
-	ent->nextThink = currentTime + 300;
+	ent->nextThink = getCurrentTime() + 300;
 }
 
 void alphaThink (entity_t *self)
@@ -318,7 +335,7 @@ void alphaThink (entity_t *self)
 		/* f stands for float */
 
 	self->thinkflags++;
-	self->nextThink = currentTime + 310;
+	self->nextThink = getCurrentTime() + 310;
 }
 
 void betaThink (entity_t *self)
@@ -334,7 +351,7 @@ void betaThink (entity_t *self)
 	}
 
 	self->thinkflags++;
-	self->nextThink = currentTime + 400;
+	self->nextThink = getCurrentTime() + 400;
 }
 
 void gammaThink (entity_t *self)
@@ -348,7 +365,7 @@ void gammaThink (entity_t *self)
 	{ self->yVel += accel; }
 
 	self->thinkflags++;
-	self->nextThink = currentTime + 600;
+	self->nextThink = getCurrentTime() + 600;
 }
 //Thinknum[0] - the boss's walk quadrant
 void bossThink (entity_t *self)
@@ -415,5 +432,30 @@ void bossThink (entity_t *self)
 			break;
 	}
 
-	self->nextThink = currentTime + 50;
+	self->nextThink = getCurrentTime() + 50;
+}
+
+void playerProperties(entity_t *player)
+{
+	player->x = 0;
+	player->y = 340;
+	player->width = 40;
+	player->height = 55;
+
+	player->sprite = plyrSprite;
+
+	player->bBox.w = 40;
+	player->bBox.h = 55;
+
+	player->health = 100;
+	player->max_health = 100;
+
+	player->framesperline = 10;
+
+	SET_FLAG(player->flags, ENT_SOLID);
+}
+
+entity_t* getPlayer()
+{
+	return player;
 }

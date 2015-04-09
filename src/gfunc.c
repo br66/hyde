@@ -1,6 +1,26 @@
+/* Variables needed here are declared here and usually only used
+here if not by a get or set function.  Spritesheet was being
+edited so for now the player's frame will be a white square. */
+
 /* Functions called in the game loop */
 
 #include "include.h"
+
+static SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+
+static TTF_Font *font = NULL;
+
+static Uint32 currentTime = 0;
+
+SDL_Surface *bgSprite = NULL;
+SDL_Surface *bgSprite2 = NULL;
+SDL_Surface *message = NULL;
+
+Mix_Music *music= NULL;
+Mix_Chunk *scratch = NULL;
+Mix_Chunk *high = NULL;
+Mix_Chunk *med = NULL;
+Mix_Chunk *low = NULL;
 
 bool init()
 {
@@ -23,11 +43,11 @@ bool init()
 	}
 
 	/* Fourth argument creates the screens surface in system memory */
-	screen = SDL_SetVideoMode (SCREEN_WIDTH, SCREEN_HEIGHT, BITSPERPIXEL, SDL_SWSURFACE);
-	if (screen == NULL)
+	if (setUpScreen() == false)
 	{
 		return false;
 	}
+
 
 	/* Window title */
 	SDL_WM_SetCaption ("Game", NULL);
@@ -43,8 +63,8 @@ bool load_Files()
 	bgSprite = load_Image("sprite/sky1.png");
 	if (bgSprite == NULL)
 	{
-		return false;
 		printf("error: %s\n", SDL_GetError());
+		return false;
 	}
 
 	bgSprite2 = load_Image("sprite/sky2.png");
@@ -271,4 +291,27 @@ void clear()
 
 	//Will free the screen surface and close SDL
 	SDL_Quit();
+}
+
+SDL_Rect getCamera (void)
+{
+	return camera;
+}
+SDL_Rect *addrCamera(void)
+{
+	return &camera;
+}
+
+TTF_Font *getFont (void)
+{
+	return font;
+}
+
+Uint32 getCurrentTime(void)
+{
+	return currentTime;
+}
+void setCurrentTime(void)
+{
+	currentTime = SDL_GetTicks();
 }

@@ -1,59 +1,35 @@
+/* Variables needed here are declared here and usually only used
+here if not by a get or set function.  Get and set functions for 
+the screen are here.  New showFrame function for spritesheets is here */
+
 #include "include.h"
 
-/* Load Image from file function */
-SDL_Surface *load_Image (char *filename)
+static SDL_Surface *screen = NULL;
+
+SDL_Surface *load_Image (char *filename) /* Load Image from file function */
 {
-	//We are going to take an image in as a parameter
-	//and return a pointer to the optimized vers.
+	SDL_Surface* loadedImage = NULL; /* this will be image from parameter */
 
-	//temporarily store the image here
-	SDL_Surface* loadedImage = NULL;
+	SDL_Surface* finalImage = NULL; /* this will be vers. of image optimized for game */
 
-	//because we need to optimize it
-	SDL_Surface* finalImage = NULL;
+	loadedImage = IMG_Load(filename); /* we know have image from parameter */
 
-	/* Getting the image from the file system and attaching 
-	an address to the pointer.  Just in case you haven't noticed,
-	from previous verisons of this code, the LoadBMP function was
-	used.  Including the SDL Image header allows me to load image
-	formats other than but still including BMP files */
-	loadedImage = IMG_Load(filename);
-
-	//if my pointer is not null / if i was able to get the image successfully
-	if( loadedImage != NULL)
+	if( loadedImage != NULL) /* if that filename is not fradulent */
 	{
-		//we will optimize the image for SDL
-		//this will create a new version of the image
-		//in the same format as the screen
-		finalImage = SDL_DisplayFormat( loadedImage );
+		finalImage = SDL_DisplayFormat( loadedImage ); /* we now make optimized image */
 
-		//the "loadedImage" has been optimized for showing now
-		//we no longer need the original image, it is literally
-		//of no use to us.
-		SDL_FreeSurface (loadedImage);
+		SDL_FreeSurface (loadedImage); /* get rid of the old version */
 
-		//optimizing it here rather than when it is blitted (drawn to surface)
-		//is more efficient.  chances are you may need this image again; but now
-		//since you optimize it when it is first loaded, it doesn't need to be
-		//optimized again upon drawing it to the surface
-
-		/* Color Keying - some sprites have backgrounds in them that we don't need
-		(ex. player spritesheet with a green background).  You don't want that back-
-		ground to show up in game. */
-		if (finalImage != NULL)
+		if (finalImage != NULL) /* if final image is not fradulent */
 		{
-			//This creates a color key, in other words, defines that color I want to get rid of.
-			Uint32 colorkey = SDL_MapRGB( finalImage->format, 0, 0xFF, 0xFF );
+			Uint32 colorkey = SDL_MapRGB( finalImage->format, 0, 0xFF, 0xFF ); /* designate a color that we will take out of the image */
 			
-			//This statement says: Take the optimized image (1st argument), and take this color (3rd argument) out of it.
-			//The 2nd argument exists because the "SetColorKey" function can do other things other than get rid of a color.
-			//But I probably won't be using it for any other reason.  So, "SRCCOLORKEY" says "I want to use the color key func.".
-			SDL_SetColorKey (finalImage, SDL_SRCCOLORKEY, colorkey);
+			SDL_SetColorKey (finalImage, SDL_SRCCOLORKEY, colorkey); /*Take the optimized image (1st argument), take this color (3rd argument) out of it. */
+
+			/* 2nd argument exists because the "SetColorKey" function can do other things other than get rid of a color. */
 		}
 	}
-
-	//returns pointer to the optimized image
-	return finalImage;
+	return finalImage; /* send out finalized image */
 }
 
 /* Displaying Image function */
@@ -68,16 +44,36 @@ void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destinati
 
 	//Displaying the surface
 	SDL_BlitSurface( source, clip, destination, &offset);
-
-	/*offset.x = frameNum%framesperline*spritewidth;
-	offset.y = frameNum / framesperline*spriteheight;
-	offset.w = sprites w;
-	offset.h = sprites h;
-
-	blit surface(the sprite, the screen, ????, ????)*/
 }
 
-/*void show_Frame (entity_t* ent, SDL_Surface* dest, int sx, int sy, int frame) // to get entity and its framesperline for its sprite
+void showFrame (entity_t* ent, SDL_Surface* surface, float sx, float sy, int frame) // to get entity and its framesperline for its sprite
 {
-	
-}*/
+	SDL_Rect source, dest;
+
+	source.x = frame % ent->framesperline * ent->sprite->w;
+	source.y = frame / ent->framesperline * ent->sprite->h;
+	source.w = 32;
+	source.h = 32;
+
+	dest.x = (int)sx;
+	dest.y = (int)sy;
+	dest.w = 32;
+	dest.h = 32;
+
+	SDL_BlitSurface (ent->sprite, &source, surface, &dest); //1. source, clip, dest, clip
+}
+
+bool setUpScreen()
+{
+	screen = SDL_SetVideoMode (SCREEN_WIDTH, SCREEN_HEIGHT, BITSPERPIXEL, SDL_SWSURFACE);
+	if (screen == NULL)
+	{
+		return false;
+	}
+	return true;
+}
+
+SDL_Surface* getScreen (void)
+{
+	return screen;
+}

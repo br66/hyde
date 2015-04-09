@@ -1,3 +1,9 @@
+/* Nothing changed here except
+include guards (#ifndef). */
+
+#ifndef _LEVEL_
+#define _LEVEL_
+
 typedef struct level_s
 {
 	char			level[100];
@@ -22,3 +28,5 @@ entity_t *platformA3;
 entity_t *platformA4;
 
 level_t levels[10];
+
+#endif

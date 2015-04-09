@@ -1,8 +1,24 @@
+/* Variables needed here are declared here and usually only used
+here if not by a get or set function.  HUD is being edited to be
+proportional to player's health integer. */
+
 /* The game loop file */
 
 #include "include.h"
 
 entity_t *background;
+
+SDL_Surface *seconds = NULL;
+
+static Uint32 delta = 0;
+static Uint8 *keystates;
+
+static SDL_Color textColor = { 255, 255, 255 };
+
+static SDL_Rect health;
+static SDL_Rect anger;
+
+extern entity_t* player; //the only legitimate extern
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
@@ -17,32 +33,10 @@ int main(int argc, char *argv[])
 	
 	if ( load_Files() == false)
 		return 1;
-	
-	
-	/* HUD */
-	health.x = 10;
-	health.y = 10;
-	health.w = 100;
-	health.h = 35;
-
-	anger.x = 115;
-	anger.y = 10;
-	anger.w = 100;
-	anger.h = 35;
-	/* --- */
 
 	/* PLAYER */
 	player = Init_Ent();
-
-	player->x = 0;
-	player->y = 340;
-	player->width = 40;
-	player->height = 55;
-
-	player->bBox.w = 40;
-	player->bBox.h = 55;
-
-	SET_FLAG(player->flags, ENT_SOLID);
+	playerProperties(getPlayer());
 	/* ------- */
 
 	/* Enemy 1 */
@@ -55,7 +49,7 @@ int main(int argc, char *argv[])
 	enemy1->sprite = load_Image("sprite/red.png"); //sprites will later be loaded in sprite.c // declared in sprite.h
 
 	enemy1->think = alphaThink;
-	enemy1->nextThink = currentTime + 5000;
+	enemy1->nextThink = getCurrentTime() + 5000;
 
 	//enemy1->bBox.w = 64;
 	//enemy1->bBox.h = 64;
@@ -78,7 +72,7 @@ int main(int argc, char *argv[])
 	enemy2->show = show_Ent;
 
 	enemy2->think = betaThink;
-	enemy2->nextThink = currentTime + 7000;
+	enemy2->nextThink = getCurrentTime() + 7000;
 	/* ------- */
 
 	/* Enemy 3 */
@@ -96,7 +90,7 @@ int main(int argc, char *argv[])
 	enemy3->show = show_Ent;
 
 	enemy3->think = gammaThink;
-	enemy3->nextThink = currentTime + 1000;
+	enemy3->nextThink = getCurrentTime() + 1000;
 	/* ------- */
 
 	/*  Boss  */
@@ -113,7 +107,7 @@ int main(int argc, char *argv[])
 	boss->show = show_Ent;
 
 	boss->think = bossThink;
-	boss->nextThink = currentTime + 800;
+	boss->nextThink = getCurrentTime() + 800;
 
 	/* ------- */
 
@@ -205,6 +199,18 @@ int main(int argc, char *argv[])
 	lvlTrigger->sprite = plyrSprite;
 	lvlTrigger->show = show_Ent;
 
+	/* HUD */
+	health.x = 10;
+	health.y = 10;
+	health.w = (getPlayer()->health * 100) / getPlayer()->max_health; //how do I get rid of division? can I?
+	health.h = 35;
+
+	anger.x = 115;
+	anger.y = 10;
+	anger.w = 100;
+	anger.h = 35;
+	/* --- */
+
 	start = SDL_GetTicks();
 
 	level = 1;
@@ -219,7 +225,7 @@ int main(int argc, char *argv[])
 
 		while (SDL_PollEvent (&event))
 		{
-			handle_Input(player);
+			handle_Input(getPlayer());
 
 			if ( event.type == SDL_KEYDOWN )
 			{
@@ -316,33 +322,34 @@ int main(int argc, char *argv[])
 				char msg[20];
 				sprintf( msg, "%s", FormatTimeString(start));
 
-				seconds = TTF_RenderText_Solid (font, msg, textColor);
-				show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, screen, NULL);
+				seconds = TTF_RenderText_Solid (getFont(), msg, textColor);
+				show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, getScreen(), NULL);
 
 				SDL_FreeSurface( seconds );
 			}
 
 		show_Ent(wall); //temp
 
-		SDL_FillRect ( screen, &health, SDL_MapRGB ( screen->format, 0, 0xFF, 0 ) );
-		SDL_FillRect ( screen, &anger, SDL_MapRGB ( screen->format, 0x77, 0x77, 0x77 ) );
+		SDL_FillRect ( getScreen(), &health, SDL_MapRGB ( getScreen()->format, 0, 0xFF, 0 ) );
+		SDL_FillRect ( getScreen(), &anger, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
 
 		if (IS_SET(lvlTrigger->flags, ENT_SHOW))
 		{
-			SDL_FillRect ( screen, &lvlTrigger->fill, SDL_MapRGB ( screen->format, 0x77, 0x77, 0x77 ) );
+			SDL_FillRect ( getScreen(), &lvlTrigger->fill, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
 		}
 		
 
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );
 
-		delta = SDL_GetTicks() - currentTime;
+		/* delta time */
+		delta = SDL_GetTicks() - getCurrentTime();
 
 		/* Constantly getting the raw time from SDL */
-		currentTime = SDL_GetTicks();
+		setCurrentTime();
 
 		/* Function so that the screen is constantly updated so you can see things happening as they happen */
-		SDL_Flip(screen);
+		SDL_Flip(getScreen());
 	}
 	
 	while(!done);
