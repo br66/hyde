@@ -73,7 +73,7 @@ typedef struct entity_s
 	/** @brief	The classname. */
 	char			classname[25];
 
-	int					health;
+	int					currentHealth;
 	int					max_health;
 
 	//int				deadflag;

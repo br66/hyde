@@ -6,6 +6,8 @@ edited so for now the player's frame will be a white square. */
 
 #include "include.h"
 
+static SDL_Surface *seconds = NULL;
+
 static SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
 static TTF_Font *font = NULL;
@@ -14,7 +16,7 @@ static Uint32 currentTime = 0;
 
 SDL_Surface *bgSprite = NULL;
 SDL_Surface *bgSprite2 = NULL;
-SDL_Surface *message = NULL;
+//SDL_Surface *message = NULL;
 
 Mix_Music *music= NULL;
 Mix_Chunk *scratch = NULL;
@@ -88,8 +90,7 @@ bool load_Files()
 	}
 
 	/* player sprite */
-	//plyrSprite = load_Image("sprite/stand.png");
-	plyrSprite = load_Image("sprite/char/53599.png");
+	plyrSprite = load_Image("sprite/char/jekyll_sheet.png");
 	if (plyrSprite == NULL)
 	{
 		return false;
@@ -271,8 +272,17 @@ void set_Camera (entity_t *ent)
 void clear()
 {
 	/* Freeing up memory by getting rid of these surfaces (images) */
-	SDL_FreeSurface (message);
+	//SDL_FreeSurface (message);
+	
 	SDL_FreeSurface (bgSprite);
+	SDL_FreeSurface (platformSprite1);
+	SDL_FreeSurface (platformSpriteA1);
+	SDL_FreeSurface (bombSprite);
+	SDL_FreeSurface (bossSprite);
+	SDL_FreeSurface (plyrSprite);
+
+	closeSeconds();
+	closeScreen();
 
 	/* Closing the fonts and text engine */
 	TTF_CloseFont (font);
@@ -314,4 +324,23 @@ Uint32 getCurrentTime(void)
 void setCurrentTime(void)
 {
 	currentTime = SDL_GetTicks();
+}
+
+SDL_Surface *getSeconds(void)
+{
+	return seconds;
+}
+void setUpSeconds(char* msg, SDL_Color textColor) //where to render to and what color
+{
+	seconds = TTF_RenderText_Solid (getFont(), msg, textColor); //setUpSeconds();
+	show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, getScreen(), NULL);
+
+	SDL_FreeSurface( seconds );
+}
+void closeSeconds(void)
+{
+	if (!seconds)
+	{
+		SDL_FreeSurface (seconds);
+	}
 }

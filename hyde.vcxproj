@@ -39,9 +39,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\</OutDir>
-    <IncludePath>C:\libraries\SDL_net-1.2.8\include;C:\libraries\SDL_mixer-1.2.12\include;C:\libraries\SDL_image-1.2.12\include;C:\libraries\SDL_ttf-2.0.11\include;C:\libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
-    <ReferencePath>C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\yaml\yaml-0.1.5\include;C:\libraries\SDL_net-1.2.8\include;C:\libraries\SDL_mixer-1.2.12\include;C:\libraries\SDL_image-1.2.12\include;C:\libraries\SDL_ttf-2.0.11\include;C:\libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

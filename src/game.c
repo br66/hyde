@@ -1,14 +1,8 @@
-/* Variables needed here are declared here and usually only used
-here if not by a get or set function.  HUD is being edited to be
-proportional to player's health integer. */
-
 /* The game loop file */
 
 #include "include.h"
 
 entity_t *background;
-
-SDL_Surface *seconds = NULL;
 
 static Uint32 delta = 0;
 static Uint8 *keystates;
@@ -18,7 +12,7 @@ static SDL_Color textColor = { 255, 255, 255 };
 static SDL_Rect health;
 static SDL_Rect anger;
 
-extern entity_t* player; //the only legitimate extern
+extern entity_t* player; //the only legitimate extern as opposed to defunct assets header
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
@@ -51,8 +45,8 @@ int main(int argc, char *argv[])
 	enemy1->think = alphaThink;
 	enemy1->nextThink = getCurrentTime() + 5000;
 
-	//enemy1->bBox.w = 64;
-	//enemy1->bBox.h = 64;
+	enemy1->bBox.w = 64;
+	enemy1->bBox.h = 64;
 	
 	enemy1->show = show_Ent;
 	/* ------- */
@@ -202,7 +196,7 @@ int main(int argc, char *argv[])
 	/* HUD */
 	health.x = 10;
 	health.y = 10;
-	health.w = (getPlayer()->health * 100) / getPlayer()->max_health; //how do I get rid of division? can I?
+	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I?
 	health.h = 35;
 
 	anger.x = 115;
@@ -316,16 +310,14 @@ int main(int argc, char *argv[])
 		}
 
 		PlayerAlive();
+		health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health;
 
 		if (running == true)
 			{
 				char msg[20];
 				sprintf( msg, "%s", FormatTimeString(start));
 
-				seconds = TTF_RenderText_Solid (getFont(), msg, textColor);
-				show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, getScreen(), NULL);
-
-				SDL_FreeSurface( seconds );
+				setUpSeconds(msg, textColor);
 			}
 
 		show_Ent(wall); //temp

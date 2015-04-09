@@ -12,6 +12,7 @@ void show_LevelOne()
 	{
 		SET_FLAG(enemy1->flags, ENT_SHOW);
 		SET_FLAG(enemy1->flags, ENT_THINK);
+		SET_FLAG(enemy1->flags, ENT_SOLID);
 	}
 	if (enemy2)
 	{
@@ -93,6 +94,7 @@ void show_LevelTwo()
 	{
 		REMOVE_FLAG(enemy1->flags, ENT_SHOW);
 		REMOVE_FLAG(enemy1->flags, ENT_THINK);
+		REMOVE_FLAG(enemy1->flags, ENT_SOLID);
 	}
 	if (enemy2)
 	{

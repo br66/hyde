@@ -184,7 +184,7 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 				player->y = 340;
 			}
 			if (strcmp(targ->classname, "enemy") == 0) // if IS_SET targ ENT SOLID
-				player->health -= 1; //health.w -= 1; 
+				player->currentHealth -= 1; //health.w -= 1; 
 			else
 			{
 				ent->x -= ent->xVel;
@@ -439,15 +439,15 @@ void playerProperties(entity_t *player)
 {
 	player->x = 0;
 	player->y = 340;
-	player->width = 40;
-	player->height = 55;
+	player->width = 32;
+	player->height = 32;
 
 	player->sprite = plyrSprite;
 
-	player->bBox.w = 40;
-	player->bBox.h = 55;
+	player->bBox.w = 32;
+	player->bBox.h = 32;
 
-	player->health = 100;
+	player->currentHealth = 100;
 	player->max_health = 100;
 
 	player->framesperline = 10;

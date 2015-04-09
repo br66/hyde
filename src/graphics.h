@@ -1,8 +1,3 @@
-/* For this file, showFrame is an alternate function for 
-showing images which divides an image into parts for 
-spritesheets. setUpScreen and getScreen setup and get
-the screen respectively simplifying code. */
-
 #ifndef _GRAPHICS_
 #define _GRAPHICS_
 
@@ -27,6 +22,6 @@ void showFrame (entity_t* ent, SDL_Surface* surface, float sx, float sy, int fra
 /* SCREEN */
 bool setUpScreen (void);
 SDL_Surface* getScreen (void);
-
+void closeScreen(void);
 
 #endif

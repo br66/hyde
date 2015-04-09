@@ -5,12 +5,12 @@ replaced by yaml. */
 
 #include	"include.h"
 
-//THE FOLLOWING CANNOT BE MOVED UNITL YAML IS IMPLEMENTED
+//THE FOLLOWING CANNOT BE MOVED UNITL YAML IS IMPLEMENTED HERE
 
 SDL_Surface *platformSprite1 = NULL;
 SDL_Surface *platformSpriteA1 = NULL;
-SDL_Surface *platformSprite2 = NULL;
-SDL_Surface *platformSpriteA2 = NULL;
+//SDL_Surface *platformSprite2 = NULL;
+//SDL_Surface *platformSpriteA2 = NULL;
 
 SDL_Surface *bombSprite = NULL;
 SDL_Surface *bossSprite = NULL;

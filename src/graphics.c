@@ -1,7 +1,3 @@
-/* Variables needed here are declared here and usually only used
-here if not by a get or set function.  Get and set functions for 
-the screen are here.  New showFrame function for spritesheets is here */
-
 #include "include.h"
 
 static SDL_Surface *screen = NULL;
@@ -76,4 +72,9 @@ bool setUpScreen()
 SDL_Surface* getScreen (void)
 {
 	return screen;
+}
+
+void closeScreen(void)
+{
+	SDL_FreeSurface (screen);
 }
