@@ -1,6 +1,8 @@
 //Nothing changed here
 #include "include.h"
 
+extern SDL_Surface *bombSprite;
+
 void fire_Bomb (entity_t *ent)
 {
 	entity_t *bomb;

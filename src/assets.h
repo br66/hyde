@@ -1,29 +1,27 @@
-
-/* For this commit, global.h and global.c have been removed.
-The objects and variables declared in assets.c and .h are
-being gradually removed and replaced with specific get
-and set functions in their respective headers/c files.
-For example "extern SDL_Surface *camera has been replaced
-with getCamera(). and camera is now static so its value
-cannot be changed outside where it is declared. */
+/**********************************************************************************************//**
+ * @file	src\assets.h
+ *
+ * @brief	Declares the assets class.  This class will be DEPRECIATED once YAML is fully 
+ * 			implemented as the following externs are for level design.
+ **************************************************************************************************/
 
 //THE FOLLOWING CANNOT BE MOVED UNITL YAML IS IMPLEMENTED
 
-/* FUNCTIONS MUST BE TRANSFERRED TO GET FUNCTIONS */
-extern SDL_Surface *bombSprite;
-extern SDL_Surface *bossSprite;
-extern SDL_Surface *plyrSprite;
-extern SDL_Surface *platformSprite1;
-extern SDL_Surface *platformSpriteA1;
+/* EXTERNS REMOVED */
+//extern SDL_Surface *bombSprite;
+//extern SDL_Surface *bossSprite;
+//extern SDL_Surface *plyrSprite;
+//extern SDL_Surface *platformSprite1;
+//extern SDL_Surface *platformSpriteA1;
 /* FUNCTIONS MUST BE TRANSFERRED TO GET FUNCTIONS */
 //extern int frameCount;
 /* FUNCTIONS MUST BE TRANSFERRED TO GET FUNCTIONS */
-extern SDL_Event event;
+//extern SDL_Event event;
 /* FUNCTIONS MUST BE TRANSFERRED TO GET FUNCTIONS */
-extern entity_t *enemy1;
-extern entity_t *enemy2;
-extern entity_t *enemy3;
-/* FUNCTIONS MUST BE TRANSFERRED TO GET FUNCTIONS */
+//extern entity_t *enemy1;
+//extern entity_t *enemy2;
+//extern entity_t *enemy3;
+/* EXTERNS TO BE REMOVED */
 extern entity_t *boss;
 /* FUNCTIONS MUST BE TRANSFERRED TO GET FUNCTIONS */
 extern entity_t *wall;

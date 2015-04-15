@@ -1,5 +1,8 @@
-/* Nothing changed here except
-include guards (#ifndef). */
+/**********************************************************************************************//**
+ * @file	src\weapon.h
+ *
+ * @brief	Declares the weapon class for weapon firing.
+ **************************************************************************************************/
 
 #ifndef _WEAPON_
 #define _WEAPON_

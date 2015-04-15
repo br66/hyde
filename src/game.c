@@ -7,12 +7,26 @@ entity_t *background;
 static Uint32 delta = 0;
 static Uint8 *keystates;
 
+SDL_Event event;
+
 static SDL_Color textColor = { 255, 255, 255 };
 
 static SDL_Rect health;
 static SDL_Rect anger;
 
-extern entity_t* player; //the only legitimate extern as opposed to defunct assets header
+extern entity_t* player;
+
+extern entity_t *enemy1;
+extern entity_t *enemy2;
+extern entity_t *enemy3;
+
+extern int level;
+
+extern SDL_Surface *bossSprite;
+extern SDL_Surface *plyrSprite;
+
+extern SDL_Surface *platformSprite1;
+extern SDL_Surface *platformSpriteA1;
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
@@ -31,6 +45,7 @@ int main(int argc, char *argv[])
 	/* PLAYER */
 	player = Init_Ent();
 	playerProperties(getPlayer());
+	setStateTo(player, ANIM_IDLE);
 	/* ------- */
 
 	/* Enemy 1 */
@@ -40,13 +55,13 @@ int main(int argc, char *argv[])
 	enemy1->x = 600;
 	enemy1->y = 350;
 
-	enemy1->sprite = load_Image("sprite/red.png"); //sprites will later be loaded in sprite.c // declared in sprite.h
+	enemy1->sprite = load_Image("sprite/char/enemy1.png"); //sprites will later be loaded in sprite.c // declared in sprite.h
 
 	enemy1->think = alphaThink;
 	enemy1->nextThink = getCurrentTime() + 5000;
 
-	enemy1->bBox.w = 64;
-	enemy1->bBox.h = 64;
+	enemy1->bBox.w = 16;
+	enemy1->bBox.h = 33;
 	
 	enemy1->show = show_Ent;
 	/* ------- */
@@ -255,6 +270,7 @@ int main(int argc, char *argv[])
 							//boss->thinkflags = 0;
 							//boss->xVel = 0;
 							//boss->yVel = 0;
+							getSetFromFile("sprite\\anim\\jekyll.txt");
 						}
 						break;
 					case SDLK_2:

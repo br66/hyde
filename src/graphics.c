@@ -2,6 +2,19 @@
 
 static SDL_Surface *screen = NULL;
 
+/**********************************************************************************************//**
+ * @fn	SDL_Surface *load_Image (char *filename)
+ *
+ * @brief	Loads an image, optimized to be displayed properly.
+ *
+ * @author	iwh
+ * @date	4/14/2015
+ *
+ * @param [in,out]	filename	If non-null, filename of the file.
+ *
+ * @return	null if it fails, else the image.
+ **************************************************************************************************/
+
 SDL_Surface *load_Image (char *filename) /* Load Image from file function */
 {
 	SDL_Surface* loadedImage = NULL; /* this will be image from parameter */
@@ -12,7 +25,7 @@ SDL_Surface *load_Image (char *filename) /* Load Image from file function */
 
 	if( loadedImage != NULL) /* if that filename is not fradulent */
 	{
-		finalImage = SDL_DisplayFormat( loadedImage ); /* we now make optimized image */
+		finalImage = SDL_DisplayFormat( loadedImage ); /* we now make optimized image */ //displayformatAlpha?
 
 		SDL_FreeSurface (loadedImage); /* get rid of the old version */
 
@@ -42,12 +55,12 @@ void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destinati
 	SDL_BlitSurface( source, clip, destination, &offset);
 }
 
-void showFrame (entity_t* ent, SDL_Surface* surface, float sx, float sy, int frame) // to get entity and its framesperline for its sprite
+void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float sy, int frame) // to get entity and its framesperline for its sprite
 {
 	SDL_Rect source, dest;
 
-	source.x = frame % ent->framesperline * ent->sprite->w;
-	source.y = frame / ent->framesperline * ent->sprite->h;
+	source.x = (frame * 32) % 320;
+	source.y = (frame * 32) / 320;
 	source.w = 32;
 	source.h = 32;
 
@@ -56,7 +69,7 @@ void showFrame (entity_t* ent, SDL_Surface* surface, float sx, float sy, int fra
 	dest.w = 32;
 	dest.h = 32;
 
-	SDL_BlitSurface (ent->sprite, &source, surface, &dest); //1. source, clip, dest, clip
+	SDL_BlitSurface (spritesheet, &source, surface, &dest); //1. source, clip, dest, clip
 }
 
 bool setUpScreen()
@@ -68,13 +81,19 @@ bool setUpScreen()
 	}
 	return true;
 }
-
 SDL_Surface* getScreen (void)
 {
 	return screen;
 }
-
 void closeScreen(void)
 {
 	SDL_FreeSurface (screen);
 }
+
+void animIdle (entity_t *ent)
+{
+	ent->frame = (ent->frame + 1) % 16;
+	ent->animThink = getCurrentTime() + 500;
+}
+// frame = (frame + 1) % 16
+// nextthink = 500 + currentTime;

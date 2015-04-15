@@ -1,10 +1,12 @@
-/* For this commit, simply moved text in comment */
+/**********************************************************************************************//**
+ * @file	src\boolean.h
+ *
+ * @brief	Declares the boolean class.  Visual Studio 2010 C programming does not have
+ * 			booleans defined.  Boolean is defined below.
+ **************************************************************************************************/
 
 #ifndef _BOOL_
 #define _BOOL_
-
-/* Visual Studio 2010 C programming does not have 
-booleans defined.  Boolean is defined below. */
 
 #pragma once
 

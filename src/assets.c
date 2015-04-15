@@ -7,23 +7,23 @@ replaced by yaml. */
 
 //THE FOLLOWING CANNOT BE MOVED UNITL YAML IS IMPLEMENTED HERE
 
-SDL_Surface *platformSprite1 = NULL;
-SDL_Surface *platformSpriteA1 = NULL;
+//SDL_Surface *platformSprite1 = NULL;
+//SDL_Surface *platformSpriteA1 = NULL;
 //SDL_Surface *platformSprite2 = NULL;
 //SDL_Surface *platformSpriteA2 = NULL;
 
-SDL_Surface *bombSprite = NULL;
-SDL_Surface *bossSprite = NULL;
+//SDL_Surface *bombSprite = NULL;
+//SDL_Surface *bossSprite = NULL;
 
-SDL_Surface *plyrSprite = NULL;
+//SDL_Surface *plyrSprite = NULL;
 
 //int frameCount;
 
-SDL_Event event;
+//SDL_Event event;
 
-entity_t *enemy1 = NULL;
-entity_t *enemy2 = NULL;
-entity_t *enemy3 = NULL;
+//entity_t *enemy1 = NULL;
+//entity_t *enemy2 = NULL;
+//entity_t *enemy3 = NULL;
 
 entity_t *lvlTrigger = NULL;
 

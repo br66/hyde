@@ -1,5 +1,9 @@
-/* Nothing changed here except
-include guards (#ifndef). */
+/**********************************************************************************************//**
+ * @file	src\level.h
+ *
+ * @brief	Declares the level class. Due to lack of organization and successful implementation of 
+ * 			YAML, this class will be removed.
+ **************************************************************************************************/
 
 #ifndef _LEVEL_
 #define _LEVEL_
@@ -16,17 +20,6 @@ typedef struct level_s
 void show_LevelOne();
 void show_LevelTwo();
 
-/* lvl/stage 1 specific entities */
-entity_t *platform1;
-entity_t *platform2;
-entity_t *platform3;
-entity_t *platform4;
-/* lvl/stage 2 specific entities */
-entity_t *platformA1;
-entity_t *platformA2;
-entity_t *platformA3;
-entity_t *platformA4;
-
-level_t levels[10];
+//level_t levels[10];
 
 #endif

@@ -1,5 +1,9 @@
-/* Nothing changed here, but
-assets will be removed */
+/**********************************************************************************************//**
+ * @file	src\include.h
+ *
+ * @brief	Declares the include class.  Lessens the amount of includes needed in other files.
+ * 			Assets.h will be depreciated.
+ **************************************************************************************************/
 
 #ifndef _INCLUDE_
 #define _INCLUDE_
@@ -17,5 +21,6 @@ assets will be removed */
 #include "weapon.h"
 #include "level.h"
 #include "assets.h"
+#include "animation.h"
 
 #endif

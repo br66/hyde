@@ -1,7 +1,3 @@
-/* Variables needed here are declared here and usually only used
-here if not by a get or set function.  Spritesheet was being
-edited so for now the player's frame will be a white square. */
-
 /* Functions called in the game loop */
 
 #include "include.h"
@@ -14,6 +10,10 @@ static TTF_Font *font = NULL;
 
 static Uint32 currentTime = 0;
 
+extern int level;
+
+level_t levels[10];
+
 SDL_Surface *bgSprite = NULL;
 SDL_Surface *bgSprite2 = NULL;
 //SDL_Surface *message = NULL;
@@ -23,6 +23,13 @@ Mix_Chunk *scratch = NULL;
 Mix_Chunk *high = NULL;
 Mix_Chunk *med = NULL;
 Mix_Chunk *low = NULL;
+
+SDL_Surface *plyrSprite = NULL;
+SDL_Surface *bombSprite = NULL;
+SDL_Surface *bossSprite = NULL;
+
+SDL_Surface *platformSprite1 = NULL;
+SDL_Surface *platformSpriteA1 = NULL;
 
 bool init()
 {

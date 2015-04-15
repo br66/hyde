@@ -1,3 +1,10 @@
+/**********************************************************************************************//**
+ * @file	src\gfunc.h
+ *
+ * @brief	Declares the gfunc class.  Used to populate with functions and variables that the
+ * 			game class and gameloop rely on and to make the game class easier to read.
+ **************************************************************************************************/
+
 #ifndef _FUNC_
 #define _FUNC_
 
@@ -10,7 +17,7 @@ void CheckLevel();
 void clear();
 char* FormatTimeString(Uint32 offset);
 char* timeString(Uint32 offset);
-int level; // <<<< TAKE THIS OUT, PUT IN LEVEL HEADER...
+//int level; //removed
 
 SDL_Rect getCamera (void);
 SDL_Rect *addrCamera (void);

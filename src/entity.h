@@ -1,10 +1,8 @@
-/* For this commit, include guards have been added for all header files except
-assets.  Everything in assets is being gradually removed.  The MAX_ENTITIES and
-max_ents is defined here as well as entity flags (ENT_SHOW) and macros to set, 
-remove, and check flags.  PlayerAlive() lessens lines of code and call move,
-show, and set camera functions.  PlayerProperties does what was in game.c which
-was setting all of the player's variables.  getPlayer() returns player to lessen
-amount of externs. */
+/**********************************************************************************************//**
+ * @file	src\entity.h
+ *
+ * @brief	Declares the entity class.  Used for all in-game that act and can be acted on.
+ **************************************************************************************************/
 
 #ifndef _ENTITY_
 #define _ENTITY_
@@ -19,6 +17,18 @@ amount of externs. */
 #define SET_FLAG(x, y) (x |= y)
 #define IS_SET(x, y) (x & y)
 
+/**********************************************************************************************//**
+ * @enum	animState
+ *
+ * @brief	Values that represent animation states for entity, might move new animation header.
+ **************************************************************************************************/
+enum animState
+{
+	ANIM_IDLE,
+	ANIM_WLEFT,
+	ANIM_WRIGHT
+};
+
 int max_ents; /* Number of entities that have been made in-game */
 
 /**********************************************************************************************//**
@@ -26,57 +36,48 @@ int max_ents; /* Number of entities that have been made in-game */
  *
  * @brief	Defines an structure representing an entity.
  **************************************************************************************************/
-
 typedef struct entity_s
 {
-	/** @brief	The inuse. */
+	/** @brief	Inuse - for checking if the entity is being used. */
 	int				inuse;
-
-	/**********************************************************************************************//**
-	 * @property	float x,y
-	 *
-	 * @brief	Gets the y coordinate.
-	 *
-	 * @return	The y coordinate.
-	 **************************************************************************************************/
 
 	float			x,y;
 	float			xVel, yVel;
 
-	/** @brief	The box. */
+	/** @brief	Bounding Box - for collision */
 	SDL_Rect		bBox;
+	/** @brief	Will be removed. */
 	SDL_Rect		fill;
-
-	/** @brief	The sprite. */
+	/** @brief	The entity's sprite. */
 	SDL_Surface		*sprite;
+	/** @brief	The amount of frames each line the spritesheet has if the entity's sprite is a spritesheet. */
 	int				framesperline;
-
-	/** @brief	The width. */
+	/** @brief	The entity sprite's current frame. */
+	int				frame;
+	/** @brief	State of the animation. */
+	int				animState;
+	/** @brief	Amount of time before moving to the next frame. */
+	int				animThink;
+	/** @brief	Entity's width. */
 	int				width;
+	/** @brief	Entity's height. */
 	int				height;
-	/** @brief	The projectiles. */
-	int				projectiles;
-
-	/** @brief	true if on ground. */
+	/** @brief	Boolean that is true if the entity is on the ground. */
 	bool			onGround;
-
-	/** @brief	The next time to think. */
+	/** @brief	Amount of time before calling the think function again. */
 	Uint32			nextThink;
-
+	/** @brief	The flags that turn on and off entities' functions. */
 	int				flags;
+	/** @brief	Used incorrectly, might be depreciated. Amount of time before doing a specified statement. */
 	int				thinkflags;
+	/** @brief	Used for state machines; different things happen depending on the number it is set to.  Array of 20 integers gives ability to have multiple things set. */
 	int				thinknums[20];
-
-	/** @brief	The solid. */
-	int				solid;
-
-	/** @brief	The classname. */
+	/** @brief	The classname of the entity. */
 	char			classname[25];
-
+	/** @brief	The entity's current health. */
 	int					currentHealth;
+	/** @brief	The maximum health the entity could have. */
 	int					max_health;
-
-	//int				deadflag;
 
 	/**********************************************************************************************//**
 	 * @struct	entity_s*
@@ -89,7 +90,13 @@ typedef struct entity_s
 
 	struct entity_s	*owner; 
 
-	void			(*resetPosition) (struct entity_s *ent);
+	/**********************************************************************************************//**
+	 * @fn	void (*resetPosition) (struct entity_s *ent);
+	 *
+	 * @brief	Function pointer for reseting position. Depreciated, will be removed.
+	 *
+	 * @param [in,out]	ent	If non-null, the ent.
+	 **************************************************************************************************/
 	void			(*handle_Input)(struct entity_s *ent);
 	void			(*move)(struct entity_s *ent);
 	void			(*show)(struct entity_s *ent);
@@ -104,6 +111,15 @@ typedef struct entity_s
 
 entity_t *Init_Ent (void);
 void Free_Ent(entity_t *self);
+
+/**********************************************************************************************//**
+ * @fn	void EntityAlive ();
+ *
+ * @brief	Entity alive.
+ *
+ * @author	iwh
+ * @date	4/10/2015
+ **************************************************************************************************/
 void EntityAlive ();
 void EntityShow ();
 void CheckCollisions ();
@@ -114,8 +130,8 @@ void PlayerAlive ();
 void init_Position( entity_t *ent );
 void handle_Input( entity_t *ent );
 void move( entity_t *ent );
-void show( entity_t *ent );
-void show_Ent( entity_t *ent );
+void show( entity_t *ent ); // now for showing single frame from spritesheet
+void show_Ent( entity_t *ent ); // placeholder function for merely showing entire sprite
 
 /* technical */
 void set_Camera( entity_t *ent);
@@ -131,5 +147,8 @@ void bossThink (entity_t *self);
 /* for the player */
 void playerProperties(entity_t *player);
 entity_t* getPlayer(void);
+
+/* setting states */
+void setStateTo(entity_t *ent, int animState);
 
 #endif

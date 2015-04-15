@@ -1,21 +1,18 @@
-/* The list of entites [listEntities] is made here.  Anytime that
-the list needs to be used it will probably be done here from now on.  
-If the need becomes too great, a get function will be made for it.
-
-The player entity is made here; if needed in another file, use getPlayer().
-
-InitEnt and FreeEnt have been edited/simplified.  The player's show function
-now uses showFrame since the player's sprite is now a spritesheet.
-
-getPlayer() and PlayerProperties is defined here at the bottom simplifying
-code. */
-
-
 #include "include.h"
 
 static entity_t listEntities [MAX_ENTITIES];
 
 entity_t *player = NULL; /* cannot be static, have to change its address, will implement playerProperties function to fix this */
+
+entity_t *enemy1 = NULL;
+entity_t *enemy2 = NULL;
+entity_t *enemy3 = NULL;
+
+
+int level;
+
+extern SDL_Surface *plyrSprite;
+extern SDL_Event event;
 
 /**********************************************************************************************//**
  * @fn	entity_t *Init_Ent (void)
@@ -62,12 +59,15 @@ void Free_Ent(entity_t *self)
 /**********************************************************************************************//**
  * @fn	void EntityAlive()
  *
- * @brief	Calls all entities' think function in certain circumstances.
+ * @brief	Calls all entities' think function within limitations.  If any entity is being used,
+ * 			is set to use their think function, and they are past due for calling it, call their
+ * 			think function.  Also, specifically for the player, if my velocities are being
+ * 			changed, move the entity accordingly. Lastly, move to the next entity in the array
+ * 			of entities.
  *
  * @author	iwh
- * @date	3/26/2015
+ * @date	4/10/2015
  **************************************************************************************************/
-
 void EntityAlive() 
 {
 	int i = 0;
@@ -80,6 +80,10 @@ void EntityAlive()
 			{
 				listEntities[i].think(&listEntities[i]);
 			}
+			/* if listentiies[i].nextanimthink <= time
+			{
+				call animthink;
+			}*/
 			if (e->xVel != 0)
 			{
 				e->x += e->xVel;
@@ -94,12 +98,13 @@ void EntityAlive()
 /**********************************************************************************************//**
  * @fn	void EntityShow ()
  *
- * @brief	Shows entitys' sprites onscreen.
+ * @brief	Shows entitys' sprites onscreen.  If the entity is in use, and they are set to show
+ * 			themselves and actually have a show function, call their show function.  In every
+ * 			circumstance, we move to the next entity in our memory block of entities.
  *
  * @author	iwh
- * @date	3/26/2015
+ * @date	4/10/2015
  **************************************************************************************************/
-
 void EntityShow ()
 {
 	int i = 0;
@@ -128,7 +133,6 @@ void EntityShow ()
  * @author	iwh
  * @date	3/26/2015
  **************************************************************************************************/
-
 void CheckCollisions()
 {
 	int i = 0;
@@ -165,7 +169,6 @@ void CheckCollisions()
  * @param [in,out]	targ	If non-null, the targ: entity next in memory.
  * @param	max				The maximum amount of entities that can be checked for collision.
  **************************************************************************************************/
-
 void CheckCollision (entity_t *ent, entity_t *targ, int max)
 {
 	int i = 0;
@@ -175,7 +178,7 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	{
 		if (isCollide (targ, ent)) //warning boss is solid in level 1
 		{
-			if IS_SET(targ->flags, ENT_SOLID){
+		if IS_SET(targ->flags, ENT_SOLID){
 			if (strcmp(targ->classname, "trigger") == 0)
 			{	
 				level = 2;
@@ -195,25 +198,31 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	}
 }
 
+/**********************************************************************************************//**
+ * @fn	void PlayerAlive ()
+ *
+ * @brief	Call basic player functions that make the player alive.  Simplifys code.
+ *
+ * @author	iwh
+ * @date	4/10/2015
+ **************************************************************************************************/
 void PlayerAlive ()
 {
 	move(player);
 	set_Camera(player);
 	show(player);
-	//showFrame(getPlayer(), getScreen(), 200, getPlayer()->y - getCamera().y, 0);
 }
 
 /**********************************************************************************************//**
  * @fn	void handle_Input ( entity_t *ent )
  *
- * @brief	Handles the input described by player.
+ * @brief	Handles the input described by player via key events.
  *
  * @author	iwh
- * @date	3/26/2015
+ * @date	4/10/2015
  *
  * @param [in,out]	ent	If non-null, the ent.
  **************************************************************************************************/
-
 void handle_Input ( entity_t *ent )
 {
 	if (ent)
@@ -244,17 +253,23 @@ void handle_Input ( entity_t *ent )
 /**********************************************************************************************//**
  * @fn	void move ( entity_t *ent )
  *
- * @brief	Moves the given entity.
+ * @brief	Moves the given entity (x, y) by adding or minusing the set velocity (xVel, yVel)
+ * 			coordinates.  Also checks velocity for setting their animation state.
  *
  * @author	iwh
  * @date	3/26/2015
  *
  * @param [in,out]	ent	If non-null, the ent.
  **************************************************************************************************/
-
 void move ( entity_t *ent )
 {
 	ent->x += ent->xVel;
+	if (ent->xVel < 0)	
+		setStateTo(player, ANIM_WLEFT);
+	else if (ent->xVel == 0)
+		setStateTo(player, ANIM_IDLE);
+	else
+		setStateTo(player, ANIM_WRIGHT);
 
 	if ( ( ent->x < 0 ) || ( ent->x + ent->width > L_WIDTH ) )
 	{
@@ -265,14 +280,23 @@ void move ( entity_t *ent )
 	
 	if ( ( ent->y < 0 ) || ( ent->y + ent->height > L_HEIGHT ) )
 	{
-		ent->y -= ent->xVel;
+		ent->y -= ent->yVel;
 	}
 }
 
 void show (entity_t *ent)
 {
 	//show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, plyrSprite, getScreen(), NULL);
-	showFrame(getPlayer(), getScreen(), getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y, 0);
+	showFrame(getPlayer()->sprite, getScreen(), getPlayer()->x - getCamera().x, getPlayer()->y, 0);
+	
+	// check states here, if state, animate and draw
+	// if ent->animState == ANIM_IDLE, do this animation on the entity
+	// animate(this entity's sprite, this animation, ent->x, ent->y)
+	if (ent->animState == ANIM_IDLE)
+	{
+		//printf("idle state");
+		//Animate(getPlayer()->sprite, playerIdle, getPlayer()->x, getPlayer()->y);
+	}
 }
 
 void show_Ent (entity_t *ent)
@@ -435,6 +459,8 @@ void bossThink (entity_t *self)
 	self->nextThink = getCurrentTime() + 50;
 }
 
+
+//player
 void playerProperties(entity_t *player)
 {
 	player->x = 0;
@@ -453,6 +479,14 @@ void playerProperties(entity_t *player)
 	player->framesperline = 10;
 
 	SET_FLAG(player->flags, ENT_SOLID);
+}
+
+void setStateTo(entity_t *ent, int animState)
+{
+	if (animState == ent->animState)
+		return;
+	else
+		ent->animState = animState;
 }
 
 entity_t* getPlayer()
