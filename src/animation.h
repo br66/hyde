@@ -3,6 +3,9 @@
 
 #define MAX_ANIMATIONS 20 //maximum animations in set
 
+//#define URL_FORMAT "https://api.github.com/repos/%s/%s/commits"
+//#define URL_SIZE 256
+
 // an individual animation
 typedef struct animation_s
 {
@@ -32,6 +35,8 @@ void Animate (SDL_Surface* spritesheet, animation_t animation, float x, float y)
 
 void getSetFromFile (char *filename); //will find anim set file and see if loaded already, add it to array of loaded ones
 void displayFromFile (char *filename); // will check if displayed already, if not, then display
+
+static int newLine(const char *text);
 
 
 #endif

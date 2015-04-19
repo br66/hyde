@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 							//boss->thinkflags = 0;
 							//boss->xVel = 0;
 							//boss->yVel = 0;
-							getSetFromFile("sprite\\anim\\jekyll.txt");
+							getSetFromFile("sprite\\anim\\animsettest.json");
 						}
 						break;
 					case SDLK_2:
