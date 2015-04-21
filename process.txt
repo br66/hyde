@@ -1,0 +1,16 @@
+take information from file
+load it into variables from code
+
+is every single frame a new variables
+can i simply load the entire array into a variable?
+animation_t->frames = json_object_get(data, "frames"); ???
+is it possible to print entire array at once instead of for loop?
+
+return an entire animation set
+instantiate new animSet_s
+set variables in animSet to designated data
+return finished animation set
+
+for simplifying getting animSets
+if player is in the parameter,
+specifically go to <file>

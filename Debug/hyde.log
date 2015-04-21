@@ -1,4 +1,4 @@
-﻿Build started 4/18/2015 10:15:28 PM.
+﻿Build started 4/20/2015 9:27:32 PM.
      1>Project "C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\hyde.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -8,7 +8,7 @@
      1>src\animation.c(15): warning C4018: '<=' : signed/unsigned mismatch
      1>src\animation.c(33): warning C4047: 'function' : 'int' differs in levels of indirection from 'char [2]'
      1>src\animation.c(33): warning C4024: 'strchr' : different types for formal and actual parameter 2
-     1>src\animation.c(73): warning C4018: '<' : signed/unsigned mismatch
+     1>src\animation.c(71): warning C4018: '<' : signed/unsigned mismatch
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.exe" /INCREMENTAL:NO /NOLOGO sdl.lib sdlmain.lib sdl_image.lib sdl_ttf.lib sdl_net.lib sdl_mixer.lib yaml.lib jansson.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\hyde.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.lib" /MACHINE:X86 Debug\animation.obj
          Debug\assets.obj
@@ -30,4 +30,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.41
+Time Elapsed 00:00:00.77

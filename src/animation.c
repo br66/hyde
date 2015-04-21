@@ -40,29 +40,26 @@ static int newLine(const char *text)
 
 void getSetFromFile (char *filename)
 {
-	//char *text;
+	/* for the forloops */
+	int i, j, k;
 
-	//text = request(filename); //github_commits.c
-	
-	//FILE* file = fopen(filename, "r");
-
-	int i = 0;
-
+	/* looks through file */
 	json_t *parser;
+	/* for errors */
 	json_error_t error;
 
-	//if(!file)
-		//fprintf(stderr, "um file doesn't exist?!");
-
+	/* parser looks through given file */
 	parser = json_load_file(filename, 0, &error); //got file in parser
-
+	
+	/* if couldn't get the file */
 	if (!parser)
 	{
 		fprintf(stderr, "wtf no parser, file may not exist or be good fmt");
 		return;
 	}
 	
-	
+	/* reading file... */
+	/* if the file doesn't start with an array */
 	if (!json_is_array(parser))
 	{
 		fprintf(stderr, "didn't find an array\n");
@@ -70,10 +67,12 @@ void getSetFromFile (char *filename)
 		return;
 	}
 
+	/* looks through array of objects */
 	for (i = 0; i < json_array_size(parser); i++)
 	{
-		json_t *data, *animation, *init;
+		json_t *data, *animation, *init, *frames, *f_array, *intervals, *i_array;
 
+		/* gets objects in array, ex. if i = 1, we are getting first object in array */
 		data = json_array_get(parser, i);
 		if(!json_is_object(data))
 		{
@@ -82,6 +81,7 @@ void getSetFromFile (char *filename)
 			return;
 		}
 
+		/* the first key should be "animation" for animation type */
 		animation = json_object_get(data, "animation");
 		if(!json_is_string(animation))
 		{
@@ -90,6 +90,7 @@ void getSetFromFile (char *filename)
 			return;
 		}
 
+		/* the second key is for the initial frame for the animation */
 		init = json_object_get(data, "init");
 		if(!json_is_integer(init))
 		{
@@ -98,34 +99,59 @@ void getSetFromFile (char *filename)
 			return;
 		}
 
-		printf("animation: %s \n", json_string_value(animation));
-		printf("initial frame %d \n", json_integer_value(init));
-		json_decref(parser);
-		return;
-	}
+		printf("animation: %s \n \n", json_string_value(animation));	//json_string_value(animation) is the type of animation ex. idle
+		printf("initial frame %d \n \n", json_integer_value(init));	//json_integer_value(init) is the frame the animation starts on
 
-	/*
-	//come along do
-	for (i = 0; i < json_array_size(parser); i++)
-	{
-		json_t *maxFrames;
-		int frameValues;
-		//const char *getMaxFrames;
-
-		maxFrames = json_array_get(parser, i);
-		frameValues = json_number_value(maxFrames);
-		if(!json_is_integer(maxFrames))
+		/* now we print the frames that make up animation */
+		printf("frames");
+		/* frames' value should be an array of integers */
+		frames = json_object_get(data, "frames");
+		if (!json_is_array(frames))
 		{
-			fprintf(stderr, "not rendered as json material");
+			fprintf(stderr, "next line should've been an array of frames");
 			json_decref(parser);
 			return;
 		}
 
-		printf(" %d \n", frameValues);
+		/* use for loop to get every single integer/frame */
+		for (j=0; j < 10; j++) //goes through "frames" which is an array of frames that make up the animation, there will always be 10 frames
+		{
+			f_array = json_array_get(frames, j);
+			if (!json_is_integer(f_array))
+			{
+				fprintf(stderr, "can't find array or next number...");
+				json_decref(parser);
+				return;
+			}
+			printf("	frame %d\n", json_integer_value(f_array)); //prints the current frame found in the file 
+		}
+
+		/* lastly, we get the intervals which are how may milliseconds each frame is shown */
+		printf("\nintrvls");
+		intervals = json_object_get(data, "intervals");
+		if(!json_is_array(intervals))
+		{
+			fprintf(stderr, "can't get value of intervals");
+			json_decref(parser);
+			return;
+		}
+
+		/* use for loop to get every single integer/frame */
+		for (k=0; k < 10; k++) //goes through "frames" which is an array of frames that make up the animation, there will always be 10 frames
+		{
+			i_array = json_array_get(intervals, k);
+			if (!json_is_integer(i_array))
+			{
+				fprintf(stderr, "can't find array or next number...");
+				json_decref(parser);
+				return;
+			}
+			printf("	%d milliseconds\n", json_integer_value(i_array)); //prints the current frame found in the file 
+		}
 	}
-	*/
 
 	json_decref(parser);
+	return; //return an entire animation set?
 }
 //disregard, inactive code
 // do i want to make this void or do i want to return the data
