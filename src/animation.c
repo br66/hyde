@@ -1,55 +1,53 @@
-#include "include.h"
-#include <stdio.h>
-
-#include <yaml.h>
-
 #include <jansson.h>
-//#include <string.h>
-//#include <stdlib.h>
-#include <stdio.h>
+#include "include.h"
+//#include <chipmunk.h>
 
-static animSet_t loadedAnimSets [20]; //array of animation sets
+//Object type declarations
+static animSet_t loadedAnimSets [MAX_SETS];
 
-void Animate (SDL_Surface* spritesheet, animation_t animation, float x, float y)
+
+// Initializing a new set of animations
+animSet_t *InitAnimSet (void)
 {
-	if(animation.nextFrameTime <= getCurrentTime()) //if time for next frame has passed
+	int current;
+
+	for (current = 0; current < MAX_SETS; current++)
 	{
-		animation.frame++; //move frame by 1
-		if (animation.frame >= animation.maxFrames)//if reached end of frames, go back 
-			animation.frame = 0;
-		//frame = (frame + 1) % animation.maxFrames;
-		animation.nextFrameTime = animation.intervals[animation.frame] + getCurrentTime(); //find the next frame time
-		showFrame(spritesheet, getScreen(), x, y, animation.frames[animation.frame]);
+		if (loadedAnimSets[current].inuse == 0)
+		{
+			loadedAnimSets[current].inuse = 1;
+			return &loadedAnimSets[current];
+		}
 	}
-}
-// .anim format
-// array of 20 arrays each element is s set of anims for that kind from .anim
-// inuse
 
-
-//JSON
-static int newLine(const char *text)
-{
-	const char *newline = strchr(text, "\n");
+	// loadedAnimSets holds array of animationSets
+	// each animation sets is an array of animation for one entity
 	
-	if (!newline)
-		return strlen(text);
-	else
-		return (int)(newline - text);
+	//need to go to every animation sets
+
+	return NULL;
 }
 
-void getSetFromFile (char *filename)
+
+
+// File parsing - getting animation/animation sets from file --------------------------------------
+
+void getAnimSet (char *filename) //using data from file to populate object of type animation set, will return an animation set
 {
 	/* for the forloops */
 	int i, j, k;
+
+	/* creating blank animSet, UNHANDLED EXCEPTION AT LINE 132, ADDRESS IS ILLEGAL, PUT IN ARRAY */
+	/* problem fixed, was missing asterisk, must make it null otherwise uninitialized, needs to be in loadedAnimSets */
+	animSet_t *test = InitAnimSet();
 
 	/* looks through file */
 	json_t *parser;
 	/* for errors */
 	json_error_t error;
 
-	/* parser looks through given file */
-	parser = json_load_file(filename, 0, &error); //got file in parser
+	/* parser is attached to given file */
+	parser = json_load_file(filename, 0, &error);
 	
 	/* if couldn't get the file */
 	if (!parser)
@@ -71,6 +69,8 @@ void getSetFromFile (char *filename)
 	for (i = 0; i < json_array_size(parser); i++)
 	{
 		json_t *data, *animation, *init, *frames, *f_array, *intervals, *i_array;
+
+		/* f_array and i_array are incorrectly named, they're actually the current value found in their respective arrays */
 
 		/* gets objects in array, ex. if i = 1, we are getting first object in array */
 		data = json_array_get(parser, i);
@@ -99,8 +99,9 @@ void getSetFromFile (char *filename)
 			return;
 		}
 
-		printf("animation: %s \n \n", json_string_value(animation));	//json_string_value(animation) is the type of animation ex. idle
-		printf("initial frame %d \n \n", json_integer_value(init));	//json_integer_value(init) is the frame the animation starts on
+		/* prints animation type and initial frame */
+		printf("animation: %s \n \n", json_string_value(animation));	//json_string_value(animation) is the type of animation ex. idle, THIS RETURNS CHAR
+		printf("initial frame %d \n \n", json_integer_value(init));	//json_integer_value(init) is the frame the animation starts on, WARNING THIS RETURN LOOOOONG
 
 		/* now we print the frames that make up animation */
 		printf("frames");
@@ -108,7 +109,7 @@ void getSetFromFile (char *filename)
 		frames = json_object_get(data, "frames");
 		if (!json_is_array(frames))
 		{
-			fprintf(stderr, "next line should've been an array of frames");
+			fprintf(stderr, "next line should've been an array of frames/integers");
 			json_decref(parser);
 			return;
 		}
@@ -123,7 +124,10 @@ void getSetFromFile (char *filename)
 				json_decref(parser);
 				return;
 			}
-			printf("	frame %d\n", json_integer_value(f_array)); //prints the current frame found in the file 
+			printf("	frame %d\n", json_integer_value(f_array));		//prints the current frame found in the file 
+			test->set[0].frames[j] = (int)json_integer_value(f_array); //game currently breaks here, set[0] is at 0x00, must be initialized
+																		//test->set[0] = InitSingleAnimation() put where?
+																		// create new animation_t put in set?
 		}
 
 		/* lastly, we get the intervals which are how may milliseconds each frame is shown */
@@ -153,74 +157,21 @@ void getSetFromFile (char *filename)
 	json_decref(parser);
 	return; //return an entire animation set?
 }
-//disregard, inactive code
-// do i want to make this void or do i want to return the data
-void oldgetSetFromFile (char *filename)
+
+
+
+// Animating -----------------------------------------------------------------------------------
+
+/* Animation motor */
+void Animate (SDL_Surface* spritesheet, animation_t animation, float x, float y)
 {
-	// new yaml parser
-	// parse thru .yml file
-	// translate, ready for loading
-	
-	/*FILE *file = fopen(filename, "r"); //open a readable file 
-
-	yaml_parser_t parser; // open parser
-	yaml_token_t token; // how to parse it
-
-	char* currentToken;
-	char** value;
-
-	// parser start the dance
-	if (!yaml_parser_initialize(&parser))
-		fputs("NOPE\n", stderr);
-	if (!file)
-		fputs("Parser works, not the file\n", stderr);
-
-	// File Set, gonna parse through that file
-	yaml_parser_set_input_file(&parser, file);
-
-	//Come Along, Do
-	do
+	if(animation.nextFrameTime <= getCurrentTime()) //if time for next frame has passed
 	{
-		yaml_parser_scan (&parser, &token);  //read teh file
-		switch (token.type)
-		{
-			// start the dance
-			case YAML_STREAM_START_TOKEN: puts("Rolling staaaaaaaaarrt"); break;
-			case YAML_STREAM_END_TOKEN: puts("GAME OVER YEEEEAAAAAAAHHH"); break;
-			// main token types
-			case YAML_KEY_TOKEN: printf("(key)  "); break;
-			case YAML_VALUE_TOKEN: printf("(value) "); break;
-			// block delimiters
-			case YAML_BLOCK_SEQUENCE_START_TOKEN: puts("trigger to start a new block"); break;
-			case YAML_BLOCK_ENTRY_TOKEN: puts("start block");
-			case YAML_BLOCK_END_TOKEN: puts("end block");
-			// actual data 
-			case YAML_BLOCK_MAPPING_START_TOKEN: puts("[block mapping]"); break;
-			case YAML_SCALAR_TOKEN: 
-				currentToken = (char*)token.data.scalar.value; // current token
-				
-				if(!strcmp(currentToken, "maxFrames"))
-				{
-					//value = key's value
-				}
-				
-				printf("billybob %s \n", token.data.scalar.value); break;
-			
-				
-			
-			// default stuff
-			default:
-				printf("got token of type %d\n", token.type);
-		}
-
-		if (token.type != YAML_STREAM_END_TOKEN)
-			yaml_token_delete(&token);
+		animation.frame++; //move frame by 1
+		if (animation.frame >= animation.maxFrames)//if reached end of frames, go back 
+			animation.frame = 0;
+		//frame = (frame + 1) % animation.maxFrames;
+		animation.nextFrameTime = animation.intervals[animation.frame] + getCurrentTime(); //find the next frame time
+		showFrame(spritesheet, getScreen(), x, y, animation.frames[animation.frame]);
 	}
-	while (token.type != YAML_STREAM_END_TOKEN);
-
-	//setting fire to the rain
-	yaml_token_delete (&token);
-
-	yaml_parser_delete(&parser); // close
-	fclose(file); */
 }

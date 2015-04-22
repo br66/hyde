@@ -8,11 +8,27 @@ entity_t *enemy1 = NULL;
 entity_t *enemy2 = NULL;
 entity_t *enemy3 = NULL;
 
+entity_t *boss = NULL;
+entity_t *wall = NULL;
+
+entity_t *platform1 = NULL;
+entity_t *platform2 = NULL;
+entity_t *platform3 = NULL;
+entity_t *platform4 = NULL;
+
+entity_t *platformA1 = NULL;
+entity_t *platformA2 = NULL;
+entity_t *platformA3 = NULL;
+entity_t *platformA4 = NULL;
+
+entity_t *lvlTrigger = NULL;
+
 
 int level;
 
 extern SDL_Surface *plyrSprite;
 extern SDL_Event event;
+
 
 /**********************************************************************************************//**
  * @fn	entity_t *Init_Ent (void)
@@ -21,7 +37,6 @@ extern SDL_Event event;
  *
  * @return	null if it fails, else an entity_t*.
  **************************************************************************************************/
-
 //Function has been simplified
 entity_t *Init_Ent (void)
 {

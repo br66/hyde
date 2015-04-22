@@ -1,16 +1,39 @@
-﻿Build started 4/20/2015 9:27:32 PM.
+﻿Build started 4/21/2015 10:12:21 PM.
      1>Project "C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\hyde.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\animation.c
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\animation.c src\assets.c src\entity.c src\game.c src\gfunc.c src\graphics.c src\level.c src\weapon.c
          animation.c
-     1>src\animation.c(15): warning C4018: '<=' : signed/unsigned mismatch
-     1>src\animation.c(33): warning C4047: 'function' : 'int' differs in levels of indirection from 'char [2]'
-     1>src\animation.c(33): warning C4024: 'strchr' : different types for formal and actual parameter 2
-     1>src\animation.c(71): warning C4018: '<' : signed/unsigned mismatch
+     1>src\animation.c(69): warning C4018: '<' : signed/unsigned mismatch
+     1>src\animation.c(168): warning C4018: '<=' : signed/unsigned mismatch
+         assets.c
+         entity.c
+         game.c
+     1>src\game.c(77): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\game.c(95): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\game.c(113): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\game.c(229): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\game.c(358): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+         gfunc.c
+     1>src\gfunc.c(163): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\gfunc.c(173): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\gfunc.c(258): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+         graphics.c
+         level.c
+         weapon.c
+     1>src\weapon.c(32): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.exe" /INCREMENTAL:NO /NOLOGO sdl.lib sdlmain.lib sdl_image.lib sdl_ttf.lib sdl_net.lib sdl_mixer.lib yaml.lib jansson.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\hyde.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.lib" /MACHINE:X86 Debug\animation.obj
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.exe" /INCREMENTAL:NO /NOLOGO sdl.lib sdlmain.lib sdl_image.lib sdl_ttf.lib sdl_net.lib sdl_mixer.lib yaml.lib jansson.lib chipmunk.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\hyde.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.pdb" /SUBSYSTEM:CONSOLE /OPT:NOREF /OPT:NOICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.lib" /MACHINE:X86 Debug\animation.obj
          Debug\assets.obj
          Debug\entity.obj
          Debug\game.obj
@@ -30,4 +53,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.77
+Time Elapsed 00:00:01.06

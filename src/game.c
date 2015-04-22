@@ -20,6 +20,22 @@ extern entity_t *enemy1;
 extern entity_t *enemy2;
 extern entity_t *enemy3;
 
+extern entity_t *boss;
+
+extern entity_t *platform1;
+extern entity_t *platform2;
+extern entity_t *platform3;
+extern entity_t *platform4;
+
+extern entity_t *platformA1;
+extern entity_t *platformA2;
+extern entity_t *platformA3;
+extern entity_t *platformA4;
+
+extern entity_t *wall;
+
+extern entity_t *lvlTrigger;
+
 extern int level;
 
 extern SDL_Surface *bossSprite;
@@ -27,6 +43,8 @@ extern SDL_Surface *plyrSprite;
 
 extern SDL_Surface *platformSprite1;
 extern SDL_Surface *platformSpriteA1;
+
+animSet_t *playerAnim = NULL;
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
@@ -45,6 +63,12 @@ int main(int argc, char *argv[])
 	/* PLAYER */
 	player = Init_Ent();
 	playerProperties(getPlayer());
+
+	/* Animations */
+	//getAnimSet("sprite\\anim\\animsettest.json");
+	getAnimSet("sprite\\anim\\animsettest.json");
+
+
 	setStateTo(player, ANIM_IDLE);
 	/* ------- */
 
@@ -270,7 +294,7 @@ int main(int argc, char *argv[])
 							//boss->thinkflags = 0;
 							//boss->xVel = 0;
 							//boss->yVel = 0;
-							getSetFromFile("sprite\\anim\\animsettest.json");
+							//playerAnimSet = animationFile("animation\\player.json") or animationFile(player);
 						}
 						break;
 					case SDLK_2:

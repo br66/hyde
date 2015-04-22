@@ -16,7 +16,6 @@ level_t levels[10];
 
 SDL_Surface *bgSprite = NULL;
 SDL_Surface *bgSprite2 = NULL;
-//SDL_Surface *message = NULL;
 
 Mix_Music *music= NULL;
 Mix_Chunk *scratch = NULL;
@@ -30,6 +29,14 @@ SDL_Surface *bossSprite = NULL;
 
 SDL_Surface *platformSprite1 = NULL;
 SDL_Surface *platformSpriteA1 = NULL;
+
+level_t *stage1 = NULL;
+level_t *stage2 = NULL;
+
+extern entity_t *platform1;
+extern entity_t *platform2;
+extern entity_t *platformA1;
+extern entity_t *platformA2;
 
 bool init()
 {

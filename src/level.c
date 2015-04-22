@@ -7,15 +7,26 @@ entity_t *platform2;
 entity_t *platform3;
 entity_t *platform4;
 
+extern entity_t *lvlTrigger;
+
 extern entity_t *enemy1;
 extern entity_t *enemy2;
 extern entity_t *enemy3;
+
+extern entity_t *boss;
 
 /* lvl/stage 2 specific entities */
 entity_t *platformA1;
 entity_t *platformA2;
 entity_t *platformA3;
 entity_t *platformA4;
+
+
+//-----
+extern level_t *stage1;
+extern level_t *stage2;
+
+extern entity_t *wall;
 
 /* level functions */
 void show_LevelOne()

@@ -25,11 +25,11 @@ replaced by yaml. */
 //entity_t *enemy2 = NULL;
 //entity_t *enemy3 = NULL;
 
-entity_t *lvlTrigger = NULL;
+//entity_t *lvlTrigger = NULL;
 
-entity_t *boss = NULL;
+//entity_t *boss = NULL;
 
-entity_t *wall = NULL;
+//entity_t *wall = NULL;
 
-level_t *stage1 = NULL;
-level_t *stage2 = NULL;
+//level_t *stage1 = NULL;
+//level_t *stage2 = NULL;

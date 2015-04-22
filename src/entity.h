@@ -108,18 +108,10 @@ typedef struct entity_s
 
 } entity_t;
 
-
+//UNORGAINIZED
 entity_t *Init_Ent (void);
 void Free_Ent(entity_t *self);
 
-/**********************************************************************************************//**
- * @fn	void EntityAlive ();
- *
- * @brief	Entity alive.
- *
- * @author	iwh
- * @date	4/10/2015
- **************************************************************************************************/
 void EntityAlive ();
 void EntityShow ();
 void CheckCollisions ();
@@ -132,6 +124,7 @@ void handle_Input( entity_t *ent );
 void move( entity_t *ent );
 void show( entity_t *ent ); // now for showing single frame from spritesheet
 void show_Ent( entity_t *ent ); // placeholder function for merely showing entire sprite
+//--------------------------------------
 
 /* technical */
 void set_Camera( entity_t *ent);

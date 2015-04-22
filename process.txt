@@ -6,11 +6,16 @@ can i simply load the entire array into a variable?
 animation_t->frames = json_object_get(data, "frames"); ???
 is it possible to print entire array at once instead of for loop?
 
+how do i change its name based on its unique data?
 return an entire animation set
 instantiate new animSet_s
 set variables in animSet to designated data
+data may have to be translated/converted
 return finished animation set
 
 for simplifying getting animSets
 if player is in the parameter,
 specifically go to <file>
+if parameter equals player get player.json, bomber gets bomber.json, kid get kid.json
+
+decrement the max number for individual animation sets based on whether the spots in the array are being used
