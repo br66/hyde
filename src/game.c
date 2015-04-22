@@ -44,7 +44,7 @@ extern SDL_Surface *plyrSprite;
 extern SDL_Surface *platformSprite1;
 extern SDL_Surface *platformSpriteA1;
 
-animSet_t *playerAnim = NULL;
+extern animSet_t *playerAnim;
 
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
@@ -60,15 +60,10 @@ int main(int argc, char *argv[])
 	if ( load_Files() == false)
 		return 1;
 
-	/* PLAYER */
+	/* PLAYER: initializaion, editing properties, getting the anim set, setting player state */
 	player = Init_Ent();
 	playerProperties(getPlayer());
-
-	/* Animations */
-	//getAnimSet("sprite\\anim\\animsettest.json");
-	getAnimSet("sprite\\anim\\animsettest.json");
-
-
+	playerAnim = getAnimSet("sprite\\anim\\animsettest.json");
 	setStateTo(player, ANIM_IDLE);
 	/* ------- */
 

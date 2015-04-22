@@ -1,10 +1,10 @@
 #include <jansson.h>
 #include "include.h"
-//#include <chipmunk.h>
 
 //Object type declarations
 static animSet_t loadedAnimSets [MAX_SETS];
 
+animSet_t *playerAnim = NULL;
 
 // Initializing a new set of animations
 animSet_t *InitAnimSet (void)
@@ -32,13 +32,13 @@ animSet_t *InitAnimSet (void)
 
 // File parsing - getting animation/animation sets from file --------------------------------------
 
-void getAnimSet (char *filename) //using data from file to populate object of type animation set, will return an animation set
+animSet_t *getAnimSet (char *filename) //using data from file to populate object of type animation set, will return an animation set
 {
 	/* for the forloops */
 	int i, j, k;
 
-	/* creating blank animSet, UNHANDLED EXCEPTION AT LINE 132, ADDRESS IS ILLEGAL, PUT IN ARRAY */
-	/* problem fixed, was missing asterisk, must make it null otherwise uninitialized, needs to be in loadedAnimSets */
+	/* creating blank animSet*/
+	/* problem fixed, was missing asterisk */
 	animSet_t *test = InitAnimSet();
 
 	/* looks through file */
@@ -53,7 +53,7 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 	if (!parser)
 	{
 		fprintf(stderr, "wtf no parser, file may not exist or be good fmt");
-		return;
+		return NULL;
 	}
 	
 	/* reading file... */
@@ -62,7 +62,7 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 	{
 		fprintf(stderr, "didn't find an array\n");
 		json_decref(parser);
-		return;
+		return NULL;
 	}
 
 	/* looks through array of objects */
@@ -78,7 +78,7 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 		{
 			fprintf(stderr, "next line should've been an object");
 			json_decref(parser);
-			return;
+			return NULL;
 		}
 
 		/* the first key should be "animation" for animation type */
@@ -87,7 +87,7 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 		{
 			fprintf(stderr, "next line should've been an animation value");
 			json_decref(parser);
-			return;
+			return NULL;
 		}
 
 		/* the second key is for the initial frame for the animation */
@@ -96,12 +96,13 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 		{
 			fprintf(stderr, "next line should've been an inital frame value");
 			json_decref(parser);
-			return;
+			return NULL;
 		}
 
 		/* prints animation type and initial frame */
 		printf("animation: %s \n \n", json_string_value(animation));	//json_string_value(animation) is the type of animation ex. idle, THIS RETURNS CHAR
 		printf("initial frame %d \n \n", json_integer_value(init));	//json_integer_value(init) is the frame the animation starts on, WARNING THIS RETURN LOOOOONG
+		test->set[0].curFrame = 0;
 
 		/* now we print the frames that make up animation */
 		printf("frames");
@@ -111,7 +112,7 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 		{
 			fprintf(stderr, "next line should've been an array of frames/integers");
 			json_decref(parser);
-			return;
+			return NULL;
 		}
 
 		/* use for loop to get every single integer/frame */
@@ -122,12 +123,10 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 			{
 				fprintf(stderr, "can't find array or next number...");
 				json_decref(parser);
-				return;
+				return NULL;
 			}
 			printf("	frame %d\n", json_integer_value(f_array));		//prints the current frame found in the file 
-			test->set[0].frames[j] = (int)json_integer_value(f_array); //game currently breaks here, set[0] is at 0x00, must be initialized
-																		//test->set[0] = InitSingleAnimation() put where?
-																		// create new animation_t put in set?
+			test->set[0].frames[j] = (short)json_integer_value(f_array);
 		}
 
 		/* lastly, we get the intervals which are how may milliseconds each frame is shown */
@@ -137,7 +136,7 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 		{
 			fprintf(stderr, "can't get value of intervals");
 			json_decref(parser);
-			return;
+			return NULL;
 		}
 
 		/* use for loop to get every single integer/frame */
@@ -148,14 +147,17 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 			{
 				fprintf(stderr, "can't find array or next number...");
 				json_decref(parser);
-				return;
+				return NULL;
 			}
-			printf("	%d milliseconds\n", json_integer_value(i_array)); //prints the current frame found in the file 
+			printf("	%d milliseconds\n", json_integer_value(i_array)); //prints the current frame found in the file
+			test->set[0].intervals[k] = (int)json_integer_value(i_array);
+			test->set[0].maxFrames = 10; //for testing
+			test->set[0].nextFrameTime = 100; //for testing
 		}
 	}
 
 	json_decref(parser);
-	return; //return an entire animation set?
+	return test; //address
 }
 
 
@@ -163,15 +165,28 @@ void getAnimSet (char *filename) //using data from file to populate object of ty
 // Animating -----------------------------------------------------------------------------------
 
 /* Animation motor */
-void Animate (SDL_Surface* spritesheet, animation_t animation, float x, float y)
+void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y) //missing asterisk in front 
 {
-	if(animation.nextFrameTime <= getCurrentTime()) //if time for next frame has passed
+	if(animation->nextFrameTime <= getCurrentTime()) //if time for next frame has passed
 	{
-		animation.frame++; //move frame by 1
-		if (animation.frame >= animation.maxFrames)//if reached end of frames, go back 
-			animation.frame = 0;
+		animation->curFrame = animation->frames[animation->frameCounter];
+		if (animation->curFrame >= animation->maxFrames) //if reached end of frames, go back 
+		{
+			animation->curFrame = 0;
+		}
+
+		if (animation->frameCounter >= animation->maxFrames)
+		{
+			animation->frameCounter = 0;
+		}
+
 		//frame = (frame + 1) % animation.maxFrames;
-		animation.nextFrameTime = animation.intervals[animation.frame] + getCurrentTime(); //find the next frame time
-		showFrame(spritesheet, getScreen(), x, y, animation.frames[animation.frame]);
+	
+		animation->nextFrameTime = animation->intervals[animation->curFrame] + getCurrentTime(); //find the next frame time
+		showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
+		//printf("%d \n", animation->curFrame);
+		animation->frameCounter++;
 	}
+
+	showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
 }

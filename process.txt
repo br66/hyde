@@ -19,3 +19,5 @@ specifically go to <file>
 if parameter equals player get player.json, bomber gets bomber.json, kid get kid.json
 
 decrement the max number for individual animation sets based on whether the spots in the array are being used
+
+getAnimSet(data that I want, object I want to give the data to)

@@ -27,6 +27,7 @@ entity_t *lvlTrigger = NULL;
 int level;
 
 extern SDL_Surface *plyrSprite;
+extern animSet_t *playerAnim;
 extern SDL_Event event;
 
 
@@ -301,16 +302,13 @@ void move ( entity_t *ent )
 
 void show (entity_t *ent)
 {
-	//show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, plyrSprite, getScreen(), NULL);
-	showFrame(getPlayer()->sprite, getScreen(), getPlayer()->x - getCamera().x, getPlayer()->y, 0);
-	
-	// check states here, if state, animate and draw
-	// if ent->animState == ANIM_IDLE, do this animation on the entity
-	// animate(this entity's sprite, this animation, ent->x, ent->y)
-	if (ent->animState == ANIM_IDLE)
+	/* check states here, if state, animate function draws next frame */
+	if (ent->animState == ANIM_IDLE && playerAnim != NULL)
 	{
 		//printf("idle state");
-		//Animate(getPlayer()->sprite, playerIdle, getPlayer()->x, getPlayer()->y);
+		Animate(getPlayer()->sprite, &playerAnim->set[0], getPlayer()->x, getPlayer()->y);
+		/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
+		at some random spot in memory */
 	}
 }
 
