@@ -2,6 +2,8 @@
 
 static SDL_Surface *screen = NULL;
 
+static SDL_Surface listSprites[MAX_SPRITES];
+
 /**********************************************************************************************//**
  * @fn	SDL_Surface *load_Image (char *filename)
  *
@@ -90,10 +92,12 @@ void closeScreen(void)
 	SDL_FreeSurface (screen);
 }
 
+/* depreciated
 void animIdle (entity_t *ent)
 {
 	ent->frame = (ent->frame + 1) % 16;
 	ent->animThink = getCurrentTime() + 500;
 }
+*/
 // frame = (frame + 1) % 16
 // nextthink = 500 + currentTime;

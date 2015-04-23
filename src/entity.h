@@ -7,7 +7,7 @@
 #ifndef _ENTITY_
 #define _ENTITY_
 
-#define MAX_ENTITIES  255 /* Abs. max. # of entities that can be made in-game before I set fire to the rain. */
+#define MAX_ENTITIES  50 /* Abs. max. # of entities that can be made in-game before I set fire to the rain. */
 
 #define ENT_SHOW	0x00000001
 #define ENT_THINK	0x00000002
@@ -70,14 +70,18 @@ typedef struct entity_s
 	int				flags;
 	/** @brief	Used incorrectly, might be depreciated. Amount of time before doing a specified statement. */
 	int				thinkflags;
-	/** @brief	Used for state machines; different things happen depending on the number it is set to.  Array of 20 integers gives ability to have multiple things set. */
+	/** @brief	Used for state machines; different things happen depending on the number it is set to.  Array of 20 integers gives ability to have multiple things set, might lower to 10. */
 	int				thinknums[20];
 	/** @brief	The classname of the entity. */
 	char			classname[25];
 	/** @brief	The entity's current health. */
-	int					currentHealth;
+	int				currentHealth;
 	/** @brief	The maximum health the entity could have. */
-	int					max_health;
+	int				max_health;
+	/** @brief	The entity's current anger rate. */
+	int				currentAnger;
+	/** @brief	The maximum amt. of anger the entity could have. */
+	int				maxAnger;
 
 	/**********************************************************************************************//**
 	 * @struct	entity_s*
@@ -90,13 +94,6 @@ typedef struct entity_s
 
 	struct entity_s	*owner; 
 
-	/**********************************************************************************************//**
-	 * @fn	void (*resetPosition) (struct entity_s *ent);
-	 *
-	 * @brief	Function pointer for reseting position. Depreciated, will be removed.
-	 *
-	 * @param [in,out]	ent	If non-null, the ent.
-	 **************************************************************************************************/
 	void			(*handle_Input)(struct entity_s *ent);
 	void			(*move)(struct entity_s *ent);
 	void			(*show)(struct entity_s *ent);
@@ -114,16 +111,16 @@ void Free_Ent(entity_t *self);
 
 void EntityAlive ();
 void EntityShow ();
+
 void CheckCollisions ();
 void CheckCollision (entity_t *ent, entity_t *targ, int max);
 
 void PlayerAlive ();
 
-void init_Position( entity_t *ent );
 void handle_Input( entity_t *ent );
 void move( entity_t *ent );
-void show( entity_t *ent ); // now for showing single frame from spritesheet
-void show_Ent( entity_t *ent ); // placeholder function for merely showing entire sprite
+void show( entity_t *ent ); // show frames from a spritesheet
+void show_Ent( entity_t *ent ); // placeholder function for merely showing single sprite
 //--------------------------------------
 
 /* technical */

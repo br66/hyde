@@ -2,7 +2,7 @@
 
 static entity_t listEntities [MAX_ENTITIES];
 
-entity_t *player = NULL; /* cannot be static, have to change its address, will implement playerProperties function to fix this */
+entity_t *player = NULL;
 
 entity_t *enemy1 = NULL;
 entity_t *enemy2 = NULL;
@@ -194,22 +194,24 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	{
 		if (isCollide (targ, ent)) //warning boss is solid in level 1
 		{
-		if IS_SET(targ->flags, ENT_SOLID){
-			if (strcmp(targ->classname, "trigger") == 0)
-			{	
-				level = 2;
-
-				player->x = 0;
-				player->y = 340;
-			}
-			if (strcmp(targ->classname, "enemy") == 0) // if IS_SET targ ENT SOLID
-				player->currentHealth -= 1; //health.w -= 1; 
-			else
+			if IS_SET(targ->flags, ENT_SOLID)
 			{
-				ent->x -= ent->xVel;
-				ent->y -= ent->yVel;
-			}}
+				//no longer need trigger
+
+				if (strcmp(targ->classname, "enemy") == 0)
+				{
+					//damage function????
+					player->currentHealth -= 1;
+					player->currentAnger += 9;
+				}
+				else
+				{
+					ent->x -= ent->xVel;
+					ent->y -= ent->yVel;
+				}
+			}
 		}
+
 		targ++;
 	}
 }
@@ -488,6 +490,9 @@ void playerProperties(entity_t *player)
 
 	player->currentHealth = 100;
 	player->max_health = 100;
+
+	player->currentAnger = 1;
+	player->maxAnger = 100;
 
 	player->framesperline = 10;
 

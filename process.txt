@@ -21,3 +21,14 @@ if parameter equals player get player.json, bomber gets bomber.json, kid get kid
 decrement the max number for individual animation sets based on whether the spots in the array are being used
 
 getAnimSet(data that I want, object I want to give the data to)
+
+
+
+
+
+HUD is next, 0 health is detected;
+make a sprite list for creating needed and removing old sprites
+
+get rid of all name inconsistencies
+need to check for memory leaks
+need to free playerAnim

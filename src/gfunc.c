@@ -12,6 +12,20 @@ static Uint32 currentTime = 0;
 
 extern int level;
 
+extern SDL_Event event;
+
+extern SDL_Rect health; //to replace with getCurHealth();
+extern SDL_Rect anger; //to replace with getCurAnger();
+
+extern entity_t *enemy1;
+extern entity_t *enemy2;
+extern entity_t *enemy3;
+
+extern bool done;
+extern bool running;
+
+extern Uint32 start;
+
 level_t levels[10];
 
 SDL_Surface *bgSprite = NULL;
@@ -76,6 +90,7 @@ bool init()
 bool load_Files()
 {
 	/* lvl 1 sprites */
+	//put into list first [listSprites]
 	bgSprite = load_Image("sprite/sky1.png");
 	if (bgSprite == NULL)
 	{
@@ -357,4 +372,127 @@ void closeSeconds(void)
 	{
 		SDL_FreeSurface (seconds);
 	}
+}
+
+void UpdateHealth()
+{
+	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I
+
+	if (getPlayer()->currentHealth == 0)
+	{
+		//sprite that says game over
+		printf("game over");
+	}
+}
+
+void UpdateAnger()
+{
+	anger.w = (getPlayer()->currentAnger * 100) / getPlayer()->maxAnger; //how do I get rid of division? can I
+
+	if (getPlayer()->currentAnger >= 100)
+	{
+		printf("level switch to #2");
+
+		level = 2;
+
+		getPlayer()->currentAnger = 99;
+		getPlayer()->x = 0;
+		getPlayer()->y = 340;
+	}
+}
+
+void Events()
+{
+	while (SDL_PollEvent (&event))
+		{
+			handle_Input(getPlayer());
+
+			if ( event.type == SDL_KEYDOWN )
+			{
+				switch ( event.key.keysym.sym )
+				{
+					case SDLK_1:
+						if (level != 1)
+						{
+							level = 1;
+
+							//enemy 1 initial position
+							enemy1->x = 600;
+							enemy1->y = 350;
+							enemy1->thinkflags = 0;
+							enemy1->xVel = 0;
+
+							//enemy 2 initial position
+							enemy2->x = 770;
+							enemy2->y = 350;
+							enemy2->thinkflags = 0;
+							enemy2->xVel = 0;
+
+							//enemy 3 initial position
+							enemy3->x = 900;
+							enemy3->y = 350;
+							enemy3->thinkflags = 0;
+							enemy3->xVel = 0;
+							enemy3->yVel = 0;
+
+							//boss 3 initial position
+							//boss->x = 1000;
+							//boss->y = 300;
+							//boss->thinkflags = 0;
+							//boss->xVel = 0;
+							//boss->yVel = 0;
+							//playerAnimSet = animationFile("animation\\player.json") or animationFile(player);
+						}
+						break;
+					case SDLK_2:
+						if (level != 2)
+						{
+							level = 2;
+
+							//enemy 1 initial position, just in case
+							enemy1->x = 600;
+							enemy1->y = 350;
+							enemy1->thinkflags = 0;
+							enemy1->xVel = 0;
+
+							//enemy 2 initial position, just in case
+							enemy2->x = 770;
+							enemy2->y = 350;
+							enemy2->thinkflags = 0;
+							enemy2->xVel = 0;
+
+							//enemy 3 initial position, just in case
+							enemy3->x = 900;
+							enemy3->y = 350;
+							enemy3->thinkflags = 0;
+							enemy3->xVel = 0;
+							enemy3->yVel = 0;
+
+							//boss 3 initial position
+							//boss->x = 1000;
+							//boss->y = 300;
+							//boss->thinkflags = 0;
+							//boss->xVel = 0;
+							//boss->yVel = 0;
+						}
+						break;
+					case SDLK_s:
+						if (running == true)
+						{
+							running = false;
+							start = 0;
+						}
+						else
+						{
+							running = true;
+							start = SDL_GetTicks();
+						}
+					}
+				}
+
+			if(event.type == SDL_QUIT)
+			{
+				done = true;
+			}
+		}
 }

@@ -9,7 +9,6 @@
 #define _GRAPHICS_
 
 #include <SDL.h>
-//#include "entity.h" //SHOWFRAME EDITED TO REMOVE THIS LINE
 
 #define	SCREEN_WIDTH	640 
 #define	SCREEN_HEIGHT	480
@@ -19,6 +18,7 @@
 #define L_WIDTH			1920
 #define	L_HEIGHT		1200
 
+#define MAX_SPRITES  50
 
 /* Load Image from file function:  Takes an image by filename and optimizes it for the screen */
 SDL_Surface *load_Image (char *filename);

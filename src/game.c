@@ -11,8 +11,8 @@ SDL_Event event;
 
 static SDL_Color textColor = { 255, 255, 255 };
 
-static SDL_Rect health;
-static SDL_Rect anger;
+SDL_Rect health;
+SDL_Rect anger;
 
 extern entity_t* player;
 
@@ -46,14 +46,14 @@ extern SDL_Surface *platformSpriteA1;
 
 extern animSet_t *playerAnim;
 
+Uint32 start = 0;
+
+bool done = false;
+bool running = true;
+
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
 {	
-	Uint32 start = 0;
-
-	bool done = false;
-	bool running = true;
-	
 	if ( init() == false)
 		return 1;
 	
@@ -231,122 +231,35 @@ int main(int argc, char *argv[])
 	health.x = 10;
 	health.y = 10;
 	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I?
-	health.h = 35;
+	health.h = 20;
 
 	anger.x = 115;
 	anger.y = 10;
-	anger.w = 100;
-	anger.h = 35;
+	anger.w = (getPlayer()->currentAnger * 100) / getPlayer()->maxAnger;
+	anger.h = 20;
 	/* --- */
 
 	start = SDL_GetTicks();
 
-	level = 1;
+	level = 1; //initial level is 1
 
 	/* GAME ------------------------------------------------------------------------- */
+	// AiO function called Hyde(); ????
 	do
-	{
+	{	
 		CheckLevel();
 		EntityAlive();
 		EntityShow();
 		CheckCollisions();
-
-		while (SDL_PollEvent (&event))
-		{
-			handle_Input(getPlayer());
-
-			if ( event.type == SDL_KEYDOWN )
-			{
-				switch ( event.key.keysym.sym )
-				{
-					case SDLK_1:
-						if (level != 1)
-						{
-							level = 1;
-
-							//enemy 1 initial position
-							enemy1->x = 600;
-							enemy1->y = 350;
-							enemy1->thinkflags = 0;
-							enemy1->xVel = 0;
-
-							//enemy 2 initial position
-							enemy2->x = 770;
-							enemy2->y = 350;
-							enemy2->thinkflags = 0;
-							enemy2->xVel = 0;
-
-							//enemy 3 initial position
-							enemy3->x = 900;
-							enemy3->y = 350;
-							enemy3->thinkflags = 0;
-							enemy3->xVel = 0;
-							enemy3->yVel = 0;
-
-							//boss 3 initial position
-							//boss->x = 1000;
-							//boss->y = 300;
-							//boss->thinkflags = 0;
-							//boss->xVel = 0;
-							//boss->yVel = 0;
-							//playerAnimSet = animationFile("animation\\player.json") or animationFile(player);
-						}
-						break;
-					case SDLK_2:
-						if (level != 2)
-						{
-							level = 2;
-
-							//enemy 1 initial position, just in case
-							enemy1->x = 600;
-							enemy1->y = 350;
-							enemy1->thinkflags = 0;
-							enemy1->xVel = 0;
-
-							//enemy 2 initial position, just in case
-							enemy2->x = 770;
-							enemy2->y = 350;
-							enemy2->thinkflags = 0;
-							enemy2->xVel = 0;
-
-							//enemy 3 initial position, just in case
-							enemy3->x = 900;
-							enemy3->y = 350;
-							enemy3->thinkflags = 0;
-							enemy3->xVel = 0;
-							enemy3->yVel = 0;
-
-							//boss 3 initial position
-							//boss->x = 1000;
-							//boss->y = 300;
-							//boss->thinkflags = 0;
-							//boss->xVel = 0;
-							//boss->yVel = 0;
-						}
-						break;
-					case SDLK_s:
-						if (running == true)
-						{
-							running = false;
-							start = 0;
-						}
-						else
-						{
-							running = true;
-							start = SDL_GetTicks();
-						}
-					}
-				}
-
-			if(event.type == SDL_QUIT)
-			{
-				done = true;
-			}
-		}
-
+		UpdateHealth();
+		UpdateAnger();
+		Events();
 		PlayerAlive();
-		health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health;
 
+		SDL_FillRect ( getScreen(), &health, SDL_MapRGB ( getScreen()->format, 0, 0xFF, 0 ) );
+		SDL_FillRect ( getScreen(), &anger, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
+
+		//Function Time()
 		if (running == true)
 			{
 				char msg[20];
@@ -357,14 +270,10 @@ int main(int argc, char *argv[])
 
 		show_Ent(wall); //temp
 
-		SDL_FillRect ( getScreen(), &health, SDL_MapRGB ( getScreen()->format, 0, 0xFF, 0 ) );
-		SDL_FillRect ( getScreen(), &anger, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
-
 		if (IS_SET(lvlTrigger->flags, ENT_SHOW))
 		{
 			SDL_FillRect ( getScreen(), &lvlTrigger->fill, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
 		}
-		
 
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );

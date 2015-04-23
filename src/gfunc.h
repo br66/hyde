@@ -17,7 +17,6 @@ void CheckLevel();
 void clear();
 char* FormatTimeString(Uint32 offset);
 char* timeString(Uint32 offset);
-//int level; //removed
 
 SDL_Rect getCamera (void);
 SDL_Rect *addrCamera (void);
@@ -30,5 +29,10 @@ void setCurrentTime(void);
 SDL_Surface *getSeconds(void);
 void setUpSeconds(char* msg, SDL_Color textColor);
 void closeSeconds(void);
+
+void UpdateHealth();
+void UpdateAnger();
+
+void Events(void);
 
 #endif
