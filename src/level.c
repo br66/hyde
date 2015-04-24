@@ -32,7 +32,6 @@ extern entity_t *wall;
 void show_LevelOne()
 {
 	show_Surface (0, 0, stage1->backgrounds[0], getScreen(), addrCamera());
-	//show_Surface (0 - (float)camera.x, 410 - (float)camera.y, stage1->lvlEntities[0]->sprite, screen, NULL);
 		
 	//other level 1 assets
 	if (enemy1)

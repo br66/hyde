@@ -1,7 +1,7 @@
 #include <jansson.h>
 #include "include.h"
 
-//Object type declarations
+// declarations
 static animSet_t loadedAnimSets [MAX_SETS];
 
 animSet_t *playerAnim = NULL;
@@ -164,7 +164,7 @@ animSet_t *getAnimSet (char *filename) //using data from file to populate object
 
 // Animating -----------------------------------------------------------------------------------
 
-/* Animation motor */
+/* Animation motor */ //#sprite
 void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y) //missing asterisk in front 
 {
 	if(animation->nextFrameTime <= getCurrentTime()) //if time for next frame has passed
@@ -184,6 +184,7 @@ void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y
 	
 		animation->nextFrameTime = animation->intervals[animation->curFrame] + getCurrentTime(); //find the next frame time
 		showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
+		//#sprite?
 		//printf("%d \n", animation->curFrame);
 		animation->frameCounter++;
 	}

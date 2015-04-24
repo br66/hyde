@@ -28,6 +28,7 @@ extern Uint32 start;
 
 level_t levels[10];
 
+//#sprite
 SDL_Surface *bgSprite = NULL;
 SDL_Surface *bgSprite2 = NULL;
 
@@ -37,6 +38,7 @@ Mix_Chunk *high = NULL;
 Mix_Chunk *med = NULL;
 Mix_Chunk *low = NULL;
 
+//#sprite
 SDL_Surface *plyrSprite = NULL;
 SDL_Surface *bombSprite = NULL;
 SDL_Surface *bossSprite = NULL;
@@ -91,6 +93,7 @@ bool load_Files()
 {
 	/* lvl 1 sprites */
 	//put into list first [listSprites]
+	//#sprite
 	bgSprite = load_Image("sprite/sky1.png");
 	if (bgSprite == NULL)
 	{
@@ -173,6 +176,7 @@ bool load_Files()
 /* Check level function - show corresponding level */
 void CheckLevel ()
 {
+	//#sprite
 	stage1 = &levels[0];
 
 	sprintf(stage1->level, "stage 1");
@@ -300,9 +304,8 @@ void set_Camera (entity_t *ent)
 /* for program exiting, cleaning and freeing up memory */
 void clear()
 {
-	/* Freeing up memory by getting rid of these surfaces (images) */
-	//SDL_FreeSurface (message);
-	
+	/* loading and freeing  */
+	//#sprite
 	SDL_FreeSurface (bgSprite);
 	SDL_FreeSurface (platformSprite1);
 	SDL_FreeSurface (platformSpriteA1);
@@ -311,7 +314,7 @@ void clear()
 	SDL_FreeSurface (plyrSprite);
 
 	closeSeconds();
-	closeScreen();
+	closeScreen(); //#sprite
 
 	/* Closing the fonts and text engine */
 	TTF_CloseFont (font);
@@ -380,7 +383,7 @@ void UpdateHealth()
 
 	if (getPlayer()->currentHealth == 0)
 	{
-		//sprite that says game over
+		//sprite_t that says game over
 		printf("game over");
 	}
 }

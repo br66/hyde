@@ -1,13 +1,13 @@
 #include "include.h"
 
-static SDL_Surface *screen = NULL;
+static SDL_Surface *screen = NULL; //#sprite
 
-static SDL_Surface listSprites[MAX_SPRITES];
+static SDL_Surface listSprites[MAX_SPRITES]; //#sprite
 
 /**********************************************************************************************//**
  * @fn	SDL_Surface *load_Image (char *filename)
  *
- * @brief	Loads an image, optimized to be displayed properly.
+ * @brief	Loads an image, this is from the tutorials, those dirty inefficient tutorials.
  *
  * @author	iwh
  * @date	4/14/2015
@@ -16,7 +16,7 @@ static SDL_Surface listSprites[MAX_SPRITES];
  *
  * @return	null if it fails, else the image.
  **************************************************************************************************/
-
+//#sprite
 SDL_Surface *load_Image (char *filename) /* Load Image from file function */
 {
 	SDL_Surface* loadedImage = NULL; /* this will be image from parameter */
@@ -43,6 +43,54 @@ SDL_Surface *load_Image (char *filename) /* Load Image from file function */
 	return finalImage; /* send out finalized image */
 }
 
+//#sprite
+/* this is heavily based off of dj's code */
+sprite_t* load (char *filename, int width, int height)
+{
+	/* will replace with searching thru list of loaded sprites */
+	/* 
+		for (i = 0; i < numSprites, i++)
+		{
+			if (strncmp(filename, listSprites[i].filename, 20) == 0)
+			{
+				listSprites[i].used++;
+				return &listSprites[i];
+			}
+		}
+	*/
+
+	/* do we have room? */
+	/*
+		if(numSprites + 1 >= MAX_SPRITES)
+		{
+			//too many sprites too many sprites too many sprites
+		}
+	*/
+
+	/* you made it this far kid, now time for the real stuff */
+	/*
+		numSprites++;
+		for (i=0; i <= numSprites; i++)
+			if(!spritelist[i].used)break; //if i find one that isn't used break 
+		
+		//temporary pointer for getting an address = img_load(filename);
+
+		spritelist[i].image = this image
+		// setting [i]'s image
+
+		strncpy(spritelist[i].filename, filename, 20)
+		// setting [i]'s filename
+
+		[i].framesperline = 16
+		[i].w = width;
+		[i].h = height;
+		[i].used++;
+		return the address;
+	}
+	*/
+}
+
+//#sprite
 /* Displaying Image function */
 void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
@@ -57,6 +105,7 @@ void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destinati
 	SDL_BlitSurface( source, clip, destination, &offset);
 }
 
+//#sprite
 void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float sy, int frame) // to get entity and its framesperline for its sprite
 {
 	SDL_Rect source, dest;
@@ -71,7 +120,7 @@ void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float 
 	dest.w = 32;
 	dest.h = 32;
 
-	SDL_BlitSurface (spritesheet, &source, surface, &dest); //1. source, clip, dest, clip
+	SDL_BlitSurface (spritesheet, &source, surface, &dest); //#sprite
 }
 
 bool setUpScreen()
@@ -83,21 +132,17 @@ bool setUpScreen()
 	}
 	return true;
 }
+
+//#sprite
 SDL_Surface* getScreen (void)
 {
 	return screen;
 }
+//#sprite
 void closeScreen(void)
 {
 	SDL_FreeSurface (screen);
 }
 
-/* depreciated
-void animIdle (entity_t *ent)
-{
-	ent->frame = (ent->frame + 1) % 16;
-	ent->animThink = getCurrentTime() + 500;
-}
-*/
 // frame = (frame + 1) % 16
 // nextthink = 500 + currentTime;

@@ -23,12 +23,11 @@ entity_t *platformA4 = NULL;
 
 entity_t *lvlTrigger = NULL;
 
-
-int level;
+int level; //getLevel(); setLevel();
 
 extern SDL_Surface *plyrSprite;
 extern animSet_t *playerAnim;
-extern SDL_Event event;
+extern SDL_Event event; //getEvents();
 
 
 /**********************************************************************************************//**
@@ -36,9 +35,8 @@ extern SDL_Event event;
  *
  * @brief	Initialises the ent.
  *
- * @return	null if it fails, else an entity_t*.
+ * @return	null if it fails, else an address for the pointer
  **************************************************************************************************/
-//Function has been simplified
 entity_t *Init_Ent (void)
 {
 	int i;
@@ -65,7 +63,6 @@ entity_t *Init_Ent (void)
  *
  * @param [in,out]	self	If non-null, the self.
  **************************************************************************************************/
-
 void Free_Ent(entity_t *self)
 {
 	self->inuse = 0;
@@ -98,7 +95,7 @@ void EntityAlive()
 			}
 			/* if listentiies[i].nextanimthink <= time
 			{
-				call animthink;
+				call animthink; //replaced by show???
 			}*/
 			if (e->xVel != 0)
 			{
@@ -227,7 +224,7 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 void PlayerAlive ()
 {
 	move(player);
-	set_Camera(player);
+	set_Camera(player); //remove underscore
 	show(player);
 }
 
@@ -241,7 +238,7 @@ void PlayerAlive ()
  *
  * @param [in,out]	ent	If non-null, the ent.
  **************************************************************************************************/
-void handle_Input ( entity_t *ent )
+void handle_Input ( entity_t *ent ) //fix
 {
 	if (ent)
 	{
@@ -279,7 +276,7 @@ void handle_Input ( entity_t *ent )
  *
  * @param [in,out]	ent	If non-null, the ent.
  **************************************************************************************************/
-void move ( entity_t *ent )
+void move ( entity_t *ent ) //better name?
 {
 	ent->x += ent->xVel;
 	if (ent->xVel < 0)	
@@ -302,24 +299,24 @@ void move ( entity_t *ent )
 	}
 }
 
-void show (entity_t *ent)
+void show (entity_t *ent) //name change?
 {
 	/* check states here, if state, animate function draws next frame */
 	if (ent->animState == ANIM_IDLE && playerAnim != NULL)
 	{
-		//printf("idle state");
-		Animate(getPlayer()->sprite, &playerAnim->set[0], getPlayer()->x, getPlayer()->y);
+		//getPlayer() should be changed to ent soon //#sprite
+		Animate(getPlayer()->sprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
 		/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
 		at some random spot in memory */
 	}
 }
 
-void show_Ent (entity_t *ent)
+void show_Ent (entity_t *ent) //name change?
 {
-	show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, ent->sprite, getScreen(), NULL);
+	show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, ent->sprite, getScreen(), NULL); //#sprite
 }
 
-/* Check Collision */
+/* Check Collision - name change? */
 bool isCollide (entity_t *otherent, entity_t *ent) /* example: A = Enemy, B = Player */
 {
 	SDL_Rect A;
@@ -482,7 +479,7 @@ void playerProperties(entity_t *player)
 	player->y = 340;
 	player->width = 32;
 	player->height = 32;
-
+	//#sprite
 	player->sprite = plyrSprite;
 
 	player->bBox.w = 32;
@@ -494,7 +491,9 @@ void playerProperties(entity_t *player)
 	player->currentAnger = 1;
 	player->maxAnger = 100;
 
-	player->framesperline = 10;
+	//player->sprite = getAnimSet("json");
+
+	//player->framesperline = 10;
 
 	SET_FLAG(player->flags, ENT_SOLID);
 }

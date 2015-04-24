@@ -60,9 +60,10 @@ int main(int argc, char *argv[])
 	if ( load_Files() == false)
 		return 1;
 
-	/* PLAYER: initializaion, editing properties, getting the anim set, setting player state */
+	/* [player] : initializaion, editing properties, getting the anim set, setting player state */
 	player = Init_Ent();
 	playerProperties(getPlayer());
+	/* to put these in player properties, name change to initPlayer ? */ //#sprite
 	playerAnim = getAnimSet("sprite\\anim\\animsettest.json");
 	setStateTo(player, ANIM_IDLE);
 	/* ------- */
@@ -74,7 +75,7 @@ int main(int argc, char *argv[])
 	enemy1->x = 600;
 	enemy1->y = 350;
 
-	enemy1->sprite = load_Image("sprite/char/enemy1.png"); //sprites will later be loaded in sprite.c // declared in sprite.h
+	enemy1->sprite = load_Image("sprite/char/enemy1.png"); //#sprite
 
 	enemy1->think = alphaThink;
 	enemy1->nextThink = getCurrentTime() + 5000;
@@ -155,6 +156,7 @@ int main(int argc, char *argv[])
 
 	/* ------- */
 
+	//#sprite
 	/* Define platforms */
 	platform1 = Init_Ent();
 	platform1->sprite = platformSprite1;

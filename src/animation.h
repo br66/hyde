@@ -35,7 +35,7 @@ typedef struct animSet_s
 
 
 // Functions
-
+//#sprite
 void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y); //actual action of animation
 animSet_t *getAnimSet (char *filename); //will find anim set file and see if loaded already, add it to array of loaded ones
 animSet_t *InitAnimSet(void);

@@ -32,3 +32,33 @@ make a sprite list for creating needed and removing old sprites
 get rid of all name inconsistencies
 need to check for memory leaks
 need to free playerAnim
+
+
+creating system for sprite
+
+void InitSpriteList()
+{
+  int x;
+  NumSprites = 0;
+  memset(SpriteList,0,sizeof(Sprite) * MaxSprites);
+  for(x = 0;x < MaxSprites;x++)SpriteList[x].image = NULL;
+}
+
+sprite and animation set must be combined into sprite_t
+sprite hold the image and its animations, saves the filename,
+the frames per line
+
+check if sprite is already loaded, strcmp the filename from the parameter
+with the filename from all the loaded sprites in the array
+
+commit before significant changes to sprite implementation
+
+before i commit
+multiple animations make an animation set
+animation sets are owned by sprite
+sprites are owned by entity
+
+after commit
+when game starts, player->animSet = getAnimSet
+showFrame should not have to be changed
+change all references to sdl_surface * sprite to sprite_t * sprite

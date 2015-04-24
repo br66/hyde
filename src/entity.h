@@ -50,14 +50,10 @@ typedef struct entity_s
 	SDL_Rect		fill;
 	/** @brief	The entity's sprite. */
 	SDL_Surface		*sprite;
-	/** @brief	The amount of frames each line the spritesheet has if the entity's sprite is a spritesheet. */
-	int				framesperline;
-	/** @brief	The entity sprite's current frame. */
-	int				frame;
-	/** @brief	State of the animation. */
+	/** @brief	Sprite - The entity's new sprite. */
+	//sprite_t		*sprite;
+	/** @brief	State of the animation. Might change to just state */
 	int				animState;
-	/** @brief	Amount of time before moving to the next frame. */
-	int				animThink;
 	/** @brief	Entity's width. */
 	int				width;
 	/** @brief	Entity's height. */
