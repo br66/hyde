@@ -18,7 +18,8 @@
 
 #define MAX_SPRITES  50
 
-#include <SDL.h> //do i need this?
+#include <SDL.h>
+
 #include "animation.h"
 
 /* Sprite Structure */
@@ -26,7 +27,7 @@ typedef struct sprite_s
 {
 	SDL_Surface		*graphic; //can be a single sprite or a spritesheet
 	animSet_t		*animationSet; //each sprite has a set of animaitions associated with it
-	char			filename[30];
+	char			filename[40];
 	int				width, height;
 	int				framesperline;
 	int				used; //reference count
@@ -38,9 +39,12 @@ SDL_Surface *load_Image (char *filename);
 /* sprite load - will load a sprite from filename, keep that filename for future functions, find, load, and optimize sprite/spritesheet for usage */
 sprite_t* load (char *filename, int width, int height);
 
-/* Displaying image function: Shows image on a given surface; makes image visible */
+/* OLD - Displaying image function: Shows image on a given surface; makes image visible */
 void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);
 void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float sy, int frame);
+
+/* NEW - graphical display */
+void surface (sprite_t * source, SDL_Surface * destination, float x, float y, SDL_Rect * clip);
 
 /* SDL_Surface *screen */
 bool setUpScreen ();
@@ -51,4 +55,5 @@ void closeScreen ();
 void initSpriteList ();
 void closeSpriteList ();
 sprite_t* loadSprite (char *filename, int width, int height);
+
 #endif

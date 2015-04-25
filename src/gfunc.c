@@ -38,8 +38,11 @@ Mix_Chunk *high = NULL;
 Mix_Chunk *med = NULL;
 Mix_Chunk *low = NULL;
 
+/* new sprite_t - naming convention _spr_t */
+//sprite_t * player_spr_t;
+
 //#sprite
-SDL_Surface *plyrSprite = NULL;
+//SDL_Surface *plyrSprite = NULL;
 SDL_Surface *bombSprite = NULL;
 SDL_Surface *bossSprite = NULL;
 
@@ -116,14 +119,6 @@ bool load_Files()
 
 	platformSpriteA1 = load_Image("sprite/lvl/platform2.png");
 	if (platformSpriteA1 == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	/* player sprite */
-	plyrSprite = load_Image("sprite/char/jekyll_sheet.png");
-	if (plyrSprite == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
@@ -311,7 +306,7 @@ void clear()
 	SDL_FreeSurface (platformSpriteA1);
 	SDL_FreeSurface (bombSprite);
 	SDL_FreeSurface (bossSprite);
-	SDL_FreeSurface (plyrSprite);
+	// SDL_FreeSurface (plyrSprite);
 
 	closeSeconds();
 	closeScreen(); //#sprite
@@ -444,7 +439,6 @@ void Events()
 							//boss->thinkflags = 0;
 							//boss->xVel = 0;
 							//boss->yVel = 0;
-							//playerAnimSet = animationFile("animation\\player.json") or animationFile(player);
 						}
 						break;
 					case SDLK_2:

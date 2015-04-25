@@ -17,7 +17,7 @@ void fire_Bomb (entity_t *ent)
 
 	//bomb->bBox.w = 20;
 	//bomb->bBox.h = 20;
-	bomb->sprite = bombSprite; //#sprite
+	bomb->oldSprite = bombSprite; //#sprite
 	bomb->show = show_Ent;
 }
 
@@ -39,7 +39,7 @@ void fire_Projectile (entity_t *shooter)
 	//projectile->bBox.h = 64;
 	//projectile->bBox.w = 64;
 
-	projectile->sprite = bombSprite; //#sprite
+	projectile->oldSprite = bombSprite; //#sprite
 	projectile->show = show_Ent;
 
 	projectile->think = projThink;

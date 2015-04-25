@@ -4,8 +4,6 @@
 // declarations
 static animSet_t loadedAnimSets [MAX_SETS];
 
-animSet_t *playerAnim = NULL;
-
 // Initializing a new set of animations
 animSet_t *InitAnimSet (void)
 {
@@ -165,7 +163,7 @@ animSet_t *getAnimSet (char *filename) //using data from file to populate object
 // Animating -----------------------------------------------------------------------------------
 
 /* Animation motor */ //#sprite
-void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y) //missing asterisk in front 
+/*void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y) //missing asterisk in front 
 {
 	if(animation->nextFrameTime <= getCurrentTime()) //if time for next frame has passed
 	{
@@ -190,4 +188,33 @@ void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y
 	}
 
 	showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
-}
+}*/
+
+/*void Animate (sprite_t * spritesheet, animation_t *animation, float x, float y) //missing asterisk in front 
+{
+	if(animation->nextFrameTime <= getCurrentTime()) //if time for next frame has passed
+	{
+		animation->curFrame = animation->frames[animation->frameCounter];
+		if (animation->curFrame >= animation->maxFrames) //if reached end of frames, go back 
+		{
+			animation->curFrame = 0;
+		}
+
+		if (animation->frameCounter >= animation->maxFrames)
+		{
+			animation->frameCounter = 0;
+		}
+
+		//frame = (frame + 1) % animation.maxFrames;
+	
+		animation->nextFrameTime = animation->intervals[animation->curFrame] + getCurrentTime(); //find the next frame time
+		//showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
+		
+		//#sprite?
+		//printf("%d \n", animation->curFrame);
+
+		animation->frameCounter++;
+	}
+
+	//showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
+}*/

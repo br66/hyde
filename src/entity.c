@@ -25,8 +25,8 @@ entity_t *lvlTrigger = NULL;
 
 int level; //getLevel(); setLevel();
 
-extern SDL_Surface *plyrSprite;
-extern animSet_t *playerAnim;
+//extern SDL_Surface *plyrSprite;
+//extern animSet_t *playerAnim;
 extern SDL_Event event; //getEvents();
 
 
@@ -302,18 +302,22 @@ void move ( entity_t *ent ) //better name?
 void show (entity_t *ent) //name change?
 {
 	/* check states here, if state, animate function draws next frame */
-	if (ent->animState == ANIM_IDLE && playerAnim != NULL)
+	//if (ent->animState == ANIM_IDLE && playerAnim != NULL)
 	{
 		//getPlayer() should be changed to ent soon //#sprite
-		Animate(getPlayer()->sprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
+		//Animate(getPlayer()->oldSprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
+		//Animate(getPlayer()->sprite, &getPlayer()->sprite->animationSet->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
 		/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
 		at some random spot in memory */
+
+		surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
 	}
+
 }
 
 void show_Ent (entity_t *ent) //name change?
 {
-	show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, ent->sprite, getScreen(), NULL); //#sprite
+	show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, ent->oldSprite, getScreen(), NULL); //#sprite
 }
 
 /* Check Collision - name change? */
@@ -477,10 +481,12 @@ void playerProperties(entity_t *player)
 {
 	player->x = 0;
 	player->y = 340;
+
 	player->width = 32;
 	player->height = 32;
+	
 	//#sprite
-	player->sprite = plyrSprite;
+	player->sprite = load("sprite/char/jekyll_sheet.png", 32, 32);
 
 	player->bBox.w = 32;
 	player->bBox.h = 32;
@@ -491,7 +497,7 @@ void playerProperties(entity_t *player)
 	player->currentAnger = 1;
 	player->maxAnger = 100;
 
-	//player->sprite = getAnimSet("json");
+	player->sprite->animationSet = getAnimSet("sprite\\anim\\animsettest.json");
 
 	//player->framesperline = 10;
 

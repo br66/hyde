@@ -29,7 +29,7 @@ enum animState
 	ANIM_WRIGHT
 };
 
-int max_ents; /* Number of entities that have been made in-game */
+int max_ents; /* Number of entities that have been made in-game */ //getMaxEnts(); move out of header file
 
 /**********************************************************************************************//**
  * @typedef	struct entity_s
@@ -49,9 +49,9 @@ typedef struct entity_s
 	/** @brief	Will be removed. */
 	SDL_Rect		fill;
 	/** @brief	The entity's sprite. */
-	SDL_Surface		*sprite;
+	SDL_Surface		*oldSprite;
 	/** @brief	Sprite - The entity's new sprite. */
-	//sprite_t		*sprite;
+	sprite_t		*sprite;
 	/** @brief	State of the animation. Might change to just state */
 	int				animState;
 	/** @brief	Entity's width. */
@@ -117,6 +117,7 @@ void handle_Input( entity_t *ent );
 void move( entity_t *ent );
 void show( entity_t *ent ); // show frames from a spritesheet
 void show_Ent( entity_t *ent ); // placeholder function for merely showing single sprite
+
 //--------------------------------------
 
 /* technical */

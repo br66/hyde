@@ -2,7 +2,9 @@
 
 static SDL_Surface *screen = NULL; //#sprite
 
-static SDL_Surface listSprites[MAX_SPRITES]; //#sprite
+static sprite_t listSprites[MAX_SPRITES]; //#sprite
+
+int numSprites;
 
 /**********************************************************************************************//**
  * @fn	SDL_Surface *load_Image (char *filename)
@@ -43,54 +45,61 @@ SDL_Surface *load_Image (char *filename) /* Load Image from file function */
 	return finalImage; /* send out finalized image */
 }
 
-//#sprite
-/* this is heavily based off of dj's code */
+// #sprite
+// this is heavily based off of dj's code
 sprite_t* load (char *filename, int width, int height)
 {
+	int i;
+	SDL_Surface * temp;
+
 	/* will replace with searching thru list of loaded sprites */
-	/* 
-		for (i = 0; i < numSprites, i++)
+	for (i = 0; i < numSprites; i++)
+	{
+		if (strncmp(filename, listSprites[i].filename, 20) == 0)
 		{
-			if (strncmp(filename, listSprites[i].filename, 20) == 0)
-			{
-				listSprites[i].used++;
-				return &listSprites[i];
-			}
+			listSprites[i].used++;
+			return &listSprites[i];
 		}
-	*/
+	}
 
 	/* do we have room? */
-	/*
-		if(numSprites + 1 >= MAX_SPRITES)
-		{
-			//too many sprites too many sprites too many sprites
-		}
-	*/
-
-	/* you made it this far kid, now time for the real stuff */
-	/*
-		numSprites++;
-		for (i=0; i <= numSprites; i++)
-			if(!spritelist[i].used)break; //if i find one that isn't used break 
-		
-		//temporary pointer for getting an address = img_load(filename);
-
-		spritelist[i].image = this image
-		// setting [i]'s image
-
-		strncpy(spritelist[i].filename, filename, 20)
-		// setting [i]'s filename
-
-		[i].framesperline = 16
-		[i].w = width;
-		[i].h = height;
-		[i].used++;
-		return the address;
+	if(numSprites + 1 >= MAX_SPRITES)
+	{
+		fprintf(stderr, "Maximum Sprites Reached. \n");
+		exit(0);
 	}
-	*/
+	
+	/* you made it this far kid, now time for the real stuff */
+	numSprites++;
+
+	for (i=0; i <= numSprites; i++)
+		if(!listSprites[i].used)break; //if i find one that isn't used break 
+		
+	temp = IMG_Load(filename);
+	if (temp == NULL)
+	{
+		fprintf(stderr, "no sprite: %s \n", SDL_GetError());
+		exit(0);
+	}
+
+	listSprites[i].graphic = SDL_DisplayFormat(temp);
+	SDL_FreeSurface(temp);
+	// setting [i]'s image
+
+	SDL_SetColorKey(listSprites[i].graphic, SDL_SRCCOLORKEY, SDL_MapRGB(listSprites[i].graphic->format, 255, 255, 255));
+
+	strncpy(listSprites[i].filename, filename, 40);
+	// setting [i]'s filename
+
+	listSprites[i].framesperline = 16;
+	listSprites[i].width = width;
+	listSprites[i].height = height;
+	listSprites[i].used++;
+	
+	return &listSprites[i];
 }
 
-//#sprite
+//#old sprite
 /* Displaying Image function */
 void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
@@ -122,6 +131,18 @@ void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float 
 
 	SDL_BlitSurface (spritesheet, &source, surface, &dest); //#sprite
 }
+
+void surface (sprite_t * source, SDL_Surface * destination, float x, float y, SDL_Rect * clip)
+{
+	SDL_Rect offset;
+
+	offset.x = (int)x;
+	offset.y = (int)y;
+
+	SDL_BlitSurface( source->graphic, clip, destination, &offset);
+}
+
+//#sprite
 
 bool setUpScreen()
 {

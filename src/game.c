@@ -39,12 +39,12 @@ extern entity_t *lvlTrigger;
 extern int level;
 
 extern SDL_Surface *bossSprite;
-extern SDL_Surface *plyrSprite;
+//extern SDL_Surface *plyrSprite;
 
 extern SDL_Surface *platformSprite1;
 extern SDL_Surface *platformSpriteA1;
 
-extern animSet_t *playerAnim;
+//extern animSet_t *playerAnim;
 
 Uint32 start = 0;
 
@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
 	player = Init_Ent();
 	playerProperties(getPlayer());
 	/* to put these in player properties, name change to initPlayer ? */ //#sprite
-	playerAnim = getAnimSet("sprite\\anim\\animsettest.json");
-	setStateTo(player, ANIM_IDLE);
+	//playerAnim = getAnimSet("sprite\\anim\\animsettest.json");
+	//setStateTo(player, ANIM_IDLE);
 	/* ------- */
 
 	/* Enemy 1 */
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 	enemy1->x = 600;
 	enemy1->y = 350;
 
-	enemy1->sprite = load_Image("sprite/char/enemy1.png"); //#sprite
+	enemy1->oldSprite = load_Image("sprite/char/enemy1.png"); //#sprite
 
 	enemy1->think = alphaThink;
 	enemy1->nextThink = getCurrentTime() + 5000;
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 	enemy2 = Init_Ent();
 	sprintf(enemy2->classname, "enemy");
 
-	enemy2->sprite = load_Image("sprite/bluepng.png");
+	enemy2->oldSprite = load_Image("sprite/bluepng.png");
 
 	enemy2->x = 770;
 	enemy2->y = 350;
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 	enemy3 = Init_Ent();
 	sprintf(enemy2->classname, "enemy");
 
-	enemy3->sprite = load_Image("sprite/green.png");
+	enemy3->oldSprite = load_Image("sprite/green.png");
 
 	enemy3->x = 900;
 	enemy3->y = 350;
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 	/*  Boss  */
 	boss = Init_Ent();
 
-	boss->sprite = bossSprite;
+	boss->oldSprite = bossSprite;
 
 	boss->x = 1000;
 	boss->y = 300;
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
 	/* Wall */
 	wall = Init_Ent();
 
-	wall->sprite = load_Image("sprite/wall.jpg");
+	wall->oldSprite = load_Image("sprite/wall.jpg");
 
 	wall->x = 400;
 	wall->y = 40;
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
 	//#sprite
 	/* Define platforms */
 	platform1 = Init_Ent();
-	platform1->sprite = platformSprite1;
+	platform1->oldSprite = platformSprite1;
 	platform1->x = 0;
 	platform1->y = 410;
 	platform1->bBox.w = 271;
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
 	platform1->show = show_Ent;
 
 	platform2 = Init_Ent();
-	platform2->sprite = platformSprite1;
+	platform2->oldSprite = platformSprite1;
 	platform2->x = 271;
 	platform2->y = 410;
 	platform2->bBox.w = 271;
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 	platform2->show = show_Ent;
 
 	platform3 = Init_Ent();
-	platform3->sprite = platformSprite1;
+	platform3->oldSprite = platformSprite1;
 	platform3->x = 600;
 	platform3->y = 410;
 	platform3->bBox.w = 271;
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 	platform3->show = show_Ent;
 
 	platform4 = Init_Ent();
-	platform4->sprite = platformSprite1;
+	platform4->oldSprite = platformSprite1;
 	platform4->x = 871;
 	platform4->y = 410;
 	platform4->bBox.w = 271;
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 	platform4->show = show_Ent;
 
 	platformA1 = Init_Ent();
-	platformA1->sprite = platformSpriteA1;
+	platformA1->oldSprite = platformSpriteA1;
 	platformA1->x = 0;
 	platformA1->y = 410;
 	platformA1->bBox.w = 271;
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
 	platformA1->show = show_Ent;
 
 	platformA2 = Init_Ent();
-	platformA2->sprite = platformSpriteA1;
+	platformA2->oldSprite = platformSpriteA1;
 	platformA2->x = 271;
 	platformA2->y = 410;
 	platformA2->bBox.w = 271;
@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
 	platformA2->show = show_Ent;
 
 	platformA3 = Init_Ent();
-	platformA3->sprite = platformSpriteA1;
+	platformA3->oldSprite = platformSpriteA1;
 	platformA3->x = 600;
 	platformA3->y = 410;
 	platformA3->bBox.w = 271;
@@ -215,19 +215,20 @@ int main(int argc, char *argv[])
 	platformA3->show = show_Ent;
 
 	platformA4 = Init_Ent();
-	platformA4->sprite = platformSpriteA1;
+	platformA4->oldSprite = platformSpriteA1;
 	platformA4->x = 900;
 	platformA4->y = 410;
 	platformA4->bBox.w = 271;
 	platformA4->bBox.h = 56;
 	platformA4->show = show_Ent;
 
+	/* remove this
 	lvlTrigger = Init_Ent();
 	sprintf(lvlTrigger->classname, "trigger");
 	lvlTrigger->x = 1100;
 	lvlTrigger->y = 380;
-	lvlTrigger->sprite = plyrSprite;
-	lvlTrigger->show = show_Ent;
+	//lvlTrigger->oldSprite = plyrSprite;
+	lvlTrigger->show = show_Ent; */
 
 	/* HUD */
 	health.x = 10;
@@ -243,7 +244,7 @@ int main(int argc, char *argv[])
 
 	start = SDL_GetTicks();
 
-	level = 1; //initial level is 1
+	level = 1; //initial level is 1 getLevel();
 
 	/* GAME ------------------------------------------------------------------------- */
 	// AiO function called Hyde(); ????
@@ -271,11 +272,6 @@ int main(int argc, char *argv[])
 			}
 
 		show_Ent(wall); //temp
-
-		if (IS_SET(lvlTrigger->flags, ENT_SHOW))
-		{
-			SDL_FillRect ( getScreen(), &lvlTrigger->fill, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
-		}
 
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );

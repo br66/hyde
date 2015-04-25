@@ -12,7 +12,7 @@
 
 /* Header file for game functions (loading, clearing, etc.) */
 bool init();
-bool load_Files();
+bool load_Files(); //remove?
 void CheckLevel();
 void clear();
 char* FormatTimeString(Uint32 offset);

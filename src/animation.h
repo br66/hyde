@@ -4,9 +4,10 @@
 #define MAX_SETS 20 //maximum animation sets
 #define MAX_ANIMATIONS 20 //maximum animations
 
+#include <SDL.h>
+#include "graphics.h"
 
 // Structures
-
 /* individual animation */
 typedef struct animation_s
 {
@@ -36,7 +37,7 @@ typedef struct animSet_s
 
 // Functions
 //#sprite
-void Animate (SDL_Surface* spritesheet, animation_t *animation, float x, float y); //actual action of animation
+//sprite_t *test();
 animSet_t *getAnimSet (char *filename); //will find anim set file and see if loaded already, add it to array of loaded ones
 animSet_t *InitAnimSet(void);
 
