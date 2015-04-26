@@ -15,12 +15,11 @@
 
 #include "boolean.h"
 #include "gfunc.h"
-#include "graphics.h"
+#include "graphic.h"
 #include "entity.h"
 #include "gfunc.h"
 #include "weapon.h"
 #include "level.h"
 #include "assets.h"
-#include "animation.h"
 
 #endif

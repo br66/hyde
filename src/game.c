@@ -60,13 +60,14 @@ int main(int argc, char *argv[])
 	if ( load_Files() == false)
 		return 1;
 
+	initSprites();
+
+	//might turn following lines into initPlayer();
 	/* [player] : initializaion, editing properties, getting the anim set, setting player state */
 	player = Init_Ent();
 	playerProperties(getPlayer());
 	/* to put these in player properties, name change to initPlayer ? */ //#sprite
-	//playerAnim = getAnimSet("sprite\\anim\\animsettest.json");
 	//setStateTo(player, ANIM_IDLE);
-	/* ------- */
 
 	/* Enemy 1 */
 	enemy1 = Init_Ent();
@@ -221,14 +222,6 @@ int main(int argc, char *argv[])
 	platformA4->bBox.w = 271;
 	platformA4->bBox.h = 56;
 	platformA4->show = show_Ent;
-
-	/* remove this
-	lvlTrigger = Init_Ent();
-	sprintf(lvlTrigger->classname, "trigger");
-	lvlTrigger->x = 1100;
-	lvlTrigger->y = 380;
-	//lvlTrigger->oldSprite = plyrSprite;
-	lvlTrigger->show = show_Ent; */
 
 	/* HUD */
 	health.x = 10;

@@ -25,8 +25,6 @@ entity_t *lvlTrigger = NULL;
 
 int level; //getLevel(); setLevel();
 
-//extern SDL_Surface *plyrSprite;
-//extern animSet_t *playerAnim;
 extern SDL_Event event; //getEvents();
 
 
@@ -306,11 +304,11 @@ void show (entity_t *ent) //name change?
 	{
 		//getPlayer() should be changed to ent soon //#sprite
 		//Animate(getPlayer()->oldSprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
-		//Animate(getPlayer()->sprite, &getPlayer()->sprite->animationSet->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
+		Animate(getPlayer()->sprite, &getPlayer()->sprite->animationSet->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
 		/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
 		at some random spot in memory */
 
-		surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
+		//surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
 	}
 
 }
@@ -498,8 +496,6 @@ void playerProperties(entity_t *player)
 	player->maxAnger = 100;
 
 	player->sprite->animationSet = getAnimSet("sprite\\anim\\animsettest.json");
-
-	//player->framesperline = 10;
 
 	SET_FLAG(player->flags, ENT_SOLID);
 }

@@ -9,6 +9,7 @@
 #define _FUNC_
 
 #include <yaml.h> // << SUCCESSFUL YAML IMPLEMENTATION
+#include <SDL_ttf.h> // never had to do this before, don't know why i need it
 
 /* Header file for game functions (loading, clearing, etc.) */
 bool init();

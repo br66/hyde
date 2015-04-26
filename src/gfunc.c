@@ -78,7 +78,7 @@ bool init()
 	}
 
 	/* Fourth argument creates the screens surface in system memory */
-	if (setUpScreen() == false)
+	if (setupScreen() == false)
 	{
 		return false;
 	}
@@ -308,6 +308,8 @@ void clear()
 	SDL_FreeSurface (bossSprite);
 	// SDL_FreeSurface (plyrSprite);
 
+	closeSprites();
+
 	closeSeconds();
 	closeScreen(); //#sprite
 
@@ -389,7 +391,7 @@ void UpdateAnger()
 
 	if (getPlayer()->currentAnger >= 100)
 	{
-		printf("level switch to #2");
+		printf("level switch to #2 \n");
 
 		level = 2;
 
