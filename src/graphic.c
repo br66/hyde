@@ -10,35 +10,12 @@
 static SDL_Surface *screen = NULL;
 
 // declarations for sprites
-sprite_t listSprites[MAX_SPRITES];
+sprite_t listSprites[MAX_SPRITES]; // similar to listEntities, keeps track of how many sprites have been loaded
 int numSprites;
 
 // declarations for animation
-animset_t loadedAnimSets [MAX_SETS];
+animset_t loadedAnimSets [MAX_SETS]; // similar to listEntities, keeps track of how many animation set are loaded
 int numSets;
-
-// functions for sprites
-SDL_Surface *load_Image (char *filename) // will be removed
-{
-	SDL_Surface* loadedImage = NULL;
-	SDL_Surface* finalImage = NULL;
-
-	loadedImage = IMG_Load(filename);
-
-	if( loadedImage != NULL)
-	{
-		finalImage = SDL_DisplayFormat( loadedImage );
-
-		SDL_FreeSurface (loadedImage);
-
-		if (finalImage != NULL)
-		{
-			Uint32 colorkey = SDL_MapRGB( finalImage->format, 0, 0xFF, 0xFF );
-			SDL_SetColorKey (finalImage, SDL_SRCCOLORKEY, colorkey);
-		}
-	}
-	return finalImage;
-}
 
 sprite_t* load (char *filename, int width, int height)
 {
@@ -108,7 +85,7 @@ void freeSprite (sprite_t * sprite)
 	}
 }
 
-//to remove
+//to remove - 1 dependency (void setUpSeconds, game.c, line 264 approx.)
 void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
 	SDL_Rect offset;
@@ -118,7 +95,7 @@ void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destinati
 
 	SDL_BlitSurface( source, clip, destination, &offset);
 }
-//to remove
+//to remove - may be absorbed into animate function
 void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float sy, int frame) // to get entity and its framesperline for its sprite
 {
 	SDL_Rect source, dest;
@@ -309,8 +286,6 @@ animset_t *getAnimSet (char *filename)
 			}
 			//printf("	%d milliseconds\n", json_integer_value(i_array)); //prints the current frame found in the file
 			test->set[0].intervals[k] = (int)json_integer_value(i_array);
-			//test->set[0].maxFrames = 10; //for testing
-			//test->set[0].nextFrameTime = 100; //for testing
 		}
 
 		test->set[0].maxFrames = 10; //for testing
@@ -319,34 +294,6 @@ animset_t *getAnimSet (char *filename)
 
 	json_decref(parser);
 	return test; //address
-}
-
-//old
-void oldAnimate (SDL_Surface* spritesheet, animation_t *animation, float x, float y) //missing asterisk in front 
-{
-	if(animation->nextFrameTime <= getCurrentTime()) //if time for next frame has passed
-	{
-		animation->curFrame = animation->frames[animation->frameCounter];
-		if (animation->curFrame >= animation->maxFrames) //if reached end of frames, go back 
-		{
-			animation->curFrame = 0;
-		}
-
-		if (animation->frameCounter >= animation->maxFrames)
-		{
-			animation->frameCounter = 0;
-		}
-
-		//frame = (frame + 1) % animation.maxFrames;
-	
-		animation->nextFrameTime = animation->intervals[animation->curFrame] + getCurrentTime(); //find the next frame time
-		showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
-		//#sprite?
-		//printf("%d \n", animation->curFrame);
-		animation->frameCounter++;
-	}
-
-	showFrame(spritesheet, getScreen(), x, y, animation->frames[animation->curFrame]); //draws to surface only once
 }
 
 void Animate (sprite_t * spritesheet, animation_t *animation, float x, float y)

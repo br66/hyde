@@ -26,9 +26,12 @@
  **************************************************************************************************/
 enum animState
 {
-	ANIM_IDLE,
-	ANIM_WLEFT,
-	ANIM_WRIGHT
+	PL_IDLE, //changed from anim_idle to player idle
+	PL_LEFT,
+	PL_RIGHT,
+	SIL_IDLE,
+	KID_IDLE,
+	BOS1_IDLE
 };
 
 int max_ents; /* Number of entities that have been made in-game */ //getMaxEnts(); move out of header file
@@ -50,8 +53,6 @@ typedef struct entity_s
 	SDL_Rect		bBox;
 	/** @brief	Will be removed. */
 	SDL_Rect		fill;
-	/** @brief	The entity's sprite. */
-	SDL_Surface		*oldSprite;
 	/** @brief	Sprite - The entity's new sprite. */
 	sprite_t		*sprite;
 	/** @brief	State of the animation. Might change to just state */
@@ -123,7 +124,7 @@ void show_Ent( entity_t *ent ); // placeholder function for merely showing singl
 //--------------------------------------
 
 /* technical */
-void set_Camera( entity_t *ent);
+void set_Camera( entity_t *ent); // to be renamed cameraOn()
 bool isCollide (entity_t *otherent, entity_t *ent);
 
 /* thinks */

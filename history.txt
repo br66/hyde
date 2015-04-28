@@ -1,0 +1,47 @@
+history
+
+4.28.15
+-------
+general changes
+------------------
+new history file, cleaned up process.txt
+
+removed SDL_Surface * sprite in entity structure //and all references to it (was renamed oldSprite before removal)
+renamed sprites that were originally SDL_Surfaces to sprite_t's
+created game over sprite for showing when health is below zero, successful implementation
+also checking health in various parts of the code so hud, player, etc won't show
+removed excess code regarding freeing surfaces
+new graphics folder
+references to asset class completely removed
+depreciated animation class (.h and .c) removed from solution
+
+graphic class
+-------------
+SDL_Surface load_Image function removed
+changed color key in previous commits, but no longer needed
+removed old Animate function, replaced with new one
+show_Surface replaced with surface
+renamed values in animation state (animState) enumeration
+
+game/gfunc class
+----------
+fixed sprite list glitch: initSprites was being called too late
+freeing surfaces now done in closeSprites, frees all sprites in array
+updateHealth in charge of showing gameOver screen
+made enemies interactive again and changed their sprites, except the boss
+show_Surface has 1 dependency in the setUpSeconds function
+
+level class
+-----------
+start function pointer removed from level structures
+removed level array declaration from level.h
+
+entity class
+------------
+removed lvlTrigger entity, no longer needed for testing
+show_Ent function changed to show a sprite rather than a raw surface
+changed how much health and anger are affected by enemies for testing game over screen
+
+weapon class
+------------
+bombs and projectiles should hit the player now

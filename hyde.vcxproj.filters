@@ -33,9 +33,6 @@
     <ClInclude Include="src\level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,9 +51,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\level.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\animation.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphic.c">

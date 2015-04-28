@@ -34,17 +34,14 @@ extern entity_t *platformA4;
 
 extern entity_t *wall;
 
-extern entity_t *lvlTrigger;
+extern int level; //getLevel();
 
-extern int level;
+extern sprite_t * gameOver;
 
-extern SDL_Surface *bossSprite;
-//extern SDL_Surface *plyrSprite;
+extern sprite_t * bossSprite;
 
-extern SDL_Surface *platformSprite1;
-extern SDL_Surface *platformSpriteA1;
-
-//extern animSet_t *playerAnim;
+extern sprite_t * platformSprite1;
+extern sprite_t * *platformSpriteA1;
 
 Uint32 start = 0;
 
@@ -54,20 +51,20 @@ bool running = true;
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
 {	
+	initSprites();
+
 	if ( init() == false)
 		return 1;
 	
 	if ( load_Files() == false)
 		return 1;
 
-	initSprites();
-
 	//might turn following lines into initPlayer();
 	/* [player] : initializaion, editing properties, getting the anim set, setting player state */
 	player = Init_Ent();
 	playerProperties(getPlayer());
 	/* to put these in player properties, name change to initPlayer ? */ //#sprite
-	//setStateTo(player, ANIM_IDLE);
+	//setStateTo(player, PL_IDLE);
 
 	/* Enemy 1 */
 	enemy1 = Init_Ent();
@@ -76,7 +73,7 @@ int main(int argc, char *argv[])
 	enemy1->x = 600;
 	enemy1->y = 350;
 
-	enemy1->oldSprite = load_Image("sprite/char/enemy1.png"); //#sprite
+	enemy1->sprite = load("sprite/char/enemy1.png", 32, 32);
 
 	enemy1->think = alphaThink;
 	enemy1->nextThink = getCurrentTime() + 5000;
@@ -91,13 +88,13 @@ int main(int argc, char *argv[])
 	enemy2 = Init_Ent();
 	sprintf(enemy2->classname, "enemy");
 
-	enemy2->oldSprite = load_Image("sprite/bluepng.png");
+	enemy2->sprite = load("graphic/enemy/kid.png", 32, 32);
 
 	enemy2->x = 770;
 	enemy2->y = 350;
 
-	//enemy2->bBox.w = 64;
-	//enemy2->bBox.h = 64;
+	enemy2->bBox.w = 32;
+	enemy2->bBox.h = 32;
 
 	enemy2->show = show_Ent;
 
@@ -109,13 +106,13 @@ int main(int argc, char *argv[])
 	enemy3 = Init_Ent();
 	sprintf(enemy2->classname, "enemy");
 
-	enemy3->oldSprite = load_Image("sprite/green.png");
+	enemy3->sprite = load("graphic/enemy/bird.png", 32, 32);
 
 	enemy3->x = 900;
 	enemy3->y = 350;
 
-	//enemy3->bBox.w = 64;
-	//enemy3->bBox.h = 64;
+	enemy3->bBox.w = 32;
+	enemy3->bBox.h = 32;
 
 	enemy3->show = show_Ent;
 
@@ -126,7 +123,7 @@ int main(int argc, char *argv[])
 	/*  Boss  */
 	boss = Init_Ent();
 
-	boss->oldSprite = bossSprite;
+	boss->sprite = bossSprite;
 
 	boss->x = 1000;
 	boss->y = 300;
@@ -134,33 +131,16 @@ int main(int argc, char *argv[])
 	//boss->bBox.w = 64;
 	//boss->bBox.h = 64;
 
-	boss->show = show_Ent;
+	//boss->show = show_Ent;
 
 	boss->think = bossThink;
 	boss->nextThink = getCurrentTime() + 800;
 
 	/* ------- */
 
-	/* Wall */
-	wall = Init_Ent();
-
-	wall->oldSprite = load_Image("sprite/wall.jpg");
-
-	wall->x = 400;
-	wall->y = 40;
-
-	wall->bBox.w = 75;
-	wall->bBox.h = 100;
-
-	//wall->think = wallThink;
-	//wall->nextThink = currentTime + 10;
-
-	/* ------- */
-
-	//#sprite
-	/* Define platforms */
+	/* Define platform properties */
 	platform1 = Init_Ent();
-	platform1->oldSprite = platformSprite1;
+	platform1->sprite = platformSprite1;
 	platform1->x = 0;
 	platform1->y = 410;
 	platform1->bBox.w = 271;
@@ -168,7 +148,7 @@ int main(int argc, char *argv[])
 	platform1->show = show_Ent;
 
 	platform2 = Init_Ent();
-	platform2->oldSprite = platformSprite1;
+	platform2->sprite = platformSprite1;
 	platform2->x = 271;
 	platform2->y = 410;
 	platform2->bBox.w = 271;
@@ -176,7 +156,7 @@ int main(int argc, char *argv[])
 	platform2->show = show_Ent;
 
 	platform3 = Init_Ent();
-	platform3->oldSprite = platformSprite1;
+	platform3->sprite = platformSprite1;
 	platform3->x = 600;
 	platform3->y = 410;
 	platform3->bBox.w = 271;
@@ -184,7 +164,7 @@ int main(int argc, char *argv[])
 	platform3->show = show_Ent;
 
 	platform4 = Init_Ent();
-	platform4->oldSprite = platformSprite1;
+	platform4->sprite = platformSprite1;
 	platform4->x = 871;
 	platform4->y = 410;
 	platform4->bBox.w = 271;
@@ -192,7 +172,7 @@ int main(int argc, char *argv[])
 	platform4->show = show_Ent;
 
 	platformA1 = Init_Ent();
-	platformA1->oldSprite = platformSpriteA1;
+	platformA1->sprite = platformSpriteA1;
 	platformA1->x = 0;
 	platformA1->y = 410;
 	platformA1->bBox.w = 271;
@@ -200,7 +180,7 @@ int main(int argc, char *argv[])
 	platformA1->show = show_Ent;
 
 	platformA2 = Init_Ent();
-	platformA2->oldSprite = platformSpriteA1;
+	platformA2->sprite = platformSpriteA1;
 	platformA2->x = 271;
 	platformA2->y = 410;
 	platformA2->bBox.w = 271;
@@ -208,7 +188,7 @@ int main(int argc, char *argv[])
 	platformA2->show = show_Ent;
 
 	platformA3 = Init_Ent();
-	platformA3->oldSprite = platformSpriteA1;
+	platformA3->sprite = platformSpriteA1;
 	platformA3->x = 600;
 	platformA3->y = 410;
 	platformA3->bBox.w = 271;
@@ -216,7 +196,7 @@ int main(int argc, char *argv[])
 	platformA3->show = show_Ent;
 
 	platformA4 = Init_Ent();
-	platformA4->oldSprite = platformSpriteA1;
+	platformA4->sprite = platformSpriteA1;
 	platformA4->x = 900;
 	platformA4->y = 410;
 	platformA4->bBox.w = 271;
@@ -252,19 +232,20 @@ int main(int argc, char *argv[])
 		Events();
 		PlayerAlive();
 
-		SDL_FillRect ( getScreen(), &health, SDL_MapRGB ( getScreen()->format, 0, 0xFF, 0 ) );
-		SDL_FillRect ( getScreen(), &anger, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
+		if (getPlayer()->currentHealth > 0)
+		{
+			SDL_FillRect ( getScreen(), &health, SDL_MapRGB ( getScreen()->format, 0, 0xFF, 0 ) );
+			SDL_FillRect ( getScreen(), &anger, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
+		}
 
 		//Function Time()
-		if (running == true)
+		if (running == true && getPlayer()->currentHealth > 0)
 			{
 				char msg[20];
 				sprintf( msg, "%s", FormatTimeString(start));
 
 				setUpSeconds(msg, textColor);
 			}
-
-		show_Ent(wall); //temp
 
 		/* this gives us an array of all the possible keystates and whether a key is pressed or not */
 		keystates = SDL_GetKeyState( NULL );

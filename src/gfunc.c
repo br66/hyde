@@ -29,8 +29,10 @@ extern Uint32 start;
 level_t levels[10];
 
 //#sprite
-SDL_Surface *bgSprite = NULL;
-SDL_Surface *bgSprite2 = NULL;
+sprite_t * gameOver = NULL;
+
+sprite_t *bgSprite = NULL;
+sprite_t *bgSprite2 = NULL;
 
 Mix_Music *music= NULL;
 Mix_Chunk *scratch = NULL;
@@ -38,16 +40,15 @@ Mix_Chunk *high = NULL;
 Mix_Chunk *med = NULL;
 Mix_Chunk *low = NULL;
 
-/* new sprite_t - naming convention _spr_t */
+/* new sprite_t - naming convention for entities with sprites _spr_t */
 //sprite_t * player_spr_t;
 
 //#sprite
-//SDL_Surface *plyrSprite = NULL;
-SDL_Surface *bombSprite = NULL;
-SDL_Surface *bossSprite = NULL;
+sprite_t *bombSprite = NULL;
+sprite_t *bossSprite = NULL;
 
-SDL_Surface *platformSprite1 = NULL;
-SDL_Surface *platformSpriteA1 = NULL;
+sprite_t *platformSprite1 = NULL;
+sprite_t *platformSpriteA1 = NULL;
 
 level_t *stage1 = NULL;
 level_t *stage2 = NULL;
@@ -94,30 +95,35 @@ bool init()
 /* Loads all files in one function, foreshadow to precaching? */
 bool load_Files()
 {
+	gameOver = load ("graphic/game/gameover.png", 32, 32);
+	if (gameOver == NULL)
+	{
+		printf("image error: %s \n", SDL_GetError());
+		return false;
+	}
+
 	/* lvl 1 sprites */
-	//put into list first [listSprites]
-	//#sprite
-	bgSprite = load_Image("sprite/sky1.png");
+	bgSprite = load("sprite/sky1.png", 32, 32);
 	if (bgSprite == NULL)
 	{
 		printf("error: %s\n", SDL_GetError());
 		return false;
 	}
 
-	bgSprite2 = load_Image("sprite/sky2.png");
+	bgSprite2 = load("sprite/sky2.png", 32, 32);
 	if (bgSprite2 == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
-	platformSprite1 = load_Image("sprite/lvl/platform1.png");
+	platformSprite1 = load("sprite/lvl/platform1.png", 32, 32);
 	if (platformSprite1 == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
 
-	platformSpriteA1 = load_Image("sprite/lvl/platform2.png");
+	platformSpriteA1 = load("sprite/lvl/platform2.png", 32 ,32);
 	if (platformSpriteA1 == NULL)
 	{
 		return false;
@@ -125,14 +131,14 @@ bool load_Files()
 	}
 
 	/* enemy sprites */
-	bombSprite = load_Image("sprite/laserRed09.png");
+	bombSprite = load("sprite/laserRed09.png", 32 ,32);
 	if (bombSprite == NULL)
 	{
 		return false;
 		printf("error: %s\n", SDL_GetError());
 	}
 
-	bossSprite = load_Image("sprite/boss.png");
+	bossSprite = load("sprite/boss.png", 32, 32);
 	if (bossSprite == NULL)
 	{
 		return false;
@@ -192,12 +198,12 @@ void CheckLevel ()
 	stage1->lvlEntities[3] = platformA2;
 	stage1->lvlEntities[4] = platformA2;
 
-	if (level == 1)
+	if (level == 1 && getPlayer()->currentHealth > 1)
 	{
 		show_LevelOne();
 
 	}
-	if (level == 2)
+	if (level == 2 && getPlayer()->currentHealth > 1)
 	{
 		show_LevelTwo();
 	}
@@ -278,6 +284,7 @@ char* timeString(Uint32 offset)
 	return FormatNumber(ticks, 0);
 }
 
+// to be renamed cameraOn
 void set_Camera (entity_t *ent)
 {
 	int xmargin;
@@ -299,17 +306,8 @@ void set_Camera (entity_t *ent)
 /* for program exiting, cleaning and freeing up memory */
 void clear()
 {
-	/* loading and freeing  */
 	//#sprite
-	SDL_FreeSurface (bgSprite);
-	SDL_FreeSurface (platformSprite1);
-	SDL_FreeSurface (platformSpriteA1);
-	SDL_FreeSurface (bombSprite);
-	SDL_FreeSurface (bossSprite);
-	// SDL_FreeSurface (plyrSprite);
-
 	closeSprites();
-
 	closeSeconds();
 	closeScreen(); //#sprite
 
@@ -378,10 +376,10 @@ void UpdateHealth()
 {
 	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I
 
-	if (getPlayer()->currentHealth == 0)
+	if (getPlayer()->currentHealth < 0)
 	{
-		//sprite_t that says game over
-		printf("game over");
+		surface(gameOver, getScreen(), 0, 0, NULL);
+		//printf("game over");
 	}
 }
 
@@ -391,7 +389,7 @@ void UpdateAnger()
 
 	if (getPlayer()->currentAnger >= 100)
 	{
-		printf("level switch to #2 \n");
+		//printf("level switch to #2 \n");
 
 		level = 2;
 
@@ -467,12 +465,6 @@ void Events()
 							enemy3->xVel = 0;
 							enemy3->yVel = 0;
 
-							//boss 3 initial position
-							//boss->x = 1000;
-							//boss->y = 300;
-							//boss->thinkflags = 0;
-							//boss->xVel = 0;
-							//boss->yVel = 0;
 						}
 						break;
 					case SDLK_s:

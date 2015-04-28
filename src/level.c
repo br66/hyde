@@ -7,8 +7,6 @@ entity_t *platform2;
 entity_t *platform3;
 entity_t *platform4;
 
-extern entity_t *lvlTrigger;
-
 extern entity_t *enemy1;
 extern entity_t *enemy2;
 extern entity_t *enemy3;
@@ -21,8 +19,8 @@ entity_t *platformA2;
 entity_t *platformA3;
 entity_t *platformA4;
 
-
 //-----
+
 extern level_t *stage1;
 extern level_t *stage2;
 
@@ -31,7 +29,7 @@ extern entity_t *wall;
 /* level functions */
 void show_LevelOne()
 {
-	show_Surface (0, 0, stage1->backgrounds[0], getScreen(), addrCamera());
+	surface (stage1->backgrounds[0], getScreen(), 0, 0, addrCamera());
 		
 	//other level 1 assets
 	if (enemy1)
@@ -104,17 +102,11 @@ void show_LevelOne()
 		REMOVE_FLAG(platformA4->flags, ENT_SHOW);
 		REMOVE_FLAG(platformA4->flags, ENT_SOLID);
 	}
-	if(lvlTrigger)
-	{
-		SET_FLAG(lvlTrigger->flags, ENT_SOLID);
-		SET_FLAG(lvlTrigger->flags, ENT_SHOW);
-	}
-
 }
 
 void show_LevelTwo()
 {
-	show_Surface (0, 0, stage2->backgrounds[0], getScreen(), addrCamera());
+	surface (stage2->backgrounds[0], getScreen(), 0, 0, addrCamera());
 
 	if (enemy1)
 	{
@@ -178,10 +170,5 @@ void show_LevelTwo()
 	{
 		SET_FLAG(platformA4->flags, ENT_SHOW);
 		SET_FLAG(platformA4->flags, ENT_SOLID);
-	}
-	if(lvlTrigger)
-	{
-		REMOVE_FLAG(lvlTrigger->flags, ENT_SHOW);
-		REMOVE_FLAG(lvlTrigger->flags, ENT_SOLID);
 	}
 }

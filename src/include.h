@@ -2,7 +2,7 @@
  * @file	src\include.h
  *
  * @brief	Declares the include class.  Lessens the amount of includes needed in other files.
- * 			Assets.h will be depreciated.
+ * 			This header file may be replaced soon.
  **************************************************************************************************/
 
 #ifndef _INCLUDE_
@@ -20,6 +20,5 @@
 #include "gfunc.h"
 #include "weapon.h"
 #include "level.h"
-#include "assets.h"
 
 #endif

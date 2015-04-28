@@ -1,6 +1,6 @@
 #include "include.h"
 
-extern SDL_Surface *bombSprite;
+extern sprite_t *bombSprite;
 
 void fire_Bomb (entity_t *ent)
 {
@@ -15,9 +15,10 @@ void fire_Bomb (entity_t *ent)
 
 	SET_FLAG(bomb->flags, ENT_SHOW);
 
-	//bomb->bBox.w = 20;
-	//bomb->bBox.h = 20;
-	bomb->oldSprite = bombSprite; //#sprite
+	bomb->bBox.w = 20;
+	bomb->bBox.h = 20;
+
+	bomb->sprite = bombSprite; //#sprite
 	bomb->show = show_Ent;
 }
 
@@ -36,10 +37,10 @@ void fire_Projectile (entity_t *shooter)
 	SET_FLAG(projectile->flags, ENT_SHOW);
 	SET_FLAG(projectile->flags, ENT_THINK);
 
-	//projectile->bBox.h = 64;
-	//projectile->bBox.w = 64;
+	projectile->bBox.h = 64;
+	projectile->bBox.w = 64;
 
-	projectile->oldSprite = bombSprite; //#sprite
+	projectile->sprite = bombSprite; //#sprite
 	projectile->show = show_Ent;
 
 	projectile->think = projThink;

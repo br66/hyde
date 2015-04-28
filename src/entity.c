@@ -21,8 +21,6 @@ entity_t *platformA2 = NULL;
 entity_t *platformA3 = NULL;
 entity_t *platformA4 = NULL;
 
-entity_t *lvlTrigger = NULL;
-
 int level; //getLevel(); setLevel();
 
 extern SDL_Event event; //getEvents();
@@ -187,17 +185,15 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 
 	for (i = 0; i < max; i++)
 	{
-		if (isCollide (targ, ent)) //warning boss is solid in level 1
+		if (isCollide (targ, ent)) //warning boss was solid in level 1
 		{
 			if IS_SET(targ->flags, ENT_SOLID)
 			{
-				//no longer need trigger
-
 				if (strcmp(targ->classname, "enemy") == 0)
 				{
-					//damage function????
-					player->currentHealth -= 1;
-					player->currentAnger += 9;
+					//damage function?
+					player->currentHealth -= 10;
+					player->currentAnger += 4;
 				}
 				else
 				{
@@ -221,9 +217,12 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
  **************************************************************************************************/
 void PlayerAlive ()
 {
-	move(player);
-	set_Camera(player); //remove underscore
-	show(player);
+	if (getPlayer()->currentHealth > 0)
+	{
+		move(player);
+		set_Camera(player); //to be renamed cameraOn()
+		show(player);
+	}
 }
 
 /**********************************************************************************************//**
@@ -274,15 +273,15 @@ void handle_Input ( entity_t *ent ) //fix
  *
  * @param [in,out]	ent	If non-null, the ent.
  **************************************************************************************************/
-void move ( entity_t *ent ) //better name?
+void move ( entity_t *ent ) //better name? also needs to be reorganized
 {
 	ent->x += ent->xVel;
 	if (ent->xVel < 0)	
-		setStateTo(player, ANIM_WLEFT);
+		setStateTo(player, PL_LEFT);
 	else if (ent->xVel == 0)
-		setStateTo(player, ANIM_IDLE);
+		setStateTo(player, PL_IDLE);
 	else
-		setStateTo(player, ANIM_WRIGHT);
+		setStateTo(player, PL_RIGHT);
 
 	if ( ( ent->x < 0 ) || ( ent->x + ent->width > L_WIDTH ) )
 	{
@@ -300,7 +299,7 @@ void move ( entity_t *ent ) //better name?
 void show (entity_t *ent) //name change?
 {
 	/* check states here, if state, animate function draws next frame */
-	//if (ent->animState == ANIM_IDLE && playerAnim != NULL)
+	//if (ent->animState == PL_IDLE && playerAnim != NULL)
 	{
 		//getPlayer() should be changed to ent soon //#sprite
 		//Animate(getPlayer()->oldSprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
@@ -311,11 +310,14 @@ void show (entity_t *ent) //name change?
 		//surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
 	}
 
+	//if an eneny && they are a SILENT_IDLE and its spritesheet is loaded
+	// animate the enemy, with this particular animation in the its animation set, at this position
+
 }
 
 void show_Ent (entity_t *ent) //name change?
 {
-	show_Surface (ent->x - getCamera().x, ent->y - getCamera().y, ent->oldSprite, getScreen(), NULL); //#sprite
+	surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
 }
 
 /* Check Collision - name change? */
@@ -412,8 +414,6 @@ void bossThink (entity_t *self)
 
 	int idleState = 1;
 
-	//printf("%d\n", self->thinknums[0]);
-
 	switch (self->thinknums[0])
 	{
 		case 1:
@@ -483,7 +483,6 @@ void playerProperties(entity_t *player)
 	player->width = 32;
 	player->height = 32;
 	
-	//#sprite
 	player->sprite = load("sprite/char/jekyll_sheet.png", 32, 32);
 
 	player->bBox.w = 32;

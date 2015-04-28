@@ -63,11 +63,10 @@ typedef struct sprite_s
 void initSprites ();
 void closeSprites ();
 
-SDL_Surface *load_Image (char *filename); //will be removed
 sprite_t* load (char *filename, int width, int height);
 void freeSprite (sprite_t * sprite);
-void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip); // to be removed
-void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float sy, int frame); // to be removed
+void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip); // needed by setUpSeconds()
+void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float sy, int frame); // needed for animation
 void surface (sprite_t * source, SDL_Surface * destination, float x, float y, SDL_Rect * clip);
 
 // functions for screen/game window
