@@ -58,6 +58,7 @@ extern entity_t *platform2;
 extern entity_t *platformA1;
 extern entity_t *platformA2;
 
+// DEPRECIATED
 bool init()
 {
 	/* start SDL 1.2 */
@@ -310,6 +311,7 @@ void clear()
 	closeSprites();
 	closeSeconds();
 	closeScreen(); //#sprite
+	closeEntities();
 
 	/* Closing the fonts and text engine */
 	TTF_CloseFont (font);
@@ -330,6 +332,7 @@ void clear()
 	SDL_Quit();
 }
 
+// MODERN
 SDL_Rect getCamera (void)
 {
 	return camera;
@@ -399,6 +402,7 @@ void UpdateAnger()
 	}
 }
 
+// RE-DO
 void Events()
 {
 	while (SDL_PollEvent (&event))
@@ -486,4 +490,70 @@ void Events()
 				done = true;
 			}
 		}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW
+void begin() //before game loop
+{
+	if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 )
+		printf("SDL 1.2 error \n", SDL_GetError());
+	else printf("sdl init success");
+	
+	//initBasic //initiates basic utilities for game to run
+		/* 
+		graphics/spritelist
+		audio/soundlist
+		font
+		entity
+		particles
+		HUD?
+		mainmenu()/splash screen, same?
+		drawlevel?
+		precache sound
+		*/
+
+	//set Game state to splash
+	//load any files needed
+}
+
+void events()
+{
+	/* if state is splash
+		do this */
+
+	/* if state is level1
+		do this */
+}
+
+void draw()
+{
+	//draw
+}
+
+void think() //also known as update
+{
+	//update
+}
+
+void end()
+{
+	//destroy everything
 }

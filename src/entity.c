@@ -45,21 +45,38 @@ entity_t *Init_Ent (void)
 			return &listEntities[i];
 		}
 	}
+	max_ents++;
 	return NULL;
 
 }
 
-/**********************************************************************************************//**
- * @fn	void Free_Ent(entity_t *self)
- *
- * @brief	Frees ent from memory.
- *
- * @author	iwh
- * @date	3/26/2015
- *
- * @param [in,out]	self	If non-null, the self.
- **************************************************************************************************/
-void Free_Ent(entity_t *self)
+void freeEnt (entity_t * self)
+{
+	self->inuse = 0;
+	max_ents--;
+
+	if(self->sprite != NULL) freeSprite(self->sprite);
+
+	// no sounds yet
+	
+	self->owner = NULL;
+	self->think = NULL;
+	self->show = NULL;
+	self->handle_Input = NULL;
+	self->move = NULL;
+}
+
+void closeEntities()
+{
+	int i;
+
+	for (i = 0; i < MAX_ENTITIES; i++)
+	{
+		freeEnt(&listEntities[i]);
+	}
+}
+
+void Free_Ent(entity_t *self) //old
 {
 	self->inuse = 0;
 	memset (self, 0, sizeof(*self));

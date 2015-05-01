@@ -3,3 +3,19 @@ decrement the max number for individual animation sets based on whether the spot
 getAnimSet(data that I want, object I want to give the data to)
 
 one sprite -> multiple surfaces for palette swapping
+
+
+C
+	-gametest, attacker, engine of lies
+	-cast mem pointers
+	-C all of it
+	-C prog structure
+	-code reviews
+	-chipmunk, physics
+	-collision detection
+	-particle systems? - really dumb entities
+	-actor
+	
+	-file i/o
+	-binary, text
+	-ui

@@ -3,7 +3,6 @@
  *
  * @brief	Sprites/spritesheets/animation/game screen/game camera
  **************************************************************************************************/
-//Merged graphics.h & animation.h into graphic.h
 
 // include
 #include "boolean.h"

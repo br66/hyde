@@ -45,3 +45,5 @@ changed how much health and anger are affected by enemies for testing game over 
 weapon class
 ------------
 bombs and projectiles should hit the player now
+
+

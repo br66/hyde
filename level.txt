@@ -1,0 +1,53 @@
+start
+(
+	done = 0
+	int i
+	char string[]
+	string[0] = '\0'
+	
+	init_All
+		init_graphics
+		init sprite list
+		init audio
+		init sound list
+		atexit(cleanupall)
+		init font
+		init messages?
+		init entity list
+		reset all particles???
+		load hud
+			creates titlebar
+			close upon exit
+
+		main menu function
+			done = 0
+			create png file for splash screen
+			blit to screen
+			just use keyboard for input
+			new window???
+			window buttons, probably not
+			menu
+			(
+				reset buffer
+				pump events
+				get keystates
+				update all windows
+				draw this window
+				if i press escape done = 1
+				next frame
+			)
+			loop
+		loadlevel?
+		init region mask no
+		loadkeyconfig? 
+		draw splash screen too???
+		
+		draw level
+		preload proj and weapon sounds
+
+)
+game
+(
+	
+)
+loop

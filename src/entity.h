@@ -107,6 +107,7 @@ typedef struct entity_s
 //UNORGAINIZED
 entity_t *Init_Ent (void);
 void Free_Ent(entity_t *self);
+void closeEntities();
 
 void EntityAlive ();
 void EntityShow ();

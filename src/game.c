@@ -51,6 +51,19 @@ bool running = true;
 /* create main or else (error LNK2001: unresolved external symbol _SDL_main) */
 int main(int argc, char *argv[])
 {	
+	//setup
+
+	/*
+	gameloop
+
+	--poll events()
+	draw()
+	update()
+
+	--game state machine (case switch)
+	check state machine in update
+	*/
+
 	initSprites();
 
 	if ( init() == false)
@@ -220,17 +233,17 @@ int main(int argc, char *argv[])
 	level = 1; //initial level is 1 getLevel();
 
 	/* GAME ------------------------------------------------------------------------- */
-	// AiO function called Hyde(); ????
+	// AiO function called Hyde(); yes
 	do
 	{	
-		CheckLevel();
-		EntityAlive();
-		EntityShow();
-		CheckCollisions();
-		UpdateHealth();
-		UpdateAnger();
-		Events();
-		PlayerAlive();
+		CheckLevel(); //removed?
+		EntityAlive(); //later
+		EntityShow(); //later
+		CheckCollisions(); //later
+		UpdateHealth(); //later
+		UpdateAnger(); //later
+		Events(); //keep?
+		PlayerAlive(); //later
 
 		if (getPlayer()->currentHealth > 0)
 		{
@@ -258,6 +271,7 @@ int main(int argc, char *argv[])
 
 		/* Function so that the screen is constantly updated so you can see things happening as they happen */
 		SDL_Flip(getScreen());
+
 	}
 	
 	while(!done);
@@ -269,3 +283,52 @@ int main(int argc, char *argv[])
 
 	/* GAME -------------------------------------------------------------------------- */
 }
+
+/*
+int main(int argc, char *argv[])
+{	
+	//setup
+
+	/*
+	gameloop
+
+	--poll events()
+	draw()
+	update()
+
+	--game state machine (case switch)
+	check state machine in update
+	*/
+
+	/*start = SDL_GetTicks();
+
+	level = 1; //initial level is 1 getLevel();
+
+	// AiO function called Hyde();
+
+	/*
+	
+	begin()
+
+	do
+	{	
+		events()
+		draw()
+		update() or think() do changes based off of state machine
+
+		/*keystates = SDL_GetKeyState( NULL ); //update
+		/*delta = SDL_GetTicks() - getCurrentTime(); //update
+		/*setCurrentTime(); //update
+		/*SDL_Flip(getScreen()); //update
+	}
+	
+	while(!done);
+
+	end() functions that clear
+
+	exit(0);
+	return 0;
+
+	/* GAME -------------------------------------------------------------------------- */
+/*
+}*/
