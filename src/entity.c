@@ -1,35 +1,17 @@
 #include "include.h"
+//#include <chipmunk.h>
 
 static entity_t listEntities [MAX_ENTITIES];
 
-entity_t *player = NULL;
+//entity_t *player = NULL;
 
-entity_t *enemy1 = NULL;
-entity_t *enemy2 = NULL;
-entity_t *enemy3 = NULL;
-
-entity_t *boss = NULL;
-entity_t *wall = NULL;
-
-entity_t *platform1 = NULL;
-entity_t *platform2 = NULL;
-entity_t *platform3 = NULL;
-entity_t *platform4 = NULL;
-
-entity_t *platformA1 = NULL;
-entity_t *platformA2 = NULL;
-entity_t *platformA3 = NULL;
-entity_t *platformA4 = NULL;
-
-int level; //getLevel(); setLevel();
-
-extern SDL_Event event; //getEvents();
-
+extern game_t Game;
+SDL_Event event;
 
 /**********************************************************************************************//**
  * @fn	entity_t *Init_Ent (void)
  *
- * @brief	Initialises the ent.
+ * @brief	Initialises single entity.
  *
  * @return	null if it fails, else an address for the pointer
  **************************************************************************************************/
@@ -50,9 +32,10 @@ entity_t *Init_Ent (void)
 
 }
 
+// frees single entity from memory
 void freeEnt (entity_t * self)
 {
-	self->inuse = 0;
+	self->inuse = 0; // self->inuse--;?
 	max_ents--;
 
 	if(self->sprite != NULL) freeSprite(self->sprite);
@@ -62,10 +45,40 @@ void freeEnt (entity_t * self)
 	self->owner = NULL;
 	self->think = NULL;
 	self->show = NULL;
-	self->handle_Input = NULL;
+	self->input = NULL;
 	self->move = NULL;
+	self->show = NULL;
+	self->think = NULL;
 }
 
+// initializes entity list
+void initEntities()
+{
+	int i,j;
+
+	memset(listEntities,0,sizeof(entity_t) * MAX_ENTITIES);
+
+	for (i = 0; i < MAX_ENTITIES; i++)
+	{
+		listEntities[i].animState = 0;
+		listEntities[i].flags = 0;
+		listEntities[i].input = NULL;
+		listEntities[i].inuse = 0;
+		listEntities[i].move = NULL;
+		listEntities[i].nextThink = 0;
+		listEntities[i].owner = NULL;
+		listEntities[i].setCamera = NULL;
+		listEntities[i].show = NULL;
+		listEntities[i].sprite = NULL;
+		listEntities[i].think = NULL;
+		listEntities[i].touch = NULL;
+		
+		for (j=0; j< 10; j++)
+		listEntities[i].thinknums[j] = 0;
+	}
+}
+
+// frees all entities in list
 void closeEntities()
 {
 	int i;
@@ -76,23 +89,12 @@ void closeEntities()
 	}
 }
 
-void Free_Ent(entity_t *self) //old
-{
-	self->inuse = 0;
-	memset (self, 0, sizeof(*self));
-}
 
 /**********************************************************************************************//**
  * @fn	void EntityAlive()
  *
- * @brief	Calls all entities' think function within limitations.  If any entity is being used,
- * 			is set to use their think function, and they are past due for calling it, call their
- * 			think function.  Also, specifically for the player, if my velocities are being
- * 			changed, move the entity accordingly. Lastly, move to the next entity in the array
- * 			of entities.
- *
- * @author	iwh
- * @date	4/10/2015
+ * @brief	Calls all entities' think function within limitations, then move to the next 
+ *			entity in the array of entities.
  **************************************************************************************************/
 void EntityAlive() 
 {
@@ -100,7 +102,7 @@ void EntityAlive()
 	entity_t *e = listEntities;
 	for (i = 0; i < MAX_ENTITIES; i++)
 	{
-		if (listEntities[i].inuse && IS_SET(listEntities[i].flags, ENT_THINK) )
+		if (listEntities[i].inuse && listEntities[i].think)
 		{
 			if (listEntities[i].nextThink <= getCurrentTime())
 			{
@@ -111,9 +113,7 @@ void EntityAlive()
 				call animthink; //replaced by show???
 			}*/
 			if (e->xVel != 0)
-			{
-				e->x += e->xVel;
-			}
+			{e->x += e->xVel;}
 			if (e->yVel != 0)
 			{ e->y += e->yVel;}
 		}
@@ -122,16 +122,12 @@ void EntityAlive()
 }
 
 /**********************************************************************************************//**
- * @fn	void EntityShow ()
+ * @fn	void entityShowAll ()
  *
- * @brief	Shows entitys' sprites onscreen.  If the entity is in use, and they are set to show
- * 			themselves and actually have a show function, call their show function.  In every
- * 			circumstance, we move to the next entity in our memory block of entities.
- *
+ * @brief	Show all entities on screen that have a set show function.
  * @author	iwh
- * @date	4/10/2015
  **************************************************************************************************/
-void EntityShow ()
+void entityShowAll ()
 {
 	int i = 0;
 	entity_t *e = listEntities;
@@ -140,7 +136,7 @@ void EntityShow ()
 		if (listEntities[i].inuse)
 		{
 			if (IS_SET(listEntities[i].flags, ENT_SHOW))
-			{
+			{ //check which form they are for
 				if (listEntities[i].show != NULL)
 				{
 					(*listEntities[i].show)(&listEntities[i]);
@@ -149,6 +145,98 @@ void EntityShow ()
 		}
 		e++;
 	}
+}
+
+void entityShowSwitch ()
+{
+	int i = 0;
+	entity_t *e = listEntities;
+
+	switch(Game.levelState)
+	{
+		case JEKYLL_MODE:
+		{
+			//printf("jekyll mode\n");
+			for (i = 0; i < MAX_ENTITIES; i++)
+			{
+				if (listEntities[i].inuse > 0)
+				{
+					if (IS_SET(listEntities[i].flags, ENT_FJEKYL))
+					{
+						if (listEntities[i].show != NULL)
+						{
+							(*listEntities[i].show)(&listEntities[i]);
+						}
+					}
+				}
+				e++;
+			}
+			break;
+		}
+
+		case HYDE_MODE:
+		{
+			//printf("hyde mode\n");
+			for (i = 0; i < MAX_ENTITIES; i++)
+			{
+				if (listEntities[i].inuse > 0)
+				{
+					if (IS_SET(listEntities[i].flags, ENT_FHYDE))
+					{
+						if (listEntities[i].show != NULL)
+						{
+							(*listEntities[i].show)(&listEntities[i]);
+						}
+					}
+				}
+				e++;
+			}
+			break;
+		}
+
+		default:
+				return; break;
+	}
+	
+
+
+	/*
+	if (Game.levelState == JEKYLL)
+	{
+		for (i = 0; i < MAX_ENTITIES; i++)
+		{
+			if (listEntities[i].inuse > 0)
+			{
+				if (IS_SET(listEntities[i].flags, ENT_FJEKYL))
+				{
+					if (listEntities[i].show != NULL)
+					{
+						(*listEntities[i].show)(&listEntities[i]);
+					}
+				}
+			}
+			e++;
+		}
+	}
+
+	if (Game.levelState == HYDE)
+	{
+		for (i = 0; i < MAX_ENTITIES; i++)
+		{
+			if (listEntities[i].inuse > 0)
+			{
+				if (IS_SET(listEntities[i].flags, ENT_FHYDE))
+				{
+					if (listEntities[i].show != NULL)
+					{
+						(*listEntities[i].show)(&listEntities[i]);
+					}
+				}
+			}
+			e++;
+		}
+	}
+	*/
 }
 
 /**********************************************************************************************//**
@@ -199,21 +287,22 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 {
 	int i = 0;
 	entity_t *e = listEntities;
-
+		
 	for (i = 0; i < max; i++)
 	{
 		if (isCollide (targ, ent)) //warning boss was solid in level 1
-		{
+		{	
 			if IS_SET(targ->flags, ENT_SOLID)
 			{
 				if (strcmp(targ->classname, "enemy") == 0)
 				{
 					//damage function?
-					player->currentHealth -= 10;
-					player->currentAnger += 4;
+					getPlayer()->currentHealth -= 10;
+					getPlayer()->currentAnger += 4;
 				}
 				else
 				{
+					printf("got here finally");
 					ent->x -= ent->xVel;
 					ent->y -= ent->yVel;
 				}
@@ -224,6 +313,11 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	}
 }
 
+void collisionEvents()
+{
+	// new collision event function
+}
+
 /**********************************************************************************************//**
  * @fn	void PlayerAlive ()
  *
@@ -232,48 +326,54 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
  * @author	iwh
  * @date	4/10/2015
  **************************************************************************************************/
-void PlayerAlive ()
+void PlayerAlive (entity_t * ent)
 {
-	if (getPlayer()->currentHealth > 0)
+	if (ent != NULL && ent-> currentHealth && ent->currentHealth > 0)
 	{
-		move(player);
-		set_Camera(player); //to be renamed cameraOn()
-		show(player);
+		move(ent);
+		cameraSetOn(ent);
+		show(ent);
+		//playerInput(ent);
 	}
 }
 
 /**********************************************************************************************//**
- * @fn	void handle_Input ( entity_t *ent )
+ * @fn	void playerInput ( entity_t *ent )
  *
- * @brief	Handles the input described by player via key events.
+ * @brief	Handles the playerInput described by player via key events.
  *
  * @author	iwh
  * @date	4/10/2015
  *
  * @param [in,out]	ent	If non-null, the ent.
  **************************************************************************************************/
-void handle_Input ( entity_t *ent ) //fix
+void playerInput ( entity_t *ent ) //fix
 {
-	if (ent)
+	while(SDL_PollEvent (&event))
 	{
-		if (event.type == SDL_KEYDOWN)
+		if(strcmp(ent->classname, "player") == 0)
 		{
-			switch (event.key.keysym.sym )
+			printf("event");
+			if (event.type == SDL_KEYDOWN)
 			{
-				case SDLK_UP: ent->yVel -= ent->height >> 4; break;
-				case SDLK_DOWN: ent->yVel += ent->height >> 4; break;
-				case SDLK_LEFT: ent->xVel -= ent->width >> 4; break;
-				case SDLK_RIGHT: ent->xVel += ent->width >> 4; break;
+				printf("event2");
+				switch (event.key.keysym.sym )
+				{
+					case SDLK_UP: ent->yVel -= ent->height >> 4; break;
+					case SDLK_DOWN: ent->yVel += ent->height >> 4; break;
+					case SDLK_LEFT: ent->xVel -= ent->width >> 4; break;
+					case SDLK_RIGHT: ent->xVel += ent->width >> 4; break;
+				}
 			}
-		}
-		else if ( event.type == SDL_KEYUP )
-		{
-			switch ( event.key.keysym.sym)
+			else if ( event.type == SDL_KEYUP )
 			{
-				case SDLK_UP: ent->yVel += ent->height >> 4; break;
-				case SDLK_DOWN: ent->yVel -= ent->height >> 4; break;
-				case SDLK_LEFT: ent->xVel += ent->width >> 4; break;
-				case SDLK_RIGHT: ent->xVel -= ent->width >> 4; break;
+				switch ( event.key.keysym.sym)
+				{
+					case SDLK_UP: ent->yVel += ent->height >> 4; break;
+					case SDLK_DOWN: ent->yVel -= ent->height >> 4; break;
+					case SDLK_LEFT: ent->xVel += ent->width >> 4; break;
+					case SDLK_RIGHT: ent->xVel -= ent->width >> 4; break;
+				}
 			}
 		}
 	}
@@ -294,11 +394,11 @@ void move ( entity_t *ent ) //better name? also needs to be reorganized
 {
 	ent->x += ent->xVel;
 	if (ent->xVel < 0)	
-		setStateTo(player, PL_LEFT);
+		setStateTo(getPlayer(), PL_LEFT);
 	else if (ent->xVel == 0)
-		setStateTo(player, PL_IDLE);
+		setStateTo(getPlayer(), PL_IDLE);
 	else
-		setStateTo(player, PL_RIGHT);
+		setStateTo(getPlayer(), PL_RIGHT);
 
 	if ( ( ent->x < 0 ) || ( ent->x + ent->width > L_WIDTH ) )
 	{
@@ -315,18 +415,20 @@ void move ( entity_t *ent ) //better name? also needs to be reorganized
 
 void show (entity_t *ent) //name change?
 {
+	if (ent)
+	{
 	/* check states here, if state, animate function draws next frame */
 	//if (ent->animState == PL_IDLE && playerAnim != NULL)
-	{
-		//getPlayer() should be changed to ent soon //#sprite
-		//Animate(getPlayer()->oldSprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
-		Animate(getPlayer()->sprite, &getPlayer()->sprite->animationSet->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
-		/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
-		at some random spot in memory */
+		{
+			//getPlayer() should be changed to ent soon //#sprite
+			//Animate(getPlayer()->oldSprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
+			Animate(ent->sprite, &ent->sprite->animationSet->set[0], ent->x - getCamera().x, ent->y - getCamera().y);
+			/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
+			at some random spot in memory */
 
-		//surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
+			//surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
+		}
 	}
-
 	//if an eneny && they are a SILENT_IDLE and its spritesheet is loaded
 	// animate the enemy, with this particular animation in the its animation set, at this position
 
@@ -338,7 +440,7 @@ void show_Ent (entity_t *ent) //name change?
 }
 
 /* Check Collision - name change? */
-bool isCollide (entity_t *otherent, entity_t *ent) /* example: A = Enemy, B = Player */
+bool isCollide (entity_t *otherent, entity_t *ent)
 {
 	SDL_Rect A;
 	SDL_Rect B;
@@ -353,10 +455,15 @@ bool isCollide (entity_t *otherent, entity_t *ent) /* example: A = Enemy, B = Pl
 	A.w = otherent->bBox.w;
 	A.h = otherent->bBox.h;
 
+	SDL_FillRect(getScreen(), &A, SDL_MapRGB(getScreen()->format, 0x77, 0x77, 0x77));
+	SDL_FillRect(getScreen(), &B, SDL_MapRGB(getScreen()->format, 0x77, 0x77, 0x77));
+
 	//combine bbox and players pos together check that in if statement
 	if((A.x + A.w >= B.x) && (A.x <= B.x + B.w) && (A.y + A.h >= B.y) && (A.y <= B.y + B.h))
-		return true; 
-		
+	{
+		//printf("a\n");
+		return true;
+	}
 
 	return false;
 }
@@ -370,7 +477,7 @@ void projThink (entity_t *ent)
 	}
 	else if (ent->thinkflags == 12)
 	{
-		Free_Ent(ent);
+		//Free_Ent(ent);
 	}
 	else
 	{
@@ -385,7 +492,7 @@ void alphaThink (entity_t *self)
 	if (self->thinkflags == 10)
 	{
 		self->xVel = 0;
-		fire_Bomb(self);
+		//fire_Bomb(self);
 	}
 	else 
 		self->xVel -= 0.2f; 
@@ -400,7 +507,7 @@ void betaThink (entity_t *self)
 	if (self->thinkflags == 7)
 	{
 		self->xVel = 0;
-		fire_Projectile(self);
+		//fire_Projectile(self);
 	}
 	else
 	{
@@ -448,7 +555,7 @@ void bossThink (entity_t *self)
 			if (self->xVel == 0)
 			{
 				self->thinknums[0] = 3;
-				fire_Projectile(self);
+				//fire_Projectile(self);
 			}
 			else
 			{
@@ -491,9 +598,12 @@ void bossThink (entity_t *self)
 }
 
 
-//player
-void playerProperties(entity_t *player)
+void initPlayer()
 {
+	entity_t * player = Init_Ent();
+
+	sprintf(player->classname, "player");
+
 	player->x = 0;
 	player->y = 340;
 
@@ -514,6 +624,10 @@ void playerProperties(entity_t *player)
 	player->sprite->animationSet = getAnimSet("sprite\\anim\\animsettest.json");
 
 	SET_FLAG(player->flags, ENT_SOLID);
+	SET_FLAG(player->flags, ENT_FJEKYL);
+
+	player->show = show;
+	player->think = PlayerAlive;
 }
 
 void setStateTo(entity_t *ent, int animState)
@@ -526,5 +640,14 @@ void setStateTo(entity_t *ent, int animState)
 
 entity_t* getPlayer()
 {
-	return player;
+	int i;
+
+	for (i = 0; i < MAX_ENTITIES; i++)
+	{
+		if (strcmp(listEntities[i].classname, "player") == 0)
+		{
+			return &listEntities[i];
+		}
+	}
+	return NULL;
 }

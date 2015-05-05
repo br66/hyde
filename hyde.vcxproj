@@ -58,13 +58,15 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <CompileAs>CompileAsC</CompileAs>
+      <AdditionalIncludeDirectories>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\include\chipmunk;C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glfw\include;C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sdl.lib;sdlmain.lib;sdl_image.lib;sdl_ttf.lib;sdl_net.lib;sdl_mixer.lib;yaml.lib;jansson.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;GLFW.lib;OpenGL32.lib;Glu32.lib;sdl.lib;sdlmain.lib;sdl_image.lib;sdl_ttf.lib;sdl_net.lib;sdl_mixer.lib;yaml.lib;jansson.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glew\lib\Release\Win32;C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glfw\lib-msvc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -94,6 +96,7 @@
     <ClInclude Include="src\graphic.h" />
     <ClInclude Include="src\include.h" />
     <ClInclude Include="src\level.h" />
+    <ClInclude Include="src\spawn.h" />
     <ClInclude Include="src\weapon.h" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +105,7 @@
     <ClCompile Include="src\gfunc.c" />
     <ClCompile Include="src\graphic.c" />
     <ClCompile Include="src\level.c" />
+    <ClCompile Include="src\spawn.c" />
     <ClCompile Include="src\weapon.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

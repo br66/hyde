@@ -1,218 +1,431 @@
-/* Functions called in the game loop */
+/* companion to game.c file */
 
+#include <jansson.h>
 #include "include.h"
+#include "spawn.h"
+
+game_t Game;
 
 static SDL_Surface *seconds = NULL;
-
 static SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-
 static TTF_Font *font = NULL;
-
 static Uint32 currentTime = 0;
+static bool running = true;
 
-extern int level;
+// for events
+SDL_Event event;
 
-extern SDL_Event event;
-
-extern SDL_Rect health; //to replace with getCurHealth();
-extern SDL_Rect anger; //to replace with getCurAnger();
-
-extern entity_t *enemy1;
-extern entity_t *enemy2;
-extern entity_t *enemy3;
+//extern SDL_Rect health; //to replace with getCurHealth();
+//extern SDL_Rect anger; //to replace with getCurAnger();
 
 extern bool done;
-extern bool running;
-
 extern Uint32 start;
 
-level_t levels[10];
-
-//#sprite
-sprite_t * gameOver = NULL;
-
-sprite_t *bgSprite = NULL;
-sprite_t *bgSprite2 = NULL;
-
-Mix_Music *music= NULL;
-Mix_Chunk *scratch = NULL;
-Mix_Chunk *high = NULL;
-Mix_Chunk *med = NULL;
-Mix_Chunk *low = NULL;
-
-/* new sprite_t - naming convention for entities with sprites _spr_t */
-//sprite_t * player_spr_t;
-
-//#sprite
-sprite_t *bombSprite = NULL;
-sprite_t *bossSprite = NULL;
-
-sprite_t *platformSprite1 = NULL;
-sprite_t *platformSpriteA1 = NULL;
-
-level_t *stage1 = NULL;
-level_t *stage2 = NULL;
-
-extern entity_t *platform1;
-extern entity_t *platform2;
-extern entity_t *platformA1;
-extern entity_t *platformA2;
-
-// DEPRECIATED
-bool init()
+// for beginning of game
+void begin()
 {
-	/* start SDL 1.2 */
 	if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 )
-	{
-		return false;
-	}
+		printf("SDL 1.2 error \n", SDL_GetError());
+	else printf("sdl init success \n");
 
-	/* fonts for text */
-	if ( TTF_Init() == -1 )
-	{
-		return false;
-	}
-
-	/* music */
 	if (Mix_OpenAudio ( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
-	{
-		return false;
-	}
+		printf("SDL Mixer error \n", SDL_GetError());
+	else printf("sdl mixer success \n");
 
-	/* Fourth argument creates the screens surface in system memory */
+	if ( TTF_Init() == -1 )
+		printf("SDL TTF error \n", SDL_GetError());
+	else printf("sdl ttf success \n");
+
+	/* graphics/sprites */
+	initSprites();
 	if (setupScreen() == false)
-	{
-		return false;
-	}
+		printf("problem setting up screen \n", SDL_GetError());
+	else printf("screen is set up \n");
 
+	/* entities */
+	initEntities();
 
-	/* Window title */
-	SDL_WM_SetCaption ("Game", NULL);
+	//begin() - initiates basic utilities for game to run
+		
+		/*
+		<< SDL 1.2
+		< graphics/spritelist
+		<< audio/soundlist
+		<< font
+		<< entity
+		<< mainmenu()/splash screen, same?
+		< precache sound
+		*/
 
-	/* If nothing's wrong, return true. */
-	return true;
+		/*
+		particles
+		HUD? not now
+		drawlevel?
+		*/
+
+	//start the game at the menu
+	setGameState(GSTATE_MENU);
+	setLvlState(NO_MODE);
+	SDL_WM_SetCaption ("HYDE", NULL);
+
 }
 
-/* Loads all files in one function, foreshadow to precaching? */
-bool load_Files()
+// for end of game
+void end()
 {
-	gameOver = load ("graphic/game/gameover.png", 32, 32);
-	if (gameOver == NULL)
-	{
-		printf("image error: %s \n", SDL_GetError());
-		return false;
-	}
-
-	/* lvl 1 sprites */
-	bgSprite = load("sprite/sky1.png", 32, 32);
-	if (bgSprite == NULL)
-	{
-		printf("error: %s\n", SDL_GetError());
-		return false;
-	}
-
-	bgSprite2 = load("sprite/sky2.png", 32, 32);
-	if (bgSprite2 == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-	platformSprite1 = load("sprite/lvl/platform1.png", 32, 32);
-	if (platformSprite1 == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	platformSpriteA1 = load("sprite/lvl/platform2.png", 32 ,32);
-	if (platformSpriteA1 == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	/* enemy sprites */
-	bombSprite = load("sprite/laserRed09.png", 32 ,32);
-	if (bombSprite == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	bossSprite = load("sprite/boss.png", 32, 32);
-	if (bossSprite == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	/* font */
-	font = TTF_OpenFont ("font/lazy.ttf", 28);
-	if (font == NULL)
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	/* audio */
-	music = Mix_LoadMUS ("sound/beat.wav");
-	if (music == NULL )
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-
-	/* sound effects */
-	scratch = Mix_LoadWAV ( "sound/scratch.wav" );
-	high = Mix_LoadWAV ( "sound/high.wav" );
-	med = Mix_LoadWAV ( "sound/medium.wav" );
-	low = Mix_LoadWAV ( "sound/low.wav" );
-	if ((scratch == NULL) || (high == NULL) || (med == NULL) || (low == NULL))
-	{
-		return false;
-		printf("error: %s\n", SDL_GetError());
-	}
-	return true;
+	Mix_CloseAudio();
+	TTF_Quit();
+	closeScreen();
+	closeSprites();
+	closeEntities();
+	SDL_Quit();
+	//destroy everything
 }
 
-/* Check level function - show corresponding level */
-void CheckLevel ()
+// for setting the game state
+void setGameState(int gameState)
 {
-	//#sprite
-	stage1 = &levels[0];
+	if (Game.gameState = gameState)
+		return;
+	else
+		Game.gameState = gameState;
+}
 
-	sprintf(stage1->level, "stage 1");
-	stage1->backgrounds[0] = bgSprite;
+// for setting the game state
+void setLvlState (int levelState)
+{
+	if (Game.levelState = levelState)
+		return;
+	else
+		Game.levelState = levelState;
+}
 
-	stage1->lvlEntities[0] = platform1;
-	stage1->lvlEntities[2] = platform1;
-	stage1->lvlEntities[3] = platform2;
-	stage1->lvlEntities[4] = platform2;
-	//---------------------------------
-	stage2 = &levels[1];
+void loadLevel(char * level)
+{
+	int i, j;
+	char *filename = NULL;
 
-	sprintf(stage2->level, "stage 2");
-	stage2->backgrounds[0] = bgSprite2;
+	json_t * parser;
+	json_error_t error; // error handler
 
-	stage2->lvlEntities[1] = platformA1;
-	stage1->lvlEntities[2] = platformA1;
-	stage1->lvlEntities[3] = platformA2;
-	stage1->lvlEntities[4] = platformA2;
+	json_t *data, *name, *background, *lvlpieces, *entity;
+	json_t *classname, *flag, *x, *y;
 
-	if (level == 1 && getPlayer()->currentHealth > 1)
+	// can't case switch strings :/
+	if (strcmp(level, "level 1") == 0)
 	{
-		show_LevelOne();
-
+		printf("loading level one\n");
+		sprintf(level, "data\\level\\level1.json");
 	}
-	if (level == 2 && getPlayer()->currentHealth > 1)
+	
+	if (strcmp(level, "level 2") == 0)
 	{
-		show_LevelTwo();
+		printf("loading level two");
+		sprintf(level, level);
+		return;
+	}
+
+	if (strcmp(level, "boss 1") == 0)
+	{
+		printf("loading boss 1");
+		sprintf(level, level);
+		return;
+	}
+
+	// loading the file
+	parser = json_load_file(level, 0, &error);
+	if (!parser)
+	{
+		fprintf(stderr, "wtf no parser\n file may not exist\n or be good format");
+		return;
+	}
+	if (!json_is_object(parser))
+	{
+		fprintf(stderr, "didn't find an object\n");
+		json_decref(parser);
+		return;
+	}
+
+	// name of level
+	name = json_object_get(parser, "name");
+	if(!json_is_string(name))
+	{
+		fprintf(stderr, "next line should've been the beginning of the lvl object");
+		json_decref(parser);
+		return;
+	}
+	//printf("%s \n", json_string_value(name));
+
+	// backgrounds for level
+	background = json_object_get(parser, "background");
+	if (!json_is_array(background))
+	{
+		fprintf(stderr, "didn't find an array\n");
+		json_decref(parser);
+		return;
+	}
+	for (i = 0; i < json_array_size(background); i++)
+	{
+		data = json_array_get(background, i);
+		if (!json_is_string(data))
+		{
+			fprintf(stderr, "next line should've been an object");
+			json_decref(parser);
+			return;
+		}
+		//printf("%s \n", json_string_value(data));
+	}
+	
+	// entities for level //if player already exists, get that address
+	lvlpieces = json_object_get(parser, "level");
+	if (!json_is_array(lvlpieces))
+	{
+		fprintf(stderr, "i was looking for the array of entities");
+		json_decref(parser);
+		return;
+	}
+	for (j = 0; j < json_array_size(lvlpieces); j++)
+	{
+		// get the entity
+		entity = json_array_get(lvlpieces, j);
+		if(!json_is_object(entity))
+		{
+			fprintf(stderr, "i was looking for the array of entities");
+			json_decref(parser);
+			return;
+		}
+
+		// get entity's attributes
+		classname = json_object_get(entity, "classname");
+		if (!json_is_string(classname))
+		{
+			fprintf(stderr, "no classname");
+			json_decref(parser);
+			return;
+		}
+		//printf("%s\n", json_string_value(classname));
+
+		flag = json_object_get(entity, "flag");
+		if (!json_is_string(flag))
+		{
+			fprintf(stderr, "no flag");
+			json_decref(parser);
+			return;
+		}
+		//printf("%s\n", json_string_value(flag));
+
+		x = json_object_get(entity, "x");
+		if (!json_is_integer(x))
+		{
+			fprintf(stderr, "no x");
+			json_decref(parser);
+			return;
+		}
+		//printf("%d\n", json_integer_value(x));
+
+		y = json_object_get(entity, "y");
+		if (!json_is_integer(y))
+		{
+			fprintf(stderr, "no y");
+			json_decref(parser);
+			return;
+		}
+		//printf("%d\n", json_integer_value(y));
+
+		spawnEntity(json_string_value(classname), (float)json_integer_value(x), (float)json_integer_value(y), json_string_value(flag));
+	}
+	
+	json_decref(parser);
+	printf("file data succesfully loaded");
+	return;
+}
+
+/* gets, sets, and closers to reduce amount of externs */
+SDL_Rect getCamera (void)
+{
+	return camera;
+}
+
+void cameraSetOn (entity_t *ent)
+{
+	int xmargin;
+	xmargin = 1000;
+
+	camera.x = ( (int)ent->x + ent->width + xmargin / 2) - L_WIDTH / 2;
+	camera.y = ( (int)ent->y + ent->height / 2) - L_HEIGHT / 2;
+
+	if ( camera.x < 0 )
+		camera.x = 0;
+	if ( camera.y < 0 )
+		camera.y = 0;
+	if ( camera.x > L_WIDTH - camera.w)
+		camera.x = L_WIDTH - camera.w;
+	if ( camera.y > L_HEIGHT - camera.h )
+		camera.y = L_HEIGHT - camera.h;
+}
+
+SDL_Rect *addrCamera(void)
+{
+	return &camera;
+}
+
+TTF_Font *getFont (void)
+{
+	return font;
+}
+
+Uint32 getCurrentTime(void)
+{
+	return currentTime;
+}
+void setCurrentTime(void)
+{
+	currentTime = SDL_GetTicks();
+}
+
+SDL_Surface *getSeconds(void)
+{
+	return seconds;
+}
+
+void setUpSeconds(char* msg, SDL_Color textColor) //where to render to and what color
+{
+	seconds = TTF_RenderText_Solid (getFont(), msg, textColor);
+	show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, getScreen(), NULL);
+
+	SDL_FreeSurface( seconds );
+}
+void closeSeconds(void)
+{
+	if (!seconds)
+	{
+		SDL_FreeSurface (seconds);
 	}
 }
 
-/* Rough translation of timecode, will attempt to better clarify later */
+SDL_Event getEvents()
+{
+	return event;
+}
+
+// for the player and hud
+/*void UpdateHealth()
+{
+	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I
+
+	if (getPlayer()->currentHealth < 0)
+	{
+		surface(gameOver, getScreen(), 0, 0, NULL);
+		//printf("game over");
+	}
+}*/
+
+/*void UpdateAnger()
+{
+	anger.w = (getPlayer()->currentAnger * 100) / getPlayer()->maxAnger; //how do I get rid of division? can I
+
+	if (getPlayer()->currentAnger >= 100)
+	{
+		//printf("level switch to #2 \n");
+
+		level = 2;
+
+		getPlayer()->currentAnger = 99;
+		getPlayer()->x = 0;
+		getPlayer()->y = 340;
+	}
+}*/
+
+// for game events (ex. keyboard input)
+// reminder: put player in level file
+void Events()
+{
+	while (SDL_PollEvent (&event))
+	{
+			if ( event.type == SDL_KEYDOWN )
+			{
+				switch ( event.key.keysym.sym )
+				{
+					case SDLK_m:
+						setGameState(GSTATE_MENU);
+						break;
+					case SDLK_l:
+						setGameState(GSTATE_LEVELEDIT); printf("got here\n");
+						break;
+					case SDLK_1:
+						setGameState(GSTATE_LEVEL1); printf("got here too\n");
+						break;
+					case SDLK_UP:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel -= getPlayer()->height >> 4; 
+							break;
+						}
+					case SDLK_DOWN:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel += getPlayer()->height >> 4;
+							break;
+						}
+					case SDLK_LEFT:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel -= getPlayer()->width >> 4;
+							break;
+						}
+					case SDLK_RIGHT: 
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel += getPlayer()->width >> 4; 
+							break;
+						}
+				}
+
+			}
+			else if (event.type == SDL_KEYUP)
+			{
+				switch ( event.key.keysym.sym )
+				{
+					case SDLK_UP:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel += getPlayer()->height >> 4; 
+							break;
+						}
+					case SDLK_DOWN:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel -= getPlayer()->height >> 4; 
+							break;
+						}
+					case SDLK_LEFT:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel += getPlayer()->width >> 4;
+							break;
+						}
+					case SDLK_RIGHT:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel -= getPlayer()->width >> 4; 
+							break;
+						}
+				}
+			}
+
+			if (event.type == SDL_QUIT)
+			{
+				done = true; // to call functions to prepare to close game
+				setGameState(-1); // don't know if this is safe..
+			}
+	}
+}
+
+/* for time */
 char *FormatNumber(Uint32 number, int min)
 {
+	/* Rough translation of timecode, will attempt to better clarify later */
+
 	Uint32 value = number;  //The number we get from the raw time (which is in Uint32 form)
 	static char array[10][20];  //Array w/ 3 10 rows & 20 columns
 	static int buffer = 0; //creating a buffer, saving the numbers
@@ -248,11 +461,6 @@ char *FormatNumber(Uint32 number, int min)
 	return array[buffer]; //???
 }
 
-#define TIMEUNIT_HOURS		3
-#define TIMEUNIT_MINUTES	2
-#define TIMEUNIT_SECONDS	1
-#define TIMEUNIT_HUNDRETHS	0
-
 char* FormatTimeString(Uint32 offset) //creates result var, converts raw time into h/m/s time and retruns it
 {
 	static char result[80]; /* ??? */
@@ -285,255 +493,19 @@ char* timeString(Uint32 offset)
 	return FormatNumber(ticks, 0);
 }
 
-// to be renamed cameraOn
-void set_Camera (entity_t *ent)
-{
-	int xmargin;
-	xmargin = 1000;
 
-	camera.x = ( (int)ent->x + ent->width + xmargin / 2) - L_WIDTH / 2;
-	camera.y = ( (int)ent->y + ent->height / 2) - L_HEIGHT / 2;
 
-	if ( camera.x < 0 )
-		camera.x = 0;
-	if ( camera.y < 0 )
-		camera.y = 0;
-	if ( camera.x > L_WIDTH - camera.w)
-		camera.x = L_WIDTH - camera.w;
-	if ( camera.y > L_HEIGHT - camera.h )
-		camera.y = L_HEIGHT - camera.h;
-}
-
+/* obsolete function */
 /* for program exiting, cleaning and freeing up memory */
 void clear()
 {
-	//#sprite
-	closeSprites();
 	closeSeconds();
-	closeScreen(); //#sprite
-	closeEntities();
 
-	/* Closing the fonts and text engine */
+	/* Closing the font */
 	TTF_CloseFont (font);
-	TTF_Quit();
-
-	/* Getting the audio out of memory */
-	Mix_FreeChunk (scratch);
-	Mix_FreeChunk (high);
-	Mix_FreeChunk (med);
-	Mix_FreeChunk (low);
-
-	Mix_FreeMusic (music);
-
-	/* Close Audio engine */
-	Mix_CloseAudio();
-
-	//Will free the screen surface and close SDL
-	SDL_Quit();
 }
 
-// MODERN
-SDL_Rect getCamera (void)
-{
-	return camera;
-}
-SDL_Rect *addrCamera(void)
-{
-	return &camera;
-}
-
-TTF_Font *getFont (void)
-{
-	return font;
-}
-
-Uint32 getCurrentTime(void)
-{
-	return currentTime;
-}
-void setCurrentTime(void)
-{
-	currentTime = SDL_GetTicks();
-}
-
-SDL_Surface *getSeconds(void)
-{
-	return seconds;
-}
-void setUpSeconds(char* msg, SDL_Color textColor) //where to render to and what color
-{
-	seconds = TTF_RenderText_Solid (getFont(), msg, textColor); //setUpSeconds();
-	show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, getScreen(), NULL);
-
-	SDL_FreeSurface( seconds );
-}
-void closeSeconds(void)
-{
-	if (!seconds)
-	{
-		SDL_FreeSurface (seconds);
-	}
-}
-
-void UpdateHealth()
-{
-	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I
-
-	if (getPlayer()->currentHealth < 0)
-	{
-		surface(gameOver, getScreen(), 0, 0, NULL);
-		//printf("game over");
-	}
-}
-
-void UpdateAnger()
-{
-	anger.w = (getPlayer()->currentAnger * 100) / getPlayer()->maxAnger; //how do I get rid of division? can I
-
-	if (getPlayer()->currentAnger >= 100)
-	{
-		//printf("level switch to #2 \n");
-
-		level = 2;
-
-		getPlayer()->currentAnger = 99;
-		getPlayer()->x = 0;
-		getPlayer()->y = 340;
-	}
-}
-
-// RE-DO
-void Events()
-{
-	while (SDL_PollEvent (&event))
-		{
-			handle_Input(getPlayer());
-
-			if ( event.type == SDL_KEYDOWN )
-			{
-				switch ( event.key.keysym.sym )
-				{
-					case SDLK_1:
-						if (level != 1)
-						{
-							level = 1;
-
-							//enemy 1 initial position
-							enemy1->x = 600;
-							enemy1->y = 350;
-							enemy1->thinkflags = 0;
-							enemy1->xVel = 0;
-
-							//enemy 2 initial position
-							enemy2->x = 770;
-							enemy2->y = 350;
-							enemy2->thinkflags = 0;
-							enemy2->xVel = 0;
-
-							//enemy 3 initial position
-							enemy3->x = 900;
-							enemy3->y = 350;
-							enemy3->thinkflags = 0;
-							enemy3->xVel = 0;
-							enemy3->yVel = 0;
-
-							//boss 3 initial position
-							//boss->x = 1000;
-							//boss->y = 300;
-							//boss->thinkflags = 0;
-							//boss->xVel = 0;
-							//boss->yVel = 0;
-						}
-						break;
-					case SDLK_2:
-						if (level != 2)
-						{
-							level = 2;
-
-							//enemy 1 initial position, just in case
-							enemy1->x = 600;
-							enemy1->y = 350;
-							enemy1->thinkflags = 0;
-							enemy1->xVel = 0;
-
-							//enemy 2 initial position, just in case
-							enemy2->x = 770;
-							enemy2->y = 350;
-							enemy2->thinkflags = 0;
-							enemy2->xVel = 0;
-
-							//enemy 3 initial position, just in case
-							enemy3->x = 900;
-							enemy3->y = 350;
-							enemy3->thinkflags = 0;
-							enemy3->xVel = 0;
-							enemy3->yVel = 0;
-
-						}
-						break;
-					case SDLK_s:
-						if (running == true)
-						{
-							running = false;
-							start = 0;
-						}
-						else
-						{
-							running = true;
-							start = SDL_GetTicks();
-						}
-					}
-				}
-
-			if(event.type == SDL_QUIT)
-			{
-				done = true;
-			}
-		}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// NEW
-void begin() //before game loop
-{
-	if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 )
-		printf("SDL 1.2 error \n", SDL_GetError());
-	else printf("sdl init success");
-	
-	//initBasic //initiates basic utilities for game to run
-		/* 
-		graphics/spritelist
-		audio/soundlist
-		font
-		entity
-		particles
-		HUD?
-		mainmenu()/splash screen, same?
-		drawlevel?
-		precache sound
-		*/
-
-	//set Game state to splash
-	//load any files needed
-}
-
+// new - may replace some existing functions
 void events()
 {
 	/* if state is splash
@@ -551,9 +523,4 @@ void draw()
 void think() //also known as update
 {
 	//update
-}
-
-void end()
-{
-	//destroy everything
 }

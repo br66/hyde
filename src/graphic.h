@@ -52,6 +52,7 @@ typedef struct sprite_s
 	SDL_Surface		*graphic; //can be a single sprite or a spritesheet
 	animset_t		*animationSet; //each sprite has a set of animaitions associated with it
 	char			filename[40];
+	int				priority;
 	int				width, height;
 	int				framesperline;
 	int				used; //reference count
@@ -59,9 +60,12 @@ typedef struct sprite_s
 }sprite_t;
 
 // functions for sprite_t
-void initSprites ();
-void closeSprites ();
+void initSprites (); // start sprites list
+void closeSprites (); // close sprites list
+void filterSpritesLow(); // close low priority sprites
+void filterSpritesHigh(); // close high priority sprites
 
+// loading and showing
 sprite_t* load (char *filename, int width, int height);
 void freeSprite (sprite_t * sprite);
 void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip); // needed by setUpSeconds()
@@ -74,8 +78,8 @@ SDL_Surface* getScreen ();
 void closeScreen ();
 
 // functions for animation
-animset_t *getAnimSet (char *filename); //will find anim set file and see if loaded already, add it to array of loaded ones
 animset_t *InitAnimSet(void);
+animset_t *getAnimSet (char *filename); //will find anim set file and see if loaded already, add it to array of loaded ones
 void Animate (sprite_t * spritesheet, animation_t *animation, float x, float y);
 
 #endif

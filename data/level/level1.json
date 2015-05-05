@@ -1,0 +1,59 @@
+{
+	"name" : "level 1",
+	"background" : ["bglvl1_1.png", "bglvl1_2.png"],
+	
+	"level" : 
+	[
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 0,
+			"y" : 460
+		},
+
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 62,
+			"y" : 460
+		},
+
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 124,
+			"y" : 460
+		},
+
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 186,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 248,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 310,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 200,
+			"y" : 300
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 262,
+			"y" : 300
+		}
+	]
+}

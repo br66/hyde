@@ -1,49 +1,114 @@
 history
 
-4.28.15
+5.5.15
 -------
 general changes
 ------------------
-new history file, cleaned up process.txt
+near-entire re-programming of game
+each mode is a game loop which finishes depending on the game state (Game.gameState)
+also level states: each level is two in one; one for jekyll, one for hyde (Game.levelState)
+time not running yet
+redesigned many files
+new folders, assets, menu screens
+new spawn class
+level 1 in .json file
 
-removed SDL_Surface * sprite in entity structure //and all references to it (was renamed oldSprite before removal)
-renamed sprites that were originally SDL_Surfaces to sprite_t's
-created game over sprite for showing when health is below zero, successful implementation
-also checking health in various parts of the code so hud, player, etc won't show
-removed excess code regarding freeing surfaces
-new graphics folder
-references to asset class completely removed
-depreciated animation class (.h and .c) removed from solution
+
+include header
+--------------
+gfunc.h was included twice
+
 
 graphic class
 -------------
-SDL_Surface load_Image function removed
-changed color key in previous commits, but no longer needed
-removed old Animate function, replaced with new one
-show_Surface replaced with surface
-renamed values in animation state (animState) enumeration
+.h
+--
+developed concept for low and high priority sprites to determine which should be removed...
+... and which should be saved in terms of memory for later use
+
+.c
+--
+initating and closing sprites list functions
+fixed freeSprite func
+
 
 game/gfunc class
 ----------
-fixed sprite list glitch: initSprites was being called too late
-freeing surfaces now done in closeSprites, frees all sprites in array
-updateHealth in charge of showing gameOver screen
-made enemies interactive again and changed their sprites, except the boss
-show_Surface has 1 dependency in the setUpSeconds function
+.h
+--
+new game_t type for entire game to check game and level states
+fully removed yaml
+redesigned header file
+enumerations for game/level states
+
+game.c
+------
+much less externs
+functions are also game states/game modes (ex. mainmenu() has a game loop...
+...which runs until the game state is changed)
+strategically showing sprites once and freeing the memory when possible
+levels are now loaded from .json files (loadLevel)
+enemies/entities no longer hard coded into game, loaded from file
+int level no longer used
+main game loop greatly streamlined
+
+gfunc.c
+-------
+json/jansson used to load data from files
+has own separate SDL_Event
+sprites/entites reset after levels (subject to change)
+hard coded sprites removed (ex. sprite_t * bgSprite)
+new begin function for starting game
+new end function for ending game
+new window caption
+hard coded levels removed (level_t * stage1)
+new functions for setting game/level states
+new function for loading level from data (loadLevel)
+checkLevel depreciated
+renamed set_Camera func to cameraSetOn
+clear function depreciated
+player input function absorbed into events
+resetting ent positions depreciated
+events function is now used differently, used in all game modes for... 
+...changing the game mode/state, handling player input
+
 
 level class
 -----------
-start function pointer removed from level structures
-removed level array declaration from level.h
+the level class has been depreciated
+
 
 entity class
 ------------
-removed lvlTrigger entity, no longer needed for testing
-show_Ent function changed to show a sprite rather than a raw surface
-changed how much health and anger are affected by enemies for testing game over screen
+.h
+--
+new defines for sprites corresponding to level state
+renamed some func pointers in entity struct
+functions in header now organized
+function for setting sprite's animation state/set
 
-weapon class
-------------
-bombs and projectiles should hit the player now
+.c
+--
+hardcoded entities are a thing of the past (ex. entity_t * player)
+separate SDL_Event for this class
+maintenance on free entity, entity alive, show entity, player alive, player input, and move function
+made new entity show switch function showing entities corresponding to player's mode/level state
+creating new functions for initiating the entity list
+close entities frees all entities
+collision function needs to be changed
+created new function to initialize the player with temp pointer (initPlayer())
+updated getplayer func now looks thru entity list to find player classname
+player properties function depreciated
+using entity think function pointer
 
 
+spawn class (new)
+-----------
+.h
+--
+new header for spawning instance functions
+
+.c
+--
+spawn entity function spawns objects corresponding to the function argument...
+... ex. spawnEntity("kid") will spawn an instance of a kid

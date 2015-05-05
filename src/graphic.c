@@ -7,22 +7,51 @@
 #include "gfunc.h"
 
 // declarations for screen/game window
-static SDL_Surface *screen = NULL;
+static SDL_Surface *screen = NULL; //main screen, menu and game backgrounds will be here
+static SDL_Surface *levelscreen = NULL; //entities will be here, background will be excluded for parallax
 
 // declarations for sprites
 sprite_t listSprites[MAX_SPRITES]; // similar to listEntities, keeps track of how many sprites have been loaded
 int numSprites;
 
 // declarations for animation
-animset_t loadedAnimSets [MAX_SETS]; // similar to listEntities, keeps track of how many animation set are loaded
+animset_t loadedAnimSets [MAX_SETS]; // similar to listEntities, keeps track of how many animation sets are loaded
 int numSets;
 
+// for the entire list, give me that fresh 0x00!
+void initSprites ()
+{
+	int i; numSprites = 0;
+
+	memset(listSprites,0,sizeof(sprite_t) * MAX_SPRITES); //gets 50 blocks of memory
+
+	for (i = 0; i < MAX_SPRITES; i++)
+	{
+		listSprites[i].graphic = NULL;
+		listSprites[i].animationSet = NULL;
+		listSprites[i].framesperline = 0;
+		listSprites[i].height = 0;
+		listSprites[i].width = 0;
+		listSprites[i].used = 0;
+	}
+}
+
+// free all sprites from the list
+void closeSprites ()
+{
+	int i;
+
+	for (i = 0; i < MAX_SPRITES; i++)
+		freeSprite(&listSprites[i]);
+}
+
+// load sprite from file
 sprite_t* load (char *filename, int width, int height)
 {
 	int i;
 	SDL_Surface * temp;
 
-	/* will replace with searching thru list of loaded sprites */
+	/* searching thru list of loaded sprites to check if i already have the file asked for loaded */
 	for (i = 0; i < numSprites; i++)
 	{
 		if (strncmp(filename, listSprites[i].filename, 20) == 0)
@@ -53,14 +82,20 @@ sprite_t* load (char *filename, int width, int height)
 		exit(0);
 	}
 
+	// setting [i]'s image
 	listSprites[i].graphic = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
-	// setting [i]'s image
 
 	SDL_SetColorKey(listSprites[i].graphic, SDL_SRCCOLORKEY, SDL_MapRGB(listSprites[i].graphic->format, 255, 255, 255));
 
-	strncpy(listSprites[i].filename, filename, 40);
 	// setting [i]'s filename
+	strncpy(listSprites[i].filename, filename, 40);
+	
+	/* depending on their filename, function will determine if sprite is high 
+	or low priority if you have platform in your name, most likely high
+	if you're specific to one level, low priority and expendable gotta find 
+	function that only searches through some of the char array may also include 
+	what levels they belong to */
 
 	listSprites[i].framesperline = 16;
 	listSprites[i].width = width;
@@ -70,10 +105,15 @@ sprite_t* load (char *filename, int width, int height)
 	return &listSprites[i];
 }
 
+// free individual sprite from memory
 void freeSprite (sprite_t * sprite)
 {
-	sprite->used--;
+	if (sprite->used < 0)
+		sprite->used = 0;
+	else
+		sprite->used--;
 
+	//remove?
 	if (sprite->used == 0)
 	{
 		strcpy(sprite->filename, "\0"); // clears the filename string
@@ -85,7 +125,7 @@ void freeSprite (sprite_t * sprite)
 	}
 }
 
-//to remove - 1 dependency (void setUpSeconds, game.c, line 264 approx.)
+// old function for blitting surfaces to screen - to remove, 1 dependency (void setUpSeconds, game.c, line 264 approx.)
 void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
 	SDL_Rect offset;
@@ -95,7 +135,7 @@ void show_Surface (float x, float y, SDL_Surface* source, SDL_Surface* destinati
 
 	SDL_BlitSurface( source, clip, destination, &offset);
 }
-//to remove - may be absorbed into animate function
+// shows individual frame for animation - may be absorbed into animate function
 void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float sy, int frame) // to get entity and its framesperline for its sprite
 {
 	SDL_Rect source, dest;
@@ -113,32 +153,7 @@ void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float 
 	SDL_BlitSurface (spritesheet, &source, surface, &dest); //#sprite
 }
 
-void initSprites ()
-{
-	int i; numSprites = 0;
-
-	memset(listSprites,0,sizeof(sprite_t) * MAX_SPRITES); //gets 50 blocks of memory
-
-	for (i = 0; i < MAX_SPRITES; i++)
-	{
-		listSprites[i].graphic = NULL;
-		listSprites[i].animationSet = NULL;
-		listSprites[i].framesperline = 0;
-		listSprites[i].height = 0;
-		listSprites[i].width = 0;
-		listSprites[i].used = 0;
-		//for the entire list, give me that fresh 0x00!
-	}
-}
-
-void closeSprites ()
-{
-	int i;
-
-	for (i = 0; i < MAX_SPRITES; i++)
-		freeSprite(&listSprites[i]);
-}
-
+// new function for blitting sprites to the game surface
 void surface (sprite_t * source, SDL_Surface * destination, float x, float y, SDL_Rect * clip)
 {
 	SDL_Rect offset;
@@ -152,6 +167,14 @@ void surface (sprite_t * source, SDL_Surface * destination, float x, float y, SD
 // functions for screen/game window
 bool setupScreen()
 {
+	/*Uint32 viewFlags = SDL_ANYFORMAT | SDL_SRCALPHA;
+	Uint32 hwFlags = 0;
+	
+	if (SDL_VideoModeOK(1024, 600, 32, viewFlags | SDL_HWSURFACE))
+	{
+
+	}*/
+	
 	screen = SDL_SetVideoMode (SCREEN_WIDTH, SCREEN_HEIGHT, BITSPERPIXEL, SDL_SWSURFACE);
 	if (screen == NULL)
 	{
@@ -160,11 +183,13 @@ bool setupScreen()
 	return true;
 }
 
+// get function for files that want the screen, but can't access it normally
 SDL_Surface* getScreen (void)
 {
 	return screen;
 }
 
+// get rid of the screen, usually used for the end of game
 void closeScreen(void)
 {
 	SDL_FreeSurface (screen);
@@ -296,6 +321,7 @@ animset_t *getAnimSet (char *filename)
 	return test; //address
 }
 
+// motor for animating
 void Animate (sprite_t * spritesheet, animation_t *animation, float x, float y)
 {
 	if(animation->nextFrameTime <= getCurrentTime()) 
@@ -320,5 +346,6 @@ void Animate (sprite_t * spritesheet, animation_t *animation, float x, float y)
 		animation->frameCounter++;
 	}
 
+	// actually shows the new frame
 	showFrame(spritesheet->graphic, getScreen(), x, y, animation->frames[animation->curFrame]);
 }

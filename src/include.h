@@ -17,7 +17,6 @@
 #include "gfunc.h"
 #include "graphic.h"
 #include "entity.h"
-#include "gfunc.h"
 #include "weapon.h"
 #include "level.h"
 

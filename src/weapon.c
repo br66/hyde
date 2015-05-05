@@ -1,7 +1,6 @@
-#include "include.h"
+//#include "include.h"
 
-extern sprite_t *bombSprite;
-
+/*
 void fire_Bomb (entity_t *ent)
 {
 	entity_t *bomb;
@@ -24,11 +23,11 @@ void fire_Bomb (entity_t *ent)
 
 void fire_Projectile (entity_t *shooter)
 {
-	entity_t *projectile; /* create projectile */
+	entity_t *projectile; /* create projectile *//*
 
-	projectile = Init_Ent(); /* put into memory */
+	projectile = Init_Ent(); /* put into memory *//*
 
-	projectile->owner = shooter; /* owner of this projectile is whoever shot it (whoever called this function) */
+	projectile->owner = shooter; /* owner of this projectile is whoever shot it (whoever called this function) *//*
 	sprintf(projectile->classname, "enemy");
 
 	projectile->x = shooter->x;
@@ -45,4 +44,4 @@ void fire_Projectile (entity_t *shooter)
 
 	projectile->think = projThink;
 	projectile->nextThink = getCurrentTime() + 100;
-}
+}*/

@@ -3,6 +3,7 @@
  *
  * @brief	Declares the entity class.  Used for all in-game that act and can be acted on.
  **************************************************************************************************/
+#include "include.h"
 
 #ifndef _ENTITY_
 #define _ENTITY_
@@ -12,12 +13,12 @@
 #define ENT_SHOW	0x00000001
 #define ENT_THINK	0x00000002
 #define ENT_SOLID	0x00000004
+#define ENT_FJEKYL	0x00000008 // for sprites that show if you are in jekyll form
+#define ENT_FHYDE	0x00000016 // for sprites that show if you've transformed to hyde
 
 #define REMOVE_FLAG(x, y) (x &= ~y)
 #define SET_FLAG(x, y) (x |= y)
 #define IS_SET(x, y) (x & y)
-
-#include "include.h"
 
 /**********************************************************************************************//**
  * @enum	animState
@@ -26,7 +27,7 @@
  **************************************************************************************************/
 enum animState
 {
-	PL_IDLE, //changed from anim_idle to player idle
+	PL_IDLE,
 	PL_LEFT,
 	PL_RIGHT,
 	SIL_IDLE,
@@ -51,8 +52,8 @@ typedef struct entity_s
 
 	/** @brief	Bounding Box - for collision */
 	SDL_Rect		bBox;
-	/** @brief	Will be removed. */
-	SDL_Rect		fill;
+	/** @brief	Trigger - for triggering think functions **/
+	SDL_Rect		trigger;
 	/** @brief	Sprite - The entity's new sprite. */
 	sprite_t		*sprite;
 	/** @brief	State of the animation. Might change to just state */
@@ -82,18 +83,9 @@ typedef struct entity_s
 	/** @brief	The maximum amt. of anger the entity could have. */
 	int				maxAnger;
 
-	/**********************************************************************************************//**
-	 * @struct	entity_s*
-	 *
-	 * @brief	The entity that owns this one.
-	 *
-	 * @author	iwh
-	 * @date	3/24/2015
-	 **************************************************************************************************/
-
 	struct entity_s	*owner; 
 
-	void			(*handle_Input)(struct entity_s *ent);
+	void			(*input)(struct entity_s *ent);
 	void			(*move)(struct entity_s *ent);
 	void			(*show)(struct entity_s *ent);
 
@@ -104,29 +96,35 @@ typedef struct entity_s
 
 } entity_t;
 
-//UNORGAINIZED
+// for initialization/removal of entities
 entity_t *Init_Ent (void);
-void Free_Ent(entity_t *self);
-void closeEntities();
+void freeEnt (entity_t * self);
+void initEntities ();
+void closeEntities ();
 
+// calling entity funcs
 void EntityAlive ();
-void EntityShow ();
+void entityShowAll (); // shows all entities
+void entityShowSwitch (); // shows all entities that make up the jekyll lvl design
+void entityShowHyde (); // shows all entities that make up the hyde lvl design
 
+// collision detection
 void CheckCollisions ();
 void CheckCollision (entity_t *ent, entity_t *targ, int max);
-
-void PlayerAlive ();
-
-void handle_Input( entity_t *ent );
-void move( entity_t *ent );
-void show( entity_t *ent ); // show frames from a spritesheet
-void show_Ent( entity_t *ent ); // placeholder function for merely showing single sprite
-
-//--------------------------------------
-
-/* technical */
-void set_Camera( entity_t *ent); // to be renamed cameraOn()
 bool isCollide (entity_t *otherent, entity_t *ent);
+
+// setting up the player
+entity_t* getPlayer (void);
+void initPlayer ();
+
+// the player
+void PlayerAlive (entity_t * ent);
+void playerInput ( entity_t *ent );
+void move ( entity_t *ent );
+void show ( entity_t *ent ); // show frames from a spritesheet
+
+// all other ents
+void show_Ent ( entity_t *ent ); // placeholder function for merely showing single sprite
 
 /* thinks */
 void projThink (entity_t *ent);
@@ -135,11 +133,7 @@ void betaThink (entity_t *self);
 void gammaThink (entity_t *self);
 void bossThink (entity_t *self);
 
-/* for the player */
-void playerProperties(entity_t *player);
-entity_t* getPlayer(void);
-
-/* setting states */
-void setStateTo(entity_t *ent, int animState);
+/* setting the entity states */
+void setStateTo (entity_t *ent, int animState);
 
 #endif
