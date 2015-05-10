@@ -39,11 +39,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\</OutDir>
-    <IncludePath>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\include\chipmunk;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\include;C:\yaml\yaml-0.1.5\include;C:\libraries\SDL_net-1.2.8\include;C:\libraries\SDL_mixer-1.2.12\include;C:\libraries\SDL_image-1.2.12\include;C:\libraries\SDL_ttf-2.0.11\include;C:\libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
-    <ReferencePath>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\vc10\chipmunk\Win32\Release;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\vc10\chipmunk\Win32\Release;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\libraries\Chipmunk-6.2.2\include\chipmunk;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\include;C:\yaml\yaml-0.1.5\include;C:\libraries\SDL_net-1.2.8\include;C:\libraries\SDL_mixer-1.2.12\include;C:\libraries\SDL_image-1.2.12\include;C:\libraries\SDL_ttf-2.0.11\include;C:\libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\libraries\Chipmunk-6.2.2\msvc\vc10\chipmunk\Win32\Release;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\libraries\Chipmunk-6.2.2\bin\src\Debug;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
-    <SourcePath>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\src;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\src;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\src;$(SourcePath)</SourcePath>
+    <SourcePath>C:\libraries\Chipmunk-6.2.2\src;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\src;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -52,21 +52,21 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <CompileAs>CompileAsC</CompileAs>
-      <AdditionalIncludeDirectories>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\include\chipmunk;C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glfw\include;C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalIncludeDirectories>./;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\Box2D</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;GLFW.lib;OpenGL32.lib;Glu32.lib;sdl.lib;sdlmain.lib;sdl_image.lib;sdl_ttf.lib;sdl_net.lib;sdl_mixer.lib;yaml.lib;jansson.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;Glu32.lib;sdl.lib;sdlmain.lib;sdl_image.lib;sdl_ttf.lib;sdl_net.lib;sdl_mixer.lib;jansson.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <AdditionalLibraryDirectories>C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glew\lib\Release\Win32;C:\Users\iwh-pc\Documents\Chipmunk\Chipmunk-7.0.0\msvc\glfw\lib-msvc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>./lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -97,6 +97,7 @@
     <ClInclude Include="src\include.h" />
     <ClInclude Include="src\level.h" />
     <ClInclude Include="src\spawn.h" />
+    <ClInclude Include="src\textInput.h" />
     <ClInclude Include="src\weapon.h" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +107,7 @@
     <ClCompile Include="src\graphic.c" />
     <ClCompile Include="src\level.c" />
     <ClCompile Include="src\spawn.c" />
+    <ClCompile Include="src\textInput.c" />
     <ClCompile Include="src\weapon.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

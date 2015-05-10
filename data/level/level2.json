@@ -1,0 +1,264 @@
+{
+	"name" : "level 1",
+	"background" : ["bglvl1_1.png", "bglvl1_2.png"],
+	
+	"level" : 
+	[
+		{
+			"classname" : "platform 1",
+			"flag" : "hyde",
+			"x" : 0,
+			"y" : 460
+		},
+
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 62,
+			"y" : 460
+		},
+
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 124,
+			"y" : 460
+		},
+
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 186,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 248,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 310,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 200,
+			"y" : 300
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 262,
+			"y" : 300
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 372,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 434,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 496,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 558,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 620,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 682,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 744,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 806,
+			"y" : 460
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 930,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 1201,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 1472,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 1743,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 2014,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 2285,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 2556,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 2827,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 3098,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 3369,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 3640,
+			"y" : 435
+		},
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 3911,
+			"y" : 435
+		},			
+		{
+			"classname" : "platform 2",
+			"flag" : "jekyll",
+			"x" : 4182,
+			"y" : 435
+		},		
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4453,
+			"y" : 460
+		},		
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4515,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4577,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4639,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4701,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4763,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4825,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4887,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 4949,
+			"y" : 460
+		},	
+		{
+			"classname" : "platform 1",
+			"flag" : "jekyll",
+			"x" : 868,
+			"y" : 460
+		},		
+		{
+			"classname" : "kid",
+			"flag" : "jekyll",
+			"x" : 262,
+			"y" : 435
+		},
+		{
+			"classname" : "bomber",
+			"flag" : "jekyll",
+			"x" : 300,
+			"y" : 435
+		},
+		{
+			"classname" : "bird",
+			"flag" : "hyde",
+			"x" : 462,
+			"y" : 200
+		}
+		
+	]
+}

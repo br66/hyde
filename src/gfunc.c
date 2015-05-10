@@ -6,20 +6,38 @@
 
 game_t Game;
 
+// for time
 static SDL_Surface *seconds = NULL;
-static SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-static TTF_Font *font = NULL;
 static Uint32 currentTime = 0;
-static bool running = true;
+static TTF_Font *time = NULL;  // to rename time font
+extern bool done;
+extern Uint32 start;
+extern bool running;
+static bool pause = false;
+//long pauseTime;
+
+// for the mouse
+static sprite_t * mouseSprite;
+int mouseX, mouseY;
+int objX = 0;
+int	objY = 0;
+
+//for lvldesign
+FILE *fp = NULL;
+sprite_t * testTile = NULL; // to be replaced with list of defined level objects?
+
+// the camera
+static SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
 // for events
 SDL_Event event;
 
-//extern SDL_Rect health; //to replace with getCurHealth();
-//extern SDL_Rect anger; //to replace with getCurAnger();
+// for the hud
+SDL_Rect health;
+SDL_Rect anger;
 
-extern bool done;
-extern Uint32 start;
+// for physics
+cpSpace * space;
 
 // for beginning of game
 void begin()
@@ -45,29 +63,17 @@ void begin()
 	/* entities */
 	initEntities();
 
-	//begin() - initiates basic utilities for game to run
-		
-		/*
-		<< SDL 1.2
-		< graphics/spritelist
-		<< audio/soundlist
-		<< font
-		<< entity
-		<< mainmenu()/splash screen, same?
-		< precache sound
-		*/
-
-		/*
-		particles
-		HUD? not now
-		drawlevel?
-		*/
+	time = TTF_OpenFont("font/lazy.ttf", 20);
+	if ( time == NULL)
+	{
+		fprintf(stderr, "ttf font error: %s \n", SDL_GetError());
+		return;
+	}
 
 	//start the game at the menu
-	setGameState(GSTATE_MENU);
+	setGameState(GSTATE_MENU, true);
 	setLvlState(NO_MODE);
 	SDL_WM_SetCaption ("HYDE", NULL);
-
 }
 
 // for end of game
@@ -79,13 +85,51 @@ void end()
 	closeSprites();
 	closeEntities();
 	SDL_Quit();
+	exit(0);
 	//destroy everything
 }
 
-// for setting the game state
-void setGameState(int gameState)
+void setGameState(int gameState, bool setup)
 {
-	if (Game.gameState = gameState)
+	if (setup == true)
+	{
+			if (fp != NULL)
+			{
+				fclose(fp);
+			}
+
+			if (space != NULL)
+			{
+				cpSpaceFree(space);
+				space = NULL;
+				printf("space has been freed\n");
+			}
+
+			closeSprites();
+			closeEntities();
+
+		switch (gameState) //local gameState
+		{
+			case GSTATE_MENU:
+				mainmenuSetup(); break;
+			case GSTATE_LEVEL1:
+				initSprites();
+				initEntities();
+				levelOneSetup(); break;
+			case GSTATE_LEVEL2:
+				initSprites();
+				initEntities();
+				levelTwoSetup(); break;
+			case GSTATE_GAMEOVER:
+				gameOverSetup(); break;
+			case GSTATE_LEVELEDIT:
+				initSprites();
+				initEntities();
+				levelEditSetup();
+		}
+	}
+
+	if (Game.gameState == gameState)
 		return;
 	else
 		Game.gameState = gameState;
@@ -94,7 +138,7 @@ void setGameState(int gameState)
 // for setting the game state
 void setLvlState (int levelState)
 {
-	if (Game.levelState = levelState)
+	if (Game.levelState == levelState)
 		return;
 	else
 		Game.levelState = levelState;
@@ -103,7 +147,6 @@ void setLvlState (int levelState)
 void loadLevel(char * level)
 {
 	int i, j;
-	char *filename = NULL;
 
 	json_t * parser;
 	json_error_t error; // error handler
@@ -111,29 +154,31 @@ void loadLevel(char * level)
 	json_t *data, *name, *background, *lvlpieces, *entity;
 	json_t *classname, *flag, *x, *y;
 
+	space = cpSpaceNew();
+	cpSpaceSetGravity(space, cpv(0, 0.9));
+
 	// can't case switch strings :/
 	if (strcmp(level, "level 1") == 0)
 	{
 		printf("loading level one\n");
-		sprintf(level, "data\\level\\level1.json");
+		parser = json_load_file("data/level/level1.json", 0, &error);
 	}
 	
-	if (strcmp(level, "level 2") == 0)
+	if (!strcmp(level, "level 2"))
 	{
 		printf("loading level two");
-		sprintf(level, level);
-		return;
+		parser = json_load_file("data/level/level2.json", 0, &error);
 	}
 
 	if (strcmp(level, "boss 1") == 0)
 	{
 		printf("loading boss 1");
-		sprintf(level, level);
+		//strcpy(level, level);
 		return;
 	}
 
 	// loading the file
-	parser = json_load_file(level, 0, &error);
+
 	if (!parser)
 	{
 		fprintf(stderr, "wtf no parser\n file may not exist\n or be good format");
@@ -190,7 +235,7 @@ void loadLevel(char * level)
 		entity = json_array_get(lvlpieces, j);
 		if(!json_is_object(entity))
 		{
-			fprintf(stderr, "i was looking for the array of entities");
+			fprintf(stderr, "i was looking for the entity");
 			json_decref(parser);
 			return;
 		}
@@ -236,7 +281,11 @@ void loadLevel(char * level)
 	}
 	
 	json_decref(parser);
-	printf("file data succesfully loaded");
+	printf("file data succesfully loaded\n");
+
+	level = NULL; // failed attempt at glitch fix
+	
+
 	return;
 }
 
@@ -251,8 +300,8 @@ void cameraSetOn (entity_t *ent)
 	int xmargin;
 	xmargin = 1000;
 
-	camera.x = ( (int)ent->x + ent->width + xmargin / 2) - L_WIDTH / 2;
-	camera.y = ( (int)ent->y + ent->height / 2) - L_HEIGHT / 2;
+	camera.x = ( ent->x + ent->width + xmargin / 2) - L_WIDTH / 8;
+	camera.y = ( ent->y + ent->height / 1) - L_HEIGHT / 3;
 
 	if ( camera.x < 0 )
 		camera.x = 0;
@@ -271,7 +320,7 @@ SDL_Rect *addrCamera(void)
 
 TTF_Font *getFont (void)
 {
-	return font;
+	return time;
 }
 
 Uint32 getCurrentTime(void)
@@ -283,6 +332,16 @@ void setCurrentTime(void)
 	currentTime = SDL_GetTicks();
 }
 
+/*
+void getTime()
+{
+	if (pause)
+		return pauseTime;
+	else
+		return SDL_GetTicks();
+}
+*/
+
 SDL_Surface *getSeconds(void)
 {
 	return seconds;
@@ -291,7 +350,7 @@ SDL_Surface *getSeconds(void)
 void setUpSeconds(char* msg, SDL_Color textColor) //where to render to and what color
 {
 	seconds = TTF_RenderText_Solid (getFont(), msg, textColor);
-	show_Surface ((SCREEN_WIDTH - (float)seconds->w ) / 2, 50, seconds, getScreen(), NULL);
+	show_Surface ((SCREEN_WIDTH - (float)seconds->w ) * 1, 10, seconds, getScreen(), NULL); // BUT I DON'T WANNA DIVIIIIIIIIIIIIIIIDE
 
 	SDL_FreeSurface( seconds );
 }
@@ -308,116 +367,154 @@ SDL_Event getEvents()
 	return event;
 }
 
+void initHUD ()
+{
+	health.x = 10;
+	health.y = 10;
+	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I?
+	health.h = 10;
+
+	anger.x = 115;
+	anger.y = 10;
+	anger.w = (getPlayer()->currentAnger * 100) / getPlayer()->maxAnger;
+	anger.h = 10;
+}
+
 // for the player and hud
-/*void UpdateHealth()
+void updateHUD ()
 {
 	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I
 
 	if (getPlayer()->currentHealth < 0)
 	{
-		surface(gameOver, getScreen(), 0, 0, NULL);
+		getPlayer()->currentHealth = 0;
+		setGameState(GSTATE_GAMEOVER, true);
 		//printf("game over");
 	}
-}*/
 
-/*void UpdateAnger()
-{
 	anger.w = (getPlayer()->currentAnger * 100) / getPlayer()->maxAnger; //how do I get rid of division? can I
 
 	if (getPlayer()->currentAnger >= 100)
 	{
-		//printf("level switch to #2 \n");
+		//printf("afadf");
 
-		level = 2;
-
-		getPlayer()->currentAnger = 99;
-		getPlayer()->x = 0;
-		getPlayer()->y = 340;
+		setLvlState(HYDE_MODE);
 	}
-}*/
+
+	if (Game.levelState == HYDE_MODE)
+			getPlayer()->currentAnger -= 0.05;
+
+	if (Game.levelState == HYDE_MODE && getPlayer()->currentAnger < 0)
+		{
+			setLvlState(JEKYLL_MODE);
+			getPlayer()->currentAnger = 0;
+		}
+
+	if (getPlayer()->currentHealth > 0)
+		{
+			SDL_FillRect ( getScreen(), &health, SDL_MapRGB ( getScreen()->format, 0, 0xFF, 0 ) );
+			SDL_FillRect ( getScreen(), &anger, SDL_MapRGB ( getScreen()->format, 0x77, 0x77, 0x77 ) );
+		}
+}
+
+SDL_Rect getHealthbar ()
+{
+	return health;
+}
+
+SDL_Rect getAngerBar ()
+{
+	return anger;
+}
 
 // for game events (ex. keyboard input)
 // reminder: put player in level file
 void Events()
 {
-	while (SDL_PollEvent (&event))
+	if (Game.gameState != -1)
 	{
-			if ( event.type == SDL_KEYDOWN )
-			{
-				switch ( event.key.keysym.sym )
+		while (SDL_PollEvent (&event))
+		{
+				if ( event.type == SDL_KEYDOWN )
 				{
-					case SDLK_m:
-						setGameState(GSTATE_MENU);
-						break;
-					case SDLK_l:
-						setGameState(GSTATE_LEVELEDIT); printf("got here\n");
-						break;
-					case SDLK_1:
-						setGameState(GSTATE_LEVEL1); printf("got here too\n");
-						break;
-					case SDLK_UP:
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->yVel -= getPlayer()->height >> 4; 
+					switch ( event.key.keysym.sym )
+					{
+						case SDLK_m:
+							setGameState(GSTATE_MENU, true);
 							break;
-						}
-					case SDLK_DOWN:
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->yVel += getPlayer()->height >> 4;
+						case SDLK_l:
+							setGameState(GSTATE_LEVELEDIT, true); printf("got here\n");
 							break;
-						}
-					case SDLK_LEFT:
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->xVel -= getPlayer()->width >> 4;
+						case SDLK_1:
+							setGameState(GSTATE_LEVEL1, true); printf("got here too\n");
 							break;
-						}
-					case SDLK_RIGHT: 
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->xVel += getPlayer()->width >> 4; 
+						case SDLK_2:
+							setGameState(GSTATE_LEVEL2, true);
 							break;
-						}
+						case SDLK_UP:
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->yVel -= getPlayer()->height >> 5; 
+								break;
+							}
+						case SDLK_DOWN:
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->yVel += getPlayer()->height >> 5;
+								break;
+							}
+						case SDLK_LEFT:
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->xVel -= getPlayer()->width >> 5;
+								break;
+							}
+						case SDLK_RIGHT: 
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->xVel += getPlayer()->width >> 5; 
+								break;
+							}
+					}
+
+				}
+				else if (event.type == SDL_KEYUP)
+				{
+					switch ( event.key.keysym.sym )
+					{
+						case SDLK_UP:
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->yVel += getPlayer()->height >> 5; 
+								break;
+							}
+						case SDLK_DOWN:
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->yVel -= getPlayer()->height >> 5; 
+								break;
+							}
+						case SDLK_LEFT:
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->xVel += getPlayer()->width >> 5;
+								break;
+							}
+						case SDLK_RIGHT:
+							{
+								if(getPlayer() != NULL)
+									getPlayer()->xVel -= getPlayer()->width >> 5; 
+								break;
+							}
+					}
 				}
 
-			}
-			else if (event.type == SDL_KEYUP)
-			{
-				switch ( event.key.keysym.sym )
+				if (event.type == SDL_QUIT)
 				{
-					case SDLK_UP:
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->yVel += getPlayer()->height >> 4; 
-							break;
-						}
-					case SDLK_DOWN:
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->yVel -= getPlayer()->height >> 4; 
-							break;
-						}
-					case SDLK_LEFT:
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->xVel += getPlayer()->width >> 4;
-							break;
-						}
-					case SDLK_RIGHT:
-						{
-							if(getPlayer() != NULL)
-								getPlayer()->xVel -= getPlayer()->width >> 4; 
-							break;
-						}
+					done = true; // to call functions to prepare to close game
+					setGameState(-1, false); // don't know if this is safe..
 				}
-			}
-
-			if (event.type == SDL_QUIT)
-			{
-				done = true; // to call functions to prepare to close game
-				setGameState(-1); // don't know if this is safe..
-			}
+		}
 	}
 }
 
@@ -502,25 +599,94 @@ void clear()
 	closeSeconds();
 
 	/* Closing the font */
-	TTF_CloseFont (font);
+	TTF_CloseFont (time);
 }
 
-// new - may replace some existing functions
-void events()
-{
-	/* if state is splash
-		do this */
 
-	/* if state is level1
-		do this */
+void levelOneSetup()
+{
+	sprite_t * bglvl1_1 = load("graphic/level/bg/newbg.png", 32, 32);
+
+	bglvl1_1->background = 1;
+
+	initPlayer ();
+
+	loadLevel ("level 1");
+
+	setLvlState (JEKYLL_MODE);
+
+	initHUD ();
+
+	start = SDL_GetTicks();
+
+	running = true;
+
+	if (space != NULL && getPlayer() != NULL)
+	{
+		if (!getPlayer()->body) return;
+		if (!getPlayer()->shape) return;
+		printf("AZIZ LIGHT\n");
+		cpSpaceAddBody(space, getPlayer()->body);
+		cpSpaceAddShape(space, getPlayer()->shape);
+	}
 }
 
-void draw()
+void levelTwoSetup()
 {
-	//draw
+	sprite_t * bglvl2_1 = load("graphic/level/bg/newbglvl1_1.png", 32, 32);
+
+	bglvl2_1->background = 1;
+
+	initPlayer ();
+
+	loadLevel ("level 2");
+
+	setLvlState (HYDE_MODE);
+
+	getPlayer()->currentAnger = 99;
+
+	initHUD ();
+
+	start = SDL_GetTicks();
+
+	running = true;
 }
 
-void think() //also known as update
+void levelEditSetup()
 {
-	//update
+	sprite_t * lvlEditBg = NULL;
+
+	lvlEditBg = load("graphic/level/bg/newbglvl1_1.png", 32 , 32);
+	lvlEditBg->background = 1;
+
+	mouseSprite = load ("graphic/game/mouse.png", 32, 32);
+	if (mouseSprite == NULL)
+		printf("mouse didn't load\n", IMG_GetError());
+
+	testTile = load("graphic/level/lvldesign/plvl_1.png", 62, 24);
+	if (testTile == NULL)
+		printf("testtile didn't load\n", IMG_GetError());
+
+	fp = fopen("data/level/lvlEdit.json", "a+");
+	if (fp = NULL)
+		fprintf(stderr, "can't open json file");
+
+	setLvlState (JEKYLL_MODE);
+}
+
+void gameOverSetup()
+{
+	sprite_t * bglvl2_1 = load("graphic/game/gameover.png", 32, 32);
+	bglvl2_1->background = 1;
+
+	setLvlState (NO_MODE);
+
+	start = 0;
+
+	running = false;
+}
+
+cpSpace * getSpace()
+{
+	return space;
 }

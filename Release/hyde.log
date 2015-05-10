@@ -1,0 +1,25 @@
+﻿Build started 5/9/2015 9:51:35 AM.
+     1>Project "C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\hyde.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\entity.c src\game.c src\gfunc.c src\graphic.c src\level.c src\spawn.c src\textInput.c src\weapon.c
+         entity.c
+     1>c:\users\iwh-pc\documents\college\modern\it276\original\hyde\src\include.h(11): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+         game.c
+     1>src\game.c(1): fatal error C1083: Cannot open include file: 'jansson.h': No such file or directory
+         gfunc.c
+     1>src\gfunc.c(3): fatal error C1083: Cannot open include file: 'jansson.h': No such file or directory
+         graphic.c
+     1>src\graphic.c(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+         level.c
+         spawn.c
+     1>c:\users\iwh-pc\documents\college\modern\it276\original\hyde\src\include.h(11): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+         textInput.c
+     1>src\textInput.c(1): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+         weapon.c
+     1>Done Building Project "C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.12

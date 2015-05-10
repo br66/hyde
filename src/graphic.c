@@ -42,7 +42,9 @@ void closeSprites ()
 	int i;
 
 	for (i = 0; i < MAX_SPRITES; i++)
+	{
 		freeSprite(&listSprites[i]);
+	}
 }
 
 // load sprite from file
@@ -54,7 +56,7 @@ sprite_t* load (char *filename, int width, int height)
 	/* searching thru list of loaded sprites to check if i already have the file asked for loaded */
 	for (i = 0; i < numSprites; i++)
 	{
-		if (strncmp(filename, listSprites[i].filename, 20) == 0)
+		if (strncmp(filename, listSprites[i].filename, 30) == 0)
 		{
 			listSprites[i].used++;
 			return &listSprites[i];
@@ -73,12 +75,14 @@ sprite_t* load (char *filename, int width, int height)
 
 	/* if i find one that isn't used break */
 	for (i=0; i <= numSprites; i++)
-		if(!listSprites[i].used)break;
+		if(!listSprites[i].used)
+			break;
 		
 	temp = IMG_Load(filename);
 	if (temp == NULL)
 	{
-		fprintf(stderr, "no sprite: %s \n", SDL_GetError());
+		fprintf(stderr, "s", IMG_GetError());
+		fprintf(stderr, "s", IMG_GetError());
 		exit(0);
 	}
 
@@ -119,7 +123,10 @@ void freeSprite (sprite_t * sprite)
 		strcpy(sprite->filename, "\0"); // clears the filename string
 		
 		if (sprite->graphic != NULL)
+		{
+			sprite->animationSet = NULL;
 			SDL_FreeSurface(sprite->graphic);
+		}
 		
 		sprite->graphic = NULL;
 	}
@@ -140,8 +147,10 @@ void showFrame (SDL_Surface* spritesheet, SDL_Surface* surface, float sx, float 
 {
 	SDL_Rect source, dest;
 
-	source.x = (frame * 32) % 320;
-	source.y = (frame * 32) / 320;
+	//source.x = (frame * 32) % 320;
+	//source.y = (frame * 32) / 320;
+	source.x = (frame * 32)%spritesheet->w;
+	source.y = (frame * 32)/spritesheet->h;
 	source.w = 32;
 	source.h = 32;
 
@@ -162,6 +171,19 @@ void surface (sprite_t * source, SDL_Surface * destination, float x, float y, SD
 	offset.y = (int)y;
 
 	SDL_BlitSurface( source->graphic, clip, destination, &offset);
+}
+
+void showBackgrounds()
+{
+	int i;
+
+	for (i = 0; i < MAX_SPRITES; i++)
+	{
+		if (listSprites[i].background == 1)
+		{
+			surface(&listSprites[i], getScreen(), 0, 0, NULL);
+		}
+	}
 }
 
 // functions for screen/game window
@@ -264,10 +286,10 @@ animset_t *getAnimSet (char *filename)
 			return NULL;
 		}
 
-		//printf("animation: %s \n \n", json_string_value(animation));	//json_string_value(animation) is the type of animation ex. idle, THIS RETURNS CHAR
-		//printf("initial frame %d \n \n", json_integer_value(init));	//json_integer_value(init) is the frame the animation starts on, WARNING THIS RETURN LOOOOONG
+		printf("animation: %s \n \n", json_string_value(animation));	//json_string_value(animation) is the type of animation ex. idle, THIS RETURNS CHAR
+		printf("initial frame %d \n \n", json_integer_value(init));	//json_integer_value(init) is the frame the animation starts on, WARNING THIS RETURN LOOOOONG
 		
-		test->set[0].curFrame = 0;
+		test->set[i].curFrame = 0;
 
 		//printf("frames");
 		frames = json_object_get(data, "frames");
@@ -287,11 +309,11 @@ animset_t *getAnimSet (char *filename)
 				json_decref(parser);
 				return NULL;
 			}
-			//printf("	frame %d\n", json_integer_value(f_array));
-			test->set[0].frames[j] = (short)json_integer_value(f_array);
+			printf("	frame %d\n", json_integer_value(f_array));
+			test->set[i].frames[j] = (short)json_integer_value(f_array);
 		}
 		
-		//printf("\nintrvls");
+		printf("\nintrvls");
 		intervals = json_object_get(data, "intervals");
 		if(!json_is_array(intervals))
 		{
@@ -309,12 +331,12 @@ animset_t *getAnimSet (char *filename)
 				json_decref(parser);
 				return NULL;
 			}
-			//printf("	%d milliseconds\n", json_integer_value(i_array)); //prints the current frame found in the file
-			test->set[0].intervals[k] = (int)json_integer_value(i_array);
+			printf("	%d milliseconds\n", json_integer_value(i_array)); //prints the current frame found in the file
+			test->set[i].intervals[k] = (int)json_integer_value(i_array);
 		}
 
-		test->set[0].maxFrames = 10; //for testing
-		test->set[0].nextFrameTime = 100; //for testing
+		test->set[i].maxFrames = 10; //for testing
+		test->set[i].nextFrameTime = 100; //for testing
 	}
 
 	json_decref(parser);

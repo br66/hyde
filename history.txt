@@ -1,114 +1,122 @@
 history
 
-5.5.15
+5.9.15
 -------
 general changes
 ------------------
-near-entire re-programming of game
-each mode is a game loop which finishes depending on the game state (Game.gameState)
-also level states: each level is two in one; one for jekyll, one for hyde (Game.levelState)
-time not running yet
-redesigned many files
-new folders, assets, menu screens
-new spawn class
-level 1 in .json file
-
-
-include header
---------------
-gfunc.h was included twice
+name of the game has been changed to "the wolfman game"
+overall theme of game has been changed - to based of the spanish...
+...inquisition and fear of wolves. see readme.txt
+near-entire re-programming of game AGAIN
+chipmunk physics 6.2.2 is working, version 7 is not made for windows
+attempt at box2d physics integration failed
+added some more graphical assets
+don't need level.txt
+working on werewolf run animation
+forced to compile game as C++ code, chipmunk is developed in C++
+still following C programming rules
+changed debug mode to make chipmunk work (from NDEBUG to _DEBUG)
+textInput class was thought to be needed, to be removed
 
 
 graphic class
 -------------
 .h
 --
-developed concept for low and high priority sprites to determine which should be removed...
-... and which should be saved in terms of memory for later use
+changed level width
+added background int to check if sprite is a background
 
 .c
 --
-initating and closing sprites list functions
-fixed freeSprite func
+fixed load function glitch, checking for filename by length wasn't long enough
+fixed freeSprite func, gets rid of animation set
+showbackgrounds... shows backgrounnds corresponding to the level
+getAnimSet func glitch fixed, was only mapping to first anim set
+
 
 
 game/gfunc class
 ----------
 .h
 --
-new game_t type for entire game to check game and level states
-fully removed yaml
-redesigned header file
-enumerations for game/level states
+no longer need addrCamera, getTime, getSeconds, getEvents, or clear functions
+new functions for setting up modes/levels (ex. levelOneSetup, gameOverSetup)
 
 game.c
 ------
-much less externs
-functions are also game states/game modes (ex. mainmenu() has a game loop...
-...which runs until the game state is changed)
-strategically showing sprites once and freeing the memory when possible
-levels are now loaded from .json files (loadLevel)
-enemies/entities no longer hard coded into game, loaded from file
-int level no longer used
-main game loop greatly streamlined
+added mouse functionality
+failed attempt to write to file for level editor
+only one game loop now
+begin function reinforced
+new functions pull, update, draw
+pull finds input, update makes changes to everything, draw shows changes
+file has been repurposed for mainly functions for updating/running game modes (ex. levelOne)
+some functions have been repurposed (ex. levelOne(), levelTwo())...
+... now used for only updating
 
 gfunc.c
 -------
-json/jansson used to load data from files
-has own separate SDL_Event
-sprites/entites reset after levels (subject to change)
-hard coded sprites removed (ex. sprite_t * bgSprite)
-new begin function for starting game
-new end function for ending game
-new window caption
-hard coded levels removed (level_t * stage1)
-new functions for setting game/level states
-new function for loading level from data (loadLevel)
-checkLevel depreciated
-renamed set_Camera func to cameraSetOn
-clear function depreciated
-player input function absorbed into events
-resetting ent positions depreciated
-events function is now used differently, used in all game modes for... 
-...changing the game mode/state, handling player input
+file affected by chipmunk physics
+updated begin function
+set game state function now accepts boolean to see if mode needs to be setup..
+.. may be used for pause function
+fixed set level state function
+fixed string issue where strings throughout game were being changed
+loadLevel function affected by chipmunk physics and can load level 2
+updated camera
+renamed font since it is only used for time at this stage
+repositioned on screen timer to optimize HUD
+made new init HUD function, HUD has been redone
+updateHealth and updateAnger are now updateHUD
+updated events function, now takes playerinput
+changed player speed
+level one setup affected by chipmunk physics
+get function to get reference to chipmunk physics space
+made sure health doesn't go below zero
+in wolf mode, anger meter goes down
 
 
-level class
+level.json files
 -----------
-the level class has been depreciated
+level 1 have been fleshed out
+level 2 being worked on too
+failed to make level editor
 
 
 entity class
 ------------
 .h
 --
-new defines for sprites corresponding to level state
-renamed some func pointers in entity struct
-functions in header now organized
-function for setting sprite's animation state/set
+increased the number of maximum entities
+need to include chipmunk header in this file to avoid "undefined" errors
+MAX_ENTITIES increased
+fixed glitch regarding sprites and solidity based on level state by changing defines
+added classType, chipmunk body and shapes in entity structure
 
 .c
 --
-hardcoded entities are a thing of the past (ex. entity_t * player)
-separate SDL_Event for this class
-maintenance on free entity, entity alive, show entity, player alive, player input, and move function
-made new entity show switch function showing entities corresponding to player's mode/level state
-creating new functions for initiating the entity list
-close entities frees all entities
-collision function needs to be changed
-created new function to initialize the player with temp pointer (initPlayer())
-updated getplayer func now looks thru entity list to find player classname
-player properties function depreciated
-using entity think function pointer
+max_ents (not MAX_ENTITIES) moved to c file
+message for overflow of entities implemented
+maintenance on freeEnt, entityShowSwitch, check collision func
+new entitySolidSwitch func for level state switching
+working on combination of all collision funcs named "collisions()"
+entity alive function affected by chipmunk physics and...
+...accidentally made jump mechanic (hold up button)
+playerInput depreciated
+move player function affected by chipmunk physics
+show player function updated to test animated wolf mode
+isCollide no longer needs testing
+better memory management with entities and balancing speed (espcially enemies)
+created think function for enemy spawner
+updated spritesheet for upcoming jump animation attempt
+initPlayer updated to support chipmunk physics and to be ignored by entityShowSwitch
+damage from enemies vary
 
 
 spawn class (new)
 -----------
-.h
---
-new header for spawning instance functions
-
 .c
 --
-spawn entity function spawns objects corresponding to the function argument...
-... ex. spawnEntity("kid") will spawn an instance of a kid
+spawn entity function can spawn more objects now...
+... has been affected by chipmunk physics (specifically platforms)
+new enemy spawner spawns kid instances every few seconds

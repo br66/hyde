@@ -1,12 +1,15 @@
 #include "include.h"
-//#include <chipmunk.h>
+#include "spawn.h"
+//#include <Box2D.h>
+//efforts at including any kind of physics fails
 
 static entity_t listEntities [MAX_ENTITIES];
 
-//entity_t *player = NULL;
+SDL_Event keyevent;
+
+int max_ents; /* Number of entities that have been made in-game */ //getMaxEnts(); move out of header file
 
 extern game_t Game;
-SDL_Event event;
 
 /**********************************************************************************************//**
  * @fn	entity_t *Init_Ent (void)
@@ -28,6 +31,7 @@ entity_t *Init_Ent (void)
 		}
 	}
 	max_ents++;
+	fprintf(stderr, "LOL TOO MANY ENTITIES");
 	return NULL;
 
 }
@@ -49,6 +53,9 @@ void freeEnt (entity_t * self)
 	self->move = NULL;
 	self->show = NULL;
 	self->think = NULL;
+	self->flags = NULL;
+	self->xVel = 0;
+	self->yVel = 0;
 }
 
 // initializes entity list
@@ -112,10 +119,24 @@ void EntityAlive()
 			{
 				call animthink; //replaced by show???
 			}*/
+
 			if (e->xVel != 0)
 			{e->x += e->xVel;}
 			if (e->yVel != 0)
 			{ e->y += e->yVel;}
+
+			if (e->shape && e->body)
+			{
+				printf("%f\n", (float)e->shape->body->v.x);
+
+				if (e->xVel != 0)
+					e->shape->body->p.x += e->xVel;
+				else
+					e->shape->body->v.x = 0;
+
+				if (e->yVel != 0)
+					e->shape->body->p.y += e->yVel * 1.1;
+			}
 		}
 		e++;
 	}
@@ -135,13 +156,13 @@ void entityShowAll ()
 	{
 		if (listEntities[i].inuse)
 		{
-			if (IS_SET(listEntities[i].flags, ENT_SHOW))
-			{ //check which form they are for
+			//if (IS_SET(listEntities[i].flags, ENT_SHOW))
+			//{
 				if (listEntities[i].show != NULL)
 				{
 					(*listEntities[i].show)(&listEntities[i]);
 				}
-			}
+			//}
 		}
 		e++;
 	}
@@ -161,7 +182,10 @@ void entityShowSwitch ()
 			{
 				if (listEntities[i].inuse > 0)
 				{
-					if (IS_SET(listEntities[i].flags, ENT_FJEKYL))
+					if(IS_SET(listEntities[i].flags, ENT_FHYDE))
+						continue;
+
+					if (IS_SET(listEntities[i].flags, ENT_FJEKYL) || IS_SET(listEntities[i].flags, ENT_SHOW))
 					{
 						if (listEntities[i].show != NULL)
 						{
@@ -181,7 +205,10 @@ void entityShowSwitch ()
 			{
 				if (listEntities[i].inuse > 0)
 				{
-					if (IS_SET(listEntities[i].flags, ENT_FHYDE))
+					if(IS_SET(listEntities[i].flags, ENT_FJEKYL))
+						continue;
+
+					if (IS_SET(listEntities[i].flags, ENT_FHYDE ||  IS_SET(listEntities[i].flags, ENT_SHOW)))
 					{
 						if (listEntities[i].show != NULL)
 						{
@@ -197,46 +224,62 @@ void entityShowSwitch ()
 		default:
 				return; break;
 	}
-	
+}
 
+void entitySolidSwitch ()
+{
+	int i = 0;
+	entity_t *list = listEntities;
 
-	/*
-	if (Game.levelState == JEKYLL)
+	switch (Game.levelState)
 	{
-		for (i = 0; i < MAX_ENTITIES; i++)
-		{
-			if (listEntities[i].inuse > 0)
+		case JEKYLL_MODE:
 			{
-				if (IS_SET(listEntities[i].flags, ENT_FJEKYL))
+				for (i = 0; i < MAX_ENTITIES; i++)
 				{
-					if (listEntities[i].show != NULL)
+					if(IS_SET(list[i].flags, ENT_FHYDE) && list[i].inuse > 0)
 					{
-						(*listEntities[i].show)(&listEntities[i]);
+						if (strcmp(list[i].classType, "enemy") == 0)
+						{
+							REMOVE_FLAG(list[i].flags, ENT_SOLID);
+						}
+					}
+					
+					if(IS_SET(list[i].flags, ENT_FJEKYL) && list[i].inuse > 0)
+					{
+						if (strcmp(list[i].classType, "enemy") == 0)
+						{
+							SET_FLAG(list[i].flags, ENT_SOLID);
+						}
 					}
 				}
 			}
-			e++;
-		}
-	}
 
-	if (Game.levelState == HYDE)
-	{
-		for (i = 0; i < MAX_ENTITIES; i++)
-		{
-			if (listEntities[i].inuse > 0)
+		case HYDE_MODE:
 			{
-				if (IS_SET(listEntities[i].flags, ENT_FHYDE))
+				for (i = 0; i < MAX_ENTITIES; i++)
 				{
-					if (listEntities[i].show != NULL)
+					if (!strcmp(list[i].classType, "enemy") == 0)
+						continue;
+
+					if(IS_SET(list[i].flags, ENT_FJEKYL) && list[i].inuse > 0)
 					{
-						(*listEntities[i].show)(&listEntities[i]);
+						if (strcmp(list[i].classType, "enemy") == 0)
+						{
+							REMOVE_FLAG(list[i].flags, ENT_SOLID);
+						}
+					}
+
+					if(IS_SET(list[i].flags, ENT_FHYDE) && list[i].inuse > 0)
+					{
+						if (strcmp(list[i].classType, "enemy") == 0)
+						{
+							SET_FLAG(list[i].flags, ENT_SOLID);
+						}
 					}
 				}
 			}
-			e++;
-		}
 	}
-	*/
 }
 
 /**********************************************************************************************//**
@@ -268,7 +311,6 @@ void CheckCollisions()
 			}
 		}
 	}
-	//if entity exists, is solid and has a velocity...
 }
 
 /**********************************************************************************************//**
@@ -290,22 +332,58 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 		
 	for (i = 0; i < max; i++)
 	{
-		if (isCollide (targ, ent)) //warning boss was solid in level 1
+		if (isCollide (targ, ent))
 		{	
-			if IS_SET(targ->flags, ENT_SOLID)
+			if (IS_SET(targ->flags, ENT_SOLID) && IS_SET(ent->flags, ENT_SOLID))
 			{
-				if (strcmp(targ->classname, "enemy") == 0)
+				if (strcmp(targ->classType, "enemy") == 0 || strcmp(ent->classType, "enemy") == 0)
 				{
-					//damage function?
-					getPlayer()->currentHealth -= 10;
-					getPlayer()->currentAnger += 4;
+					if (Game.levelState == HYDE_MODE && (IS_SET(targ->flags, ENT_FJEKYL) || IS_SET(ent->flags, ENT_FHYDE)))
+						continue;
+
+					/* damage varys depending on enemy class */
+					if (strcmp(targ->classname, "player") == 0)
+					{
+						if (strcmp(ent->classname, "kid") == 0)
+						{
+							targ->currentHealth -= 0.5;
+							targ->currentAnger += 2;
+						}
+						if (strcmp(ent->classname, "bomber") == 0)
+						{
+							targ->currentHealth -= 1;
+							targ->currentAnger += 1;
+						}
+						if (strcmp(ent->classname, "bird") == 0)
+						{
+							targ->currentHealth -= 1;
+							targ->currentAnger += 3;
+						}
+					}
+
+					if (strcmp(ent->classname, "player") == 0)
+					{
+						if (strcmp(targ->classname, "kid") == 0)
+						{
+							ent->currentHealth -= 0.5;
+							ent->currentAnger += 2;
+						}
+						else if (strcmp(targ->classname, "bomber") == 0)
+						{
+							ent->currentHealth -= 1;
+							ent->currentAnger += 1;
+						}
+						else if (strcmp(targ->classname, "bird") == 0)
+						{
+							ent->currentHealth -= 1;
+							ent->currentAnger += 3;
+						}
+
+					}
 				}
-				else
-				{
-					printf("got here finally");
-					ent->x -= ent->xVel;
-					ent->y -= ent->yVel;
-				}
+
+				//ent->x -= ent->xVel;
+				//ent->y -= ent->yVel;
 			}
 		}
 
@@ -313,10 +391,37 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 	}
 }
 
-void collisionEvents()
+/*
+void collisions()
 {
-	// new collision event function
+	int i, j;
+	entity_t * list = listEntities;
+	entity_t * collider1, * collider2;
+	int max;
+
+	for (i = 0; i < MAX_ENTITIES; i++)
+	{
+		if (list[i].inuse && IS_SET(list[i].flags, ENT_SOLID))
+		{
+			if (list[i].xVel != 0 || listEntities[i].yVel != 0)
+			{
+				collider1 = &list[i];
+				collider2 = &list[i + 1];
+				max = MAX_ENTITIES - i;
+
+				for (j = 0; i < max; i++)
+				{
+					if (onCollision (targ, ent) && IS_SET(targ->flags, ENT_SOLID))
+					{
+						collisionEvents(targ, ent);
+					}
+				}
+
+			}
+		}
+	}
 }
+*/
 
 /**********************************************************************************************//**
  * @fn	void PlayerAlive ()
@@ -328,12 +433,12 @@ void collisionEvents()
  **************************************************************************************************/
 void PlayerAlive (entity_t * ent)
 {
+
 	if (ent != NULL && ent-> currentHealth && ent->currentHealth > 0)
 	{
 		move(ent);
 		cameraSetOn(ent);
 		show(ent);
-		//playerInput(ent);
 	}
 }
 
@@ -347,37 +452,39 @@ void PlayerAlive (entity_t * ent)
  *
  * @param [in,out]	ent	If non-null, the ent.
  **************************************************************************************************/
+/*
 void playerInput ( entity_t *ent ) //fix
 {
-	while(SDL_PollEvent (&event))
+	while(SDL_PollEvent (&keyevent))
 	{
 		if(strcmp(ent->classname, "player") == 0)
 		{
 			printf("event");
-			if (event.type == SDL_KEYDOWN)
+			if (keyevent.type == SDL_KEYDOWN)
 			{
 				printf("event2");
-				switch (event.key.keysym.sym )
+				switch (keyevent.key.keysym.sym )
 				{
-					case SDLK_UP: ent->yVel -= ent->height >> 4; break;
-					case SDLK_DOWN: ent->yVel += ent->height >> 4; break;
-					case SDLK_LEFT: ent->xVel -= ent->width >> 4; break;
-					case SDLK_RIGHT: ent->xVel += ent->width >> 4; break;
+					case SDLK_UP: ent->yVel -= ent->height >> 5; break;
+					case SDLK_DOWN: ent->yVel += ent->height >> 5; break;
+					case SDLK_LEFT: ent->xVel -= ent->width >> 5; break;
+					case SDLK_RIGHT: ent->xVel += ent->width >> 5; break;
 				}
 			}
-			else if ( event.type == SDL_KEYUP )
+			else if ( keyevent.type == SDL_KEYUP )
 			{
-				switch ( event.key.keysym.sym)
+				switch ( keyevent.key.keysym.sym)
 				{
-					case SDLK_UP: ent->yVel += ent->height >> 4; break;
-					case SDLK_DOWN: ent->yVel -= ent->height >> 4; break;
-					case SDLK_LEFT: ent->xVel += ent->width >> 4; break;
-					case SDLK_RIGHT: ent->xVel -= ent->width >> 4; break;
+					case SDLK_UP: ent->yVel += ent->height >> 5; break;
+					case SDLK_DOWN: ent->yVel -= ent->height >> 5; break;
+					case SDLK_LEFT: ent->xVel += ent->width >> 5; break;
+					case SDLK_RIGHT: ent->xVel -= ent->width >> 5; break;
 				}
 			}
 		}
 	}
 }
+*/
 
 /**********************************************************************************************//**
  * @fn	void move ( entity_t *ent )
@@ -392,6 +499,8 @@ void playerInput ( entity_t *ent ) //fix
  **************************************************************************************************/
 void move ( entity_t *ent ) //better name? also needs to be reorganized
 {
+	cpVect v;
+
 	ent->x += ent->xVel;
 	if (ent->xVel < 0)	
 		setStateTo(getPlayer(), PL_LEFT);
@@ -411,6 +520,15 @@ void move ( entity_t *ent ) //better name? also needs to be reorganized
 	{
 		ent->y -= ent->yVel;
 	}
+
+	//ent->shape->surface_v = cpv(ent->x, 0.0);
+	//ent->shape->u = 10/2;
+
+	v = cpBodyGetPos (ent->body);
+	//ent->body->f = cpv(ent->xVel, ent->yVel);
+	ent->x = v.x;
+	ent->y = v.y;
+	//cpBodyUpdateVelocity(ent->body, getSpace()->gravity, 0.00001, 0.00001);
 }
 
 void show (entity_t *ent) //name change?
@@ -418,15 +536,15 @@ void show (entity_t *ent) //name change?
 	if (ent)
 	{
 	/* check states here, if state, animate function draws next frame */
-	//if (ent->animState == PL_IDLE && playerAnim != NULL)
+		if (Game.levelState == HYDE_MODE && ent->sprite->animationSet != NULL)
 		{
-			//getPlayer() should be changed to ent soon //#sprite
-			//Animate(getPlayer()->oldSprite, &playerAnim->set[0], getPlayer()->x - getCamera().x, getPlayer()->y - getCamera().y);
-			Animate(ent->sprite, &ent->sprite->animationSet->set[0], ent->x - getCamera().x, ent->y - getCamera().y);
+			Animate(ent->sprite, &ent->sprite->animationSet->set[1], ent->x - getCamera().x, ent->y - getCamera().y);
 			/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
 			at some random spot in memory */
-
-			//surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
+		}
+		else
+		{
+			Animate(ent->sprite, &ent->sprite->animationSet->set[0], ent->x - getCamera().x, ent->y - getCamera().y);
 		}
 	}
 	//if an eneny && they are a SILENT_IDLE and its spritesheet is loaded
@@ -455,8 +573,8 @@ bool isCollide (entity_t *otherent, entity_t *ent)
 	A.w = otherent->bBox.w;
 	A.h = otherent->bBox.h;
 
-	SDL_FillRect(getScreen(), &A, SDL_MapRGB(getScreen()->format, 0x77, 0x77, 0x77));
-	SDL_FillRect(getScreen(), &B, SDL_MapRGB(getScreen()->format, 0x77, 0x77, 0x77));
+	//SDL_FillRect(getScreen(), &A, SDL_MapRGB(getScreen()->format, 0x77, 0x77, 0x77));
+	//SDL_FillRect(getScreen(), &B, SDL_MapRGB(getScreen()->format, 0x77, 0x77, 0x77));
 
 	//combine bbox and players pos together check that in if statement
 	if((A.x + A.w >= B.x) && (A.x <= B.x + B.w) && (A.y + A.h >= B.y) && (A.y <= B.y + B.h))
@@ -469,22 +587,23 @@ bool isCollide (entity_t *otherent, entity_t *ent)
 }
 
 /* Thinking */
-void projThink (entity_t *ent)
+void projThink (entity_t * self)
 {	
-	if (ent->thinkflags == 10)
+	if (self->thinkflags == 10)
 	{
-		ent->xVel = 0;
+		self->xVel = 0;
 	}
-	else if (ent->thinkflags == 12)
+	else if (self->thinkflags == 12)
 	{
-		//Free_Ent(ent);
+		freeEnt(self);
 	}
 	else
 	{
-		ent->xVel -= 1;
+		self->xVel -= 1;
 	}
-	ent->thinkflags++;
-	ent->nextThink = getCurrentTime() + 300;
+
+	self->thinkflags++;
+	self->nextThink = getCurrentTime() + 300;
 }
 
 void alphaThink (entity_t *self)
@@ -497,6 +616,9 @@ void alphaThink (entity_t *self)
 	else 
 		self->xVel -= 0.2f; 
 		/* f stands for float */
+
+	if (self->x < 20)
+		freeEnt(self);
 
 	self->thinkflags++;
 	self->nextThink = getCurrentTime() + 310;
@@ -511,8 +633,11 @@ void betaThink (entity_t *self)
 	}
 	else
 	{
-		self->xVel -= .25;
+		self->xVel -= .20;
 	}
+
+	if (self->x < 20)
+		freeEnt(self);
 
 	self->thinkflags++;
 	self->nextThink = getCurrentTime() + 400;
@@ -520,17 +645,27 @@ void betaThink (entity_t *self)
 
 void gammaThink (entity_t *self)
 {
-	int accel = 2;
+	float accel = 2;
 
-	if (self->y > 200 && self->y < 400)
+	if (self->y > 100 && self->y < 500)
 	{ self->yVel += -accel; }
 	
-	if (self->y > 400 || self->y < 200)
+	if (self->y > 500 || self->y < 100)
 	{ self->yVel += accel; }
+
+	//self->yVel += accel;
 
 	self->thinkflags++;
 	self->nextThink = getCurrentTime() + 600;
 }
+
+void spawnThink (entity_t * self)
+{
+	spawnEntity("kid", self->x, self->y, "jekyll");
+	//printf("cookie");
+	self->nextThink = getCurrentTime() + 9000;
+}
+
 //Thinknum[0] - the boss's walk quadrant
 void bossThink (entity_t *self)
 {
@@ -610,7 +745,7 @@ void initPlayer()
 	player->width = 32;
 	player->height = 32;
 	
-	player->sprite = load("sprite/char/jekyll_sheet.png", 32, 32);
+	player->sprite = load("graphic/player/jekyll_sheet3.png", 32, 32);
 
 	player->bBox.w = 32;
 	player->bBox.h = 32;
@@ -624,10 +759,17 @@ void initPlayer()
 	player->sprite->animationSet = getAnimSet("sprite\\anim\\animsettest.json");
 
 	SET_FLAG(player->flags, ENT_SOLID);
-	SET_FLAG(player->flags, ENT_FJEKYL);
+	SET_FLAG(player->flags, ENT_SHOW);
 
 	player->show = show;
 	player->think = PlayerAlive;
+
+	player->body = cpBodyNew(10, cpMomentForCircle(10, 16, 0, cpvzero));
+	player->shape = cpCircleShapeNew(player->body, 16, cpvzero);
+	cpBodySetPos(player->body, cpv(player->x, player->y));
+	cpShapeSetLayers(player->shape,CP_ALL_LAYERS);
+	cpShapeSetCollisionType(player->shape, 2);
+	cpShapeSetUserData(player->shape, (const cpDataPointer)player);
 }
 
 void setStateTo(entity_t *ent, int animState)

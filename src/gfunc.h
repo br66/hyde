@@ -61,15 +61,14 @@ typedef struct game_s
 }game_t;
 
 
-
 /* Functions */
 
 // for beginning and end of game
 void begin();
 void end();
 
-// for setting the game state
-void setGameState (int gameState);
+// for setting the game state and setup
+void setGameState (int gameState, bool setup);
 void setLvlState (int levelState);
 
 // for loading levels
@@ -78,30 +77,54 @@ void loadLevel(char * level);
 /* gets, sets, and closers to reduce amount of externs */
 SDL_Rect getCamera (void);
 void cameraSetOn( entity_t *ent);
-SDL_Rect *addrCamera (void);
+//SDL_Rect *addrCamera (void);
 
 TTF_Font *getFont (void);
 
 Uint32 getCurrentTime (void);
 void setCurrentTime(void);
 
-SDL_Surface *getSeconds(void);
+//void getTime();
+
+//SDL_Surface *getSeconds(void);
 void setUpSeconds(char* msg, SDL_Color textColor);
 void closeSeconds(void);
 
-SDL_Event getEvents();
+//SDL_Event getEvents();
 
 // for the player and hud
-void UpdateHealth();
-void UpdateAnger();
+void initHUD();
+void updateHUD ();
+//SDL_Rect getHealthbar();
+//SDL_Rect getAngerBar();
 
 // for game events (ex. keyboard input)
-void Events(void); // name must be changed
+void Events(); // name MUST be changed
 
 /* for time */
 char* FormatTimeString(Uint32 offset);
 char* timeString(Uint32 offset);
 
+/* for physics */
+cpSpace * getSpace();
+
 /* obsolete func */
-void clear();
+//void clear();
+
+
+// new functions to be described soon
+void pull();
+void update();
+void draw();
+
+void mainmenuSetup();
+void levelOneSetup();
+void levelOne();
+void levelTwoSetup();
+void levelTwo();
+void levelEditSetup();
+void levelEdit();
+void gameOverSetup();
+
+void showBackgrounds();
 #endif

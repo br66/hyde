@@ -14,7 +14,7 @@
 #define	BITSPERPIXEL	32
 #define	SCREEN_WIDTH	640 
 #define	SCREEN_HEIGHT	480
-#define L_WIDTH			1920
+#define L_WIDTH			5000
 #define	L_HEIGHT		1200
 
 // #define GRAPHICS
@@ -51,6 +51,7 @@ typedef struct sprite_s
 {
 	SDL_Surface		*graphic; //can be a single sprite or a spritesheet
 	animset_t		*animationSet; //each sprite has a set of animaitions associated with it
+	int				background;
 	char			filename[40];
 	int				priority;
 	int				width, height;
@@ -62,8 +63,8 @@ typedef struct sprite_s
 // functions for sprite_t
 void initSprites (); // start sprites list
 void closeSprites (); // close sprites list
-void filterSpritesLow(); // close low priority sprites
-void filterSpritesHigh(); // close high priority sprites
+//void filterSpritesLow(); // close low priority sprites
+//void filterSpritesHigh(); // close high priority sprites
 
 // loading and showing
 sprite_t* load (char *filename, int width, int height);

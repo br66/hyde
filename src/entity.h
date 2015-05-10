@@ -3,18 +3,18 @@
  *
  * @brief	Declares the entity class.  Used for all in-game that act and can be acted on.
  **************************************************************************************************/
-#include "include.h"
+#include <chipmunk.h> // needed or else cp things become undefined
 
 #ifndef _ENTITY_
 #define _ENTITY_
 
-#define MAX_ENTITIES  50 /* Abs. max. # of entities that can be made in-game before I set fire to the rain. */
+#define MAX_ENTITIES  255 /* Abs. max. # of entities that can be made in-game before I set fire to the rain. */
 
 #define ENT_SHOW	0x00000001
 #define ENT_THINK	0x00000002
 #define ENT_SOLID	0x00000004
 #define ENT_FJEKYL	0x00000008 // for sprites that show if you are in jekyll form
-#define ENT_FHYDE	0x00000016 // for sprites that show if you've transformed to hyde
+#define ENT_FHYDE	0x00000010 // for sprites that show if you've transformed to hyde
 
 #define REMOVE_FLAG(x, y) (x &= ~y)
 #define SET_FLAG(x, y) (x |= y)
@@ -34,8 +34,6 @@ enum animState
 	KID_IDLE,
 	BOS1_IDLE
 };
-
-int max_ents; /* Number of entities that have been made in-game */ //getMaxEnts(); move out of header file
 
 /**********************************************************************************************//**
  * @typedef	struct entity_s
@@ -72,16 +70,22 @@ typedef struct entity_s
 	int				thinkflags;
 	/** @brief	Used for state machines; different things happen depending on the number it is set to.  Array of 20 integers gives ability to have multiple things set, might lower to 10. */
 	int				thinknums[20];
-	/** @brief	The classname of the entity. */
+	/** @brief	The class name of the entity. */
 	char			classname[25];
+	/** @brief	The type of the entity. */
+	char			classType[10];
 	/** @brief	The entity's current health. */
-	int				currentHealth;
+	float			currentHealth;
 	/** @brief	The maximum health the entity could have. */
 	int				max_health;
 	/** @brief	The entity's current anger rate. */
-	int				currentAnger;
+	float			currentAnger;
 	/** @brief	The maximum amt. of anger the entity could have. */
 	int				maxAnger;
+
+	// chipmunk
+	cpBody * body;
+	cpShape * shape;
 
 	struct entity_s	*owner; 
 
@@ -104,11 +108,11 @@ void closeEntities ();
 
 // calling entity funcs
 void EntityAlive ();
-void entityShowAll (); // shows all entities
-void entityShowSwitch (); // shows all entities that make up the jekyll lvl design
-void entityShowHyde (); // shows all entities that make up the hyde lvl design
+void entityShowAll (); // shows all entities, this is for debugging
+void entityShowSwitch (); // shows entities based on level state
+void entitySolidSwitch (); // makes entities solid based on level state
 
-// collision detection
+// collision detection - all three functions may be fused soon
 void CheckCollisions ();
 void CheckCollision (entity_t *ent, entity_t *targ, int max);
 bool isCollide (entity_t *otherent, entity_t *ent);
@@ -119,18 +123,19 @@ void initPlayer ();
 
 // the player
 void PlayerAlive (entity_t * ent);
-void playerInput ( entity_t *ent );
+//void playerInput ( entity_t *ent );
 void move ( entity_t *ent );
-void show ( entity_t *ent ); // show frames from a spritesheet
+void show ( entity_t *ent ); // show frames from a spritesheet... terribly
 
 // all other ents
-void show_Ent ( entity_t *ent ); // placeholder function for merely showing single sprite
+void show_Ent ( entity_t *ent ); //  function for showing single sprite
 
 /* thinks */
 void projThink (entity_t *ent);
 void alphaThink (entity_t *self);
 void betaThink (entity_t *self);
 void gammaThink (entity_t *self);
+void spawnThink (entity_t * self);
 void bossThink (entity_t *self);
 
 /* setting the entity states */
