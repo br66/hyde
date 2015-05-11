@@ -107,7 +107,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			SET_FLAG(bird->flags, ENT_FHYDE);
 	}
 
-	if (strcmp(name, "platform 2") == 0)
+	if (strcmp(name, "platform 2") == 0) //Collision doesn't work quite right
 	{
 		cpShape * edge = NULL;
 
