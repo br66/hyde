@@ -69,7 +69,7 @@ void initEntities()
 	{
 		listEntities[i].animState = 0;
 		listEntities[i].flags = 0;
-		listEntities[i].input = NULL;
+		listEntities[i].input = NULL;  //JUSTIN: if you're not using them, don't bother setting them to NULL. Set to NULL when freeing.
 		listEntities[i].inuse = 0;
 		listEntities[i].move = NULL;
 		listEntities[i].nextThink = 0;
@@ -344,7 +344,10 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 			{
 				if (strcmp(targ->classType, "enemy") == 0 || strcmp(ent->classType, "enemy") == 0)
 				{
-					if (Game.levelState == HYDE_MODE && (IS_SET(targ->flags, ENT_FJEKYL) || IS_SET(ent->flags, ENT_FHYDE)))
+					if (Game.levelState == HYDE_MODE && (IS_SET(targ->flags, ENT_FJEKYL) || IS_SET(ent->flags, ENT_FJEKYL)))
+						continue;
+
+					if (Game.levelState == JEKYLL_MODE && (IS_SET(targ->flags, ENT_FHYDE) || IS_SET(ent->flags, ENT_FHYDE)))
 						continue;
 
 					/* damage varys depending on enemy class */
@@ -744,20 +747,33 @@ void bossThink (entity_t *self)
 	self->nextThink = getCurrentTime() + 50;
 }
 
-void emitterThink(entity_t * self)
+void particleMove(entity_t * self)
 {
-	printf("cookie");
-	entity_t * ent = initEnt();
-	sprintf(ent->classname, "particle");
+	//printf("cookie");
+	//entity_t * ent = initEnt();
+	//sprintf(ent->classname, "particle");
 	
-	ent->sprite = load ("graphic/particle/particle.png", 32, 32);
+	//ent->sprite = load ("graphic/particle/particle.png", 32, 32);
 
-	ent->show = showEnt;
-	SET_FLAG(ent->flags, ENT_SHOW);
+	//ent->show = showEnt;
+	//SET_FLAG(ent->flags, ENT_SHOW);
 
-	ent->x += 100;
-	ent->y += 100;
+	self->xVel = 5;
+	self->yVel = 5;
+
+	if (self->thinkflags == 10)
+	{
+		freeEnt(self);
+	}
+
+	self->thinkflags++;
 	self->nextThink = getCurrentTime() + 5000;
+}
+
+void emitterThink (entity_t * self)
+{
+	spawnParticle(self->x, self->y, 12);
+	self->nextThink = getCurrentTime() + 500;
 }
 
 void initPlayer()

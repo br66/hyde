@@ -482,32 +482,31 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 void spawnParticle (int x, int y, float speed)
 {
-	entity_t * ent = initEnt();
-	sprintf(ent->classname, "particle");
+	entity_t * emitter = initEnt();
+	sprintf(emitter->classname, "particle");
+
+	emitter->x = x;
+	emitter->y = y;
+
+	emitter->sprite = load("graphic/particle/particle.png", 32, 32);
+	emitter->show = showEnt;
+	SET_FLAG(emitter->flags, ENT_SHOW);
 	
-	ent->sprite = load ("graphic/particle/particle.png", 32, 32);
-
-	ent->show = showEnt;
-	SET_FLAG(ent->flags, ENT_SHOW);
-
-	ent->xVel = -speed;
-	ent->yVel = -speed;
+	emitter->think = particleMove;
+	emitter->nextThink = getCurrentTime() + 200;
 }
 
 //the emitter
 void spawnMultiParticle (int x, int y, float speed)
 {
 	entity_t * emitter = initEnt();
-	sprintf(emitter->classname, "emitter");
+	sprintf(emitter->classname, "particle");
 
 	emitter->x = x;
 	emitter->y = y;
 
-	//emitter->show = showEnt;
-	//SET_FLAG(emitter->flags, ENT_SHOW);
+	spawnParticle (x, y, speed);
+
 	emitter->think = emitterThink;
 	emitter->nextThink = getCurrentTime() + 200;
-	//spawnParticle (x - 5, y, speed);
-	//spawnParticle (x, y, speed);
-	//spawnParticle (x + 5, y, speed);
 }

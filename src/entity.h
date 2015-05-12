@@ -140,6 +140,7 @@ void gammaThink (entity_t *self);
 void kidSpawnThink (entity_t * self);
 void bombSpawnThink (entity_t * self);
 void bossThink (entity_t *self);
+void particleMove (entity_t * self);
 void emitterThink (entity_t * self);
 
 /* setting the entity states */

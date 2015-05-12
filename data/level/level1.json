@@ -678,7 +678,19 @@
 			"classname" : "bird",
 			"flag" : "hyde",
 			"x" : 620,
+			"y" : 300
+		},
+		{
+			"classname" : "bird",
+			"flag" : "hyde",
+			"x" : 620,
 			"y" : 200
+		},
+		{
+			"classname" : "kid spawner",
+			"flag" : "none",
+			"x" : 4030,
+			"y" : 410
 		},		
 		{
 			"classname" : "bird",
@@ -686,5 +698,6 @@
 			"x" : 462,
 			"y" : 150
 		}
+		
 	]
 }

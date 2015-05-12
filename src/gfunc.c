@@ -46,6 +46,9 @@ SDL_Rect anger;
 // for physics
 cpSpace * space;
 
+// for music
+Mix_Music * bgMusic;
+
 // for beginning of game
 void begin()
 {
@@ -95,6 +98,11 @@ void begin()
 		}
 	}
 
+	bgMusic = Mix_LoadMUS("sound/Bloody Tears_ Super Castlevania 4 Music.wav");
+
+	if (Mix_PlayMusic (bgMusic, -1) == -1)
+		return;
+
 	//start the game at the menu
 	setGameState(GSTATE_MENU, true);
 	setLvlState(NO_MODE);
@@ -106,6 +114,8 @@ void end()
 {
 	if (SDL_JoystickOpened(0))
 		SDL_JoystickClose(joystick);
+	
+	Mix_HaltMusic();
 
 	Mix_CloseAudio();
 	TTF_Quit();
@@ -785,7 +795,7 @@ void levelOneSetup()
 		cpSpaceAddShape(space, getPlayer()->shape);
 	}
 
-	spawnMultiParticle(30, 40, 12);
+	spawnMultiParticle (30, 40, 12);
 }
 
 void levelTwoSetup()

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void pull()
+void pull()  //JUSTIN: Why not skip a step and just call Events(); in your game loop
 {
 	Events();
 }
@@ -185,7 +185,7 @@ void levelOne()
 		SDL_Flip(getScreen());
 }
 
-void levelTwo()
+void levelTwo()  //JUSTIN: This is the same as level one
 {
 	int i;
 
@@ -215,4 +215,7 @@ void levelTwo()
 	SDL_Flip(getScreen());
 }
 
-/**/
+/*
+JUSTIN NOTES: 
+- You really need to clean up code that you have commented out
+*/
