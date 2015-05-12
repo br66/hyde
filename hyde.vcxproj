@@ -95,7 +95,6 @@
     <ClInclude Include="src\gfunc.h" />
     <ClInclude Include="src\graphic.h" />
     <ClInclude Include="src\include.h" />
-    <ClInclude Include="src\level.h" />
     <ClInclude Include="src\spawn.h" />
     <ClInclude Include="src\textInput.h" />
     <ClInclude Include="src\weapon.h" />
@@ -105,7 +104,6 @@
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\gfunc.c" />
     <ClCompile Include="src\graphic.c" />
-    <ClCompile Include="src\level.c" />
     <ClCompile Include="src\spawn.c" />
     <ClCompile Include="src\textInput.c" />
     <ClCompile Include="src\weapon.c" />

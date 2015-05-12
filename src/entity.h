@@ -66,6 +66,8 @@ typedef struct entity_s
 	Uint32			nextThink;
 	/** @brief	The flags that turn on and off entities' functions. */
 	int				flags;
+	/** **/
+	char			mode[10];
 	/** @brief	Used incorrectly, might be depreciated. Amount of time before doing a specified statement. */
 	int				thinkflags;
 	/** @brief	Used for state machines; different things happen depending on the number it is set to.  Array of 20 integers gives ability to have multiple things set, might lower to 10. */

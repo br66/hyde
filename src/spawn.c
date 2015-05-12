@@ -2,6 +2,26 @@
 
 extern game_t Game;
 
+void newSpawnEntity (const char * name, float x, float y, const char * flag)
+{
+	entity_t * spawn = Init_Ent();
+
+	if (strcmp(name, "kid") == 0)
+	{
+		strcpy(spawn->classname, "kid");
+		strcpy(spawn->classType, "enemy");
+		spawn->sprite = load("graphic/enemy/kid.png", 16, 23);
+
+		spawn->bBox.w = 16;
+		spawn->bBox.h = 23;
+
+		spawn->think = betaThink;
+		spawn->nextThink = getCurrentTime() + 2000;
+	}
+
+	SET_FLAG(spawn->flags, ENT_SOLID);
+}
+
 void spawnEntity(const char * name, float x, float y, const char * flag)
 {
 	if (strcmp(name, "kid") == 0)
@@ -20,7 +40,10 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		kid->nextThink = getCurrentTime() + 2000;
 
 		if (strcmp(flag, "jekyll") == 0 /*&& Game.levelState == JEKYLL_MODE*/)
+		{
+			strcpy(kid->mode, "jekyll");
 			SET_FLAG(kid->flags, ENT_FJEKYL);
+		}
 
 		if (strcmp(flag, "hyde") == 0 /*&& Game.levelState == HYDE_MODE*/)
 			SET_FLAG(kid->flags, ENT_FHYDE);
@@ -44,19 +67,25 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		SET_FLAG(platform1->flags, ENT_SOLID);
 
 		if (strcmp(flag, "jekyll") == 0)
+		{
+			strcpy(platform1->mode, "jekyll");
 			SET_FLAG(platform1->flags, ENT_FJEKYL);
+		}
 
 		if (strcmp(flag, "hyde") == 0)
 			SET_FLAG(platform1->flags, ENT_FHYDE);
 
-		edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 40);
-		edge->e = 0;
-		edge->u = 0;
-		cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
-		cpShapeSetCollisionType(edge, 1);
-		cpShapeSetLayers(edge,CP_ALL_LAYERS);
-		cpShapeSetUserData(edge, (const cpDataPointer)platform1);
-		cpSpaceAddStaticShape(getSpace(), edge);
+		if (Game.gameState != GSTATE_LEVELEDIT)
+		{
+			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 40);
+			edge->e = 0;
+			edge->u = 0;
+			cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
+			cpShapeSetCollisionType(edge, 1);
+			cpShapeSetLayers(edge,CP_ALL_LAYERS);
+			cpShapeSetUserData(edge, (const cpDataPointer)platform1);
+			cpSpaceAddStaticShape(getSpace(), edge);
+		}
 	}
 
 	if (strcmp(name, "bomber") == 0)

@@ -1,6 +1,7 @@
 /* companion to game.c file */
 
 #include <jansson.h>
+#include <stdio.h>
 #include "include.h"
 #include "spawn.h"
 
@@ -23,8 +24,10 @@ int objX = 0;
 int	objY = 0;
 
 //for lvldesign
-FILE *fp = NULL;
+FILE *fp;
 sprite_t * testTile = NULL; // to be replaced with list of defined level objects?
+extern entity_t listEntities [MAX_ENTITIES];
+static int spawned;
 
 // the camera
 static SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -91,11 +94,37 @@ void end()
 
 void setGameState(int gameState, bool setup)
 {
+	int lvlObject;
+
+	const char * classname, * flag;
+	int x, y;
+
 	if (setup == true)
 	{
+			// if open, last state was level edit, save all entities from mode in file
 			if (fp != NULL)
 			{
+				fprintf (fp, "{\n\t\"name\" : \"level edit\",\n\t\"background\" : [\"bglvl1_1.png\", \"bglvl_1.png\"],\n\n\t \"level\" : \n\t[\n");
+				for (lvlObject = 0; lvlObject < spawned; lvlObject++)
+				{
+					classname = listEntities[lvlObject].classname;
+					flag = listEntities[lvlObject].mode;
+					x = listEntities[lvlObject].x;
+					y = listEntities[lvlObject].y;
+
+					fprintf(fp , "\t\t{\n\t\t\t\"classname\" : \"%s\",\n\t\t\t\"flag\" : \"%s\",\n\t\t\t\"x\" : %i,\n\t\t\t\"y\" : %i\n\t\t}", classname, flag, x, y);
+					//printf("\t{\n\"classname\" : \"%s\",\n\"flag\" : \"%s\",\n\"x\" : %i,\n\"y\" : %i\n}", classname, flag, x, y);
+
+					if (lvlObject < spawned - 1)
+					{
+						fprintf(fp, ",\n\n");
+					}
+				}
+
+				fprintf(fp, "\n\t]\n}");
+				
 				fclose(fp);
+				spawned = 0;
 			}
 
 			if (space != NULL)
@@ -431,91 +460,116 @@ SDL_Rect getAngerBar ()
 // reminder: put player in level file
 void Events()
 {
+	int x, y;
+
 	if (Game.gameState != -1)
 	{
 		while (SDL_PollEvent (&event))
 		{
-				if ( event.type == SDL_KEYDOWN )
+			if (Game.gameState == GSTATE_LEVELEDIT)
+			{
+				switch (event.type)
 				{
-					switch ( event.key.keysym.sym )
-					{
-						case SDLK_m:
-							setGameState(GSTATE_MENU, true);
-							break;
-						case SDLK_l:
-							setGameState(GSTATE_LEVELEDIT, true); printf("got here\n");
-							break;
-						case SDLK_1:
-							setGameState(GSTATE_LEVEL1, true); printf("got here too\n");
-							break;
-						case SDLK_2:
-							setGameState(GSTATE_LEVEL2, true);
-							break;
-						case SDLK_UP:
+					case SDL_MOUSEBUTTONDOWN:
+						{
+							if (fp != NULL && SDL_GetMouseState(&mouseX, &mouseY))
 							{
-								if(getPlayer() != NULL)
-									getPlayer()->yVel -= getPlayer()->height >> 5; 
-								break;
-							}
-						case SDLK_DOWN:
-							{
-								if(getPlayer() != NULL)
-									getPlayer()->yVel += getPlayer()->height >> 5;
-								break;
-							}
-						case SDLK_LEFT:
-							{
-								if(getPlayer() != NULL)
-									getPlayer()->xVel -= getPlayer()->width >> 5;
-								break;
-							}
-						case SDLK_RIGHT: 
-							{
-								if(getPlayer() != NULL)
-									getPlayer()->xVel += getPlayer()->width >> 5; 
-								break;
-							}
-					}
+								// PUT ENTITY HERE, at end find all entities in world put in .json
+								x = (mouseX/32) * 32;
+								y = (mouseY/32) * 32;
 
+								spawned++;
+								printf("%i", spawned);
+								
+								spawnEntity ("platform 1", x, y, "jekyll");
+							}
+						}
 				}
-				else if (event.type == SDL_KEYUP)
+			}
+
+			if ( event.type == SDL_KEYDOWN )
+			{
+				switch ( event.key.keysym.sym )
 				{
-					switch ( event.key.keysym.sym )
-					{
-						case SDLK_UP:
-							{
-								if(getPlayer() != NULL)
-									getPlayer()->yVel += getPlayer()->height >> 5; 
-								break;
-							}
-						case SDLK_DOWN:
-							{
-								if(getPlayer() != NULL)
-									getPlayer()->yVel -= getPlayer()->height >> 5; 
-								break;
-							}
-						case SDLK_LEFT:
-							{
-								if(getPlayer() != NULL)
-									getPlayer()->xVel += getPlayer()->width >> 5;
-								break;
-							}
-						case SDLK_RIGHT:
-							{
-								if(getPlayer() != NULL)
-									getPlayer()->xVel -= getPlayer()->width >> 5; 
-								break;
-							}
-					}
+					case SDLK_m:
+						setGameState(GSTATE_MENU, true);
+						break;
+					case SDLK_l:
+						setGameState(GSTATE_LEVELEDIT, true); printf("got here\n");
+						break;
+					case SDLK_1:
+						setGameState(GSTATE_LEVEL1, true); printf("got here too\n");
+						break;
+					case SDLK_2:
+						setGameState(GSTATE_LEVEL2, true);
+						break;
+					case SDLK_UP:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel -= getPlayer()->height >> 5; 
+							break;
+						}
+					case SDLK_DOWN:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel += getPlayer()->height >> 5;
+							break;
+						}
+					case SDLK_LEFT:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel -= getPlayer()->width >> 5;
+							break;
+						}
+					case SDLK_RIGHT: 
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel += getPlayer()->width >> 5; 
+							break;
+						}
 				}
 
-				if (event.type == SDL_QUIT)
+			}
+			else if (event.type == SDL_KEYUP)
+			{
+				switch ( event.key.keysym.sym )
 				{
-					done = true; // to call functions to prepare to close game
-					setGameState(-1, false); // don't know if this is safe..
+					case SDLK_UP:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel += getPlayer()->height >> 5; 
+							break;
+						}
+					case SDLK_DOWN:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->yVel -= getPlayer()->height >> 5; 
+							break;
+						}
+					case SDLK_LEFT:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel += getPlayer()->width >> 5;
+							break;
+						}
+					case SDLK_RIGHT:
+						{
+							if(getPlayer() != NULL)
+								getPlayer()->xVel -= getPlayer()->width >> 5; 
+							break;
+						}
 				}
+			}
+
+			if (event.type == SDL_QUIT)
+			{
+				done = true; // to call functions to prepare to close game
+				setGameState(-1, false); // don't know if this is safe..
+			}
 		}
 	}
+
+
 }
 
 /* for time */
@@ -654,6 +708,8 @@ void levelTwoSetup()
 
 void levelEditSetup()
 {
+	spawned = 0;
+
 	sprite_t * lvlEditBg = NULL;
 
 	lvlEditBg = load("graphic/level/bg/newbglvl1_1.png", 32 , 32);
@@ -668,7 +724,7 @@ void levelEditSetup()
 		printf("testtile didn't load\n", IMG_GetError());
 
 	fp = fopen("data/level/lvlEdit.json", "a+");
-	if (fp = NULL)
+	if (fp == NULL)
 		fprintf(stderr, "can't open json file");
 
 	setLvlState (JEKYLL_MODE);
@@ -689,4 +745,9 @@ void gameOverSetup()
 cpSpace * getSpace()
 {
 	return space;
+}
+
+int getSpawned()
+{
+	return spawned;
 }

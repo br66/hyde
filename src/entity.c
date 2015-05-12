@@ -3,7 +3,7 @@
 //#include <Box2D.h>
 //efforts at including any kind of physics fails
 
-static entity_t listEntities [MAX_ENTITIES];
+entity_t listEntities [MAX_ENTITIES];
 
 SDL_Event keyevent;
 

@@ -19,6 +19,7 @@ extern int mouseX, mouseY;
 extern int objX, objY;
 
 // for level design
+SDL_Event clickEvent;
 extern sprite_t * testTile;
 extern FILE * fp;
 
@@ -112,32 +113,32 @@ void mainmenuSetup()
 
 void levelEdit()
 {
-	//json_t * start, * lvlname, * backgroundArray, * bgData, * lvlPieces, * entityObj, 
-		/* classname, * flag, * x, * y;*/
-	/*
-	lvlname = json_string("name");
-	backgroundArray = json_array();
-	bgData = json_string("");
-	lvlPieces = json_array();
-	entityObj = json_object();
-	classname = json_string("");
-	flag = json_string("");
-	x = json_integer(0);
-	y = json_integer(0);
-	*/
-	//json_object_set_new(start, "", json_string(""));
+	//static bool pressed = false;
+	// draw mouse
+	//if (SDL_GetMouseState(&mouseX, &mouseY) && !pressed)
+	//	if (fp != NULL)
+	//	{
+	//		fputs("WTF", fp);
+	//		printf("pressed\n");
+	//	}
 
-	//draw the mouse
-	if (SDL_GetMouseState(&mouseX, &mouseY))
+	//	//surface(testTile, getScreen(), (mouseX/32) * 32, (mouseY/32) * 32, NULL);
+	//	//spawnEntity("platform 1", (mouseX/32) * 32, (mouseY/32) * 32, "jekyll");
+	//	//printf("spawn");
+
+	// if mouse release and true
+	// set to false;
+	/*
+	while (SDL_PollEvent (&getEvents()) )
 	{
-		//surface(testTile, getScreen(), (mouseX/32) * 32, (mouseY/32) * 32, NULL);
-		//spawnEntity("platform 1", (mouseX/32) * 32, (mouseY/32) * 32, "jekyll");
-		printf("spawn");
-		//fputs("WTF", fp);  // WHAT THE FUUUUUUCK
-		Events();
-		SDL_Flip(getScreen());
-		return;
+		//switch (event.type)
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			//if (event.button.button == SDL_BUTTON_LEFT)
+				printf("w00t");
+		}
 	}
+	*/
 
 	Events();
 	SDL_Flip(getScreen());
@@ -202,35 +203,4 @@ void levelTwo()
 	SDL_Flip(getScreen());
 }
 
-/* create main or else (error LNK2001: unresolved external symbol _SDL_main) 
-int main(int argc, char *argv[])
-{
-	begin(); //initializes everything and main menu stuff
-
-	// unusual printing glitch keeps replacing chars w/ "el/level1.json", fixing glitch here
-	printf(" ");
-	printf(" ");
-	printf(" ");
-	printf(" ");
-
-	do
-	{
-		//update or Hyde()
-		switch(Game.gameState)
-		{
-			case GSTATE_MENU:
-				printf_s("menu state \n"); mainmenu(); break;
-			case GSTATE_LEVELEDIT:
-				printf("leveledit state \n"); leveledit(); break;
-			case GSTATE_LEVEL1:
-				printf("level 1 state \n"); levelOne(); break;
-		}
-
-		Events(); //will be changed to "events()" 
-		SDL_Flip(getScreen());
-	}
-	while (!done);
-
-	end();
-	return 0;
-}*/
+/**/

@@ -12,7 +12,7 @@
 
 /* Includes */
 
-#include <SDL_ttf.h>
+#include <SDL_ttf.h> // failed attempt to remove this
 #include "graphic.h" // entity header dependent on graphic header
 #include "entity.h" // needed for camera function
 
@@ -26,6 +26,8 @@
 #define TIMEUNIT_SECONDS	1
 #define TIMEUNIT_HUNDRETHS	0
 
+// for level design
+#define MAX_LVLOBJ			255
 
 
 /* Enumerations */
@@ -90,7 +92,7 @@ void setCurrentTime(void);
 void setUpSeconds(char* msg, SDL_Color textColor);
 void closeSeconds(void);
 
-//SDL_Event getEvents();
+SDL_Event getEvents();
 
 // for the player and hud
 void initHUD();
@@ -107,6 +109,9 @@ char* timeString(Uint32 offset);
 
 /* for physics */
 cpSpace * getSpace();
+
+/* for level design */
+int getSpawned();
 
 /* obsolete func */
 //void clear();
