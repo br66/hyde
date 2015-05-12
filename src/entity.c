@@ -127,15 +127,21 @@ void EntityAlive()
 
 			if (e->shape && e->body)
 			{
-				printf("%f\n", (float)e->shape->body->v.x);
+				//printf("%f\n", (float)e->shape->body->v.x);
 
 				if (e->xVel != 0)
 					e->shape->body->p.x += e->xVel;
 				else
 					e->shape->body->v.x = 0;
 
+				if (e->xVel > 1.2)
+					e->xVel = 1.2;
+
 				if (e->yVel != 0)
 					e->shape->body->p.y += e->yVel * 1.1;
+
+				if (e->yVel > 2)
+					e->yVel = 2;
 			}
 		}
 		e++;

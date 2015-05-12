@@ -70,6 +70,10 @@ void update()
 			break;
 		case GSTATE_LEVELEDIT:
 			levelEdit();
+			break;
+		case GSTATE_PLAYEDIT:
+			playCustomLevel();
+			break;
 		case GSTATE_GAMEOVER:
 			Events();
 			break;
@@ -93,6 +97,10 @@ void draw()
 		case GSTATE_LEVELEDIT:
 			entityShowSwitch ();
 			break;
+		case GSTATE_PLAYEDIT:
+			entityShowAll();
+			updateHUD();
+			break;
 		case GSTATE_GAMEOVER:
 			break;
 	}
@@ -113,34 +121,37 @@ void mainmenuSetup()
 
 void levelEdit()
 {
-	//static bool pressed = false;
-	// draw mouse
-	//if (SDL_GetMouseState(&mouseX, &mouseY) && !pressed)
-	//	if (fp != NULL)
-	//	{
-	//		fputs("WTF", fp);
-	//		printf("pressed\n");
-	//	}
-
-	//	//surface(testTile, getScreen(), (mouseX/32) * 32, (mouseY/32) * 32, NULL);
-	//	//spawnEntity("platform 1", (mouseX/32) * 32, (mouseY/32) * 32, "jekyll");
-	//	//printf("spawn");
-
-	// if mouse release and true
-	// set to false;
-	/*
-	while (SDL_PollEvent (&getEvents()) )
-	{
-		//switch (event.type)
-		if (event.type == SDL_MOUSEBUTTONDOWN)
-		{
-			//if (event.button.button == SDL_BUTTON_LEFT)
-				printf("w00t");
-		}
-	}
-	*/
-
 	Events();
+	SDL_Flip(getScreen());
+}
+
+void playCustomLevel()
+{
+	int i;
+
+	if (running == true)
+	{
+		char msg[20];
+
+		for( i = 0; i < 20; i++)
+			msg[i] = 0;
+
+		strcpy( msg, FormatTimeString(start));
+		//setUpSeconds(msg, timeColor);
+	}
+
+	delta = SDL_GetTicks() - getCurrentTime();
+	setCurrentTime();
+
+	cpSpaceStep(getSpace(), 0.1);
+	EntityAlive ();
+	CheckCollisions ();
+	Events ();
+
+	keystates = SDL_GetKeyState (NULL);
+
+	// checking keyboard input does not work outside of a function
+
 	SDL_Flip(getScreen());
 }
 

@@ -40,7 +40,8 @@ enum gameState
 	GSTATE_LEVEL1,
 	GSTATE_LEVEL2,
 	GSTATE_GAMEOVER,
-	GSTATE_BOSS
+	GSTATE_BOSS,
+	GSTATE_PLAYEDIT
 };
 
 // for the level state machine
@@ -123,12 +124,19 @@ void update();
 void draw();
 
 void mainmenuSetup();
+
 void levelOneSetup();
 void levelOne();
+
 void levelTwoSetup();
 void levelTwo();
+
 void levelEditSetup();
 void levelEdit();
+
+void customLevelSetup();
+void playCustomLevel();
+
 void gameOverSetup();
 
 void showBackgrounds();

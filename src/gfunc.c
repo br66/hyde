@@ -7,6 +7,10 @@
 
 game_t Game;
 
+// for external controls
+SDL_Joystick * joystick;
+SDL_JoyButtonEvent joyEvent;
+
 // for time
 static SDL_Surface *seconds = NULL;
 static Uint32 currentTime = 0;
@@ -73,6 +77,24 @@ void begin()
 		return;
 	}
 
+	// joysticks controls tested w/ xbox 360 controller
+	if (SDL_NumJoysticks() > 0)
+	{
+		joystick = SDL_JoystickOpen(0);
+
+		if (joystick)
+		{
+			printf("Joystick successfully opened -- Name: %s\n", SDL_JoystickName(0));
+			printf("# of Axes: %d\n", SDL_JoystickNumAxes(joystick));
+			printf("# of Buttons: %d\n", SDL_JoystickNumButtons(joystick));
+			printf("# of hats: %d\n", SDL_JoystickNumHats(joystick));
+		}
+		else
+		{
+			printf("could not find joystick");
+		}
+	}
+
 	//start the game at the menu
 	setGameState(GSTATE_MENU, true);
 	setLvlState(NO_MODE);
@@ -82,6 +104,9 @@ void begin()
 // for end of game
 void end()
 {
+	if (SDL_JoystickOpened(0))
+		SDL_JoystickClose(joystick);
+
 	Mix_CloseAudio();
 	TTF_Quit();
 	closeScreen();
@@ -148,13 +173,21 @@ void setGameState(int gameState, bool setup)
 			case GSTATE_LEVEL2:
 				initSprites();
 				initEntities();
-				levelTwoSetup(); break;
+				levelTwoSetup(); 
+				break;
 			case GSTATE_GAMEOVER:
-				gameOverSetup(); break;
+				gameOverSetup(); 
+				break;
 			case GSTATE_LEVELEDIT:
 				initSprites();
 				initEntities();
 				levelEditSetup();
+				break;
+			case GSTATE_PLAYEDIT:
+				initSprites();
+				initEntities();
+				customLevelSetup();
+				break;
 		}
 	}
 
@@ -199,6 +232,12 @@ void loadLevel(char * level)
 		parser = json_load_file("data/level/level2.json", 0, &error);
 	}
 
+	if (!strcmp(level, "custom level"))
+	{
+		printf("loading custom level");
+		parser = json_load_file("data/level/lvlEdit.json", 0, &error);
+	}
+
 	if (strcmp(level, "boss 1") == 0)
 	{
 		printf("loading boss 1");
@@ -228,7 +267,7 @@ void loadLevel(char * level)
 		json_decref(parser);
 		return;
 	}
-	//printf("%s \n", json_string_value(name));
+	printf("%s \n", json_string_value(name));
 
 	// backgrounds for level
 	background = json_object_get(parser, "background");
@@ -277,7 +316,7 @@ void loadLevel(char * level)
 			json_decref(parser);
 			return;
 		}
-		//printf("%s\n", json_string_value(classname));
+		printf("%s\n", json_string_value(classname));
 
 		flag = json_object_get(entity, "flag");
 		if (!json_is_string(flag))
@@ -487,6 +526,62 @@ void Events()
 				}
 			}
 
+			if(joystick && getPlayer() != NULL)
+			{
+				switch (event.type)
+				{
+					case SDL_JOYAXISMOTION:
+						{
+							if ( (event.jaxis.value < 0) || (event.jaxis.value > 3200))
+							{
+								switch (event.jaxis.axis)
+								{
+									case 0: 
+										printf("up down\n"); 
+										break;
+
+									case 1:
+									{
+										if(getPlayer() != NULL)
+										{
+											getPlayer()->xVel = event.jaxis.value >> 14;
+											printf("%f\n",getPlayer()->xVel);
+											break;
+										}
+						
+									}
+								}
+
+							}
+							else
+								getPlayer()->xVel = 0;
+						}
+					case SDL_JOYBUTTONDOWN:
+					{
+						switch (event.jbutton.button)
+						{
+							case 0: printf("the a button"); break;
+							case 1: printf("the b button"); break;
+							case 2: printf("the x button"); getPlayer()->yVel -= getPlayer()->height >> 5; break;
+							case 3: printf("the y button"); break;
+						}
+						break;
+					}
+					case SDL_JOYBUTTONUP:
+					{
+						switch (event.jbutton.button)
+						{
+							case 0: printf("the a button"); break;
+							case 1: printf("the b button"); break;
+							case 2: printf("the x button up"); getPlayer()->yVel += getPlayer()->height >> 5; break;
+							case 3: printf("the y button"); break;
+						}
+						break;
+					}
+				
+				}
+			}
+
 			if ( event.type == SDL_KEYDOWN )
 			{
 				switch ( event.key.keysym.sym )
@@ -502,6 +597,9 @@ void Events()
 						break;
 					case SDLK_2:
 						setGameState(GSTATE_LEVEL2, true);
+						break;
+					case SDLK_3:
+						setGameState(GSTATE_PLAYEDIT, true);
 						break;
 					case SDLK_UP:
 						{
@@ -569,7 +667,10 @@ void Events()
 		}
 	}
 
-
+	//if (joystick && Game.gameState != -1)
+	//{
+		//while (SDL_Polle
+	//}
 }
 
 /* for time */
@@ -679,7 +780,7 @@ void levelOneSetup()
 	{
 		if (!getPlayer()->body) return;
 		if (!getPlayer()->shape) return;
-		printf("AZIZ LIGHT\n");
+		//printf("AZIZ LIGHT\n");
 		cpSpaceAddBody(space, getPlayer()->body);
 		cpSpaceAddShape(space, getPlayer()->shape);
 	}
@@ -723,11 +824,43 @@ void levelEditSetup()
 	if (testTile == NULL)
 		printf("testtile didn't load\n", IMG_GetError());
 
-	fp = fopen("data/level/lvlEdit.json", "a+");
+	loadLevel ("custom level");
+
+	fp = fopen("data/level/lvlEdit.json", "w");
 	if (fp == NULL)
 		fprintf(stderr, "can't open json file");
 
 	setLvlState (JEKYLL_MODE);
+}
+
+void customLevelSetup()
+{
+	sprite_t * bglvl2_1 = load("graphic/level/bg/newbglvl1_1.png", 32, 32);
+
+	bglvl2_1->background = 1;
+
+	initPlayer ();
+
+	loadLevel ("custom level");
+
+	setLvlState (JEKYLL_MODE);
+
+	getPlayer()->currentAnger = 1;
+
+	initHUD ();
+
+	start = SDL_GetTicks();
+
+	running = true;
+
+	if (space != NULL && getPlayer() != NULL)
+	{
+		if (!getPlayer()->body) return;
+		if (!getPlayer()->shape) return;
+		//printf("AZIZ LIGHT\n");
+		cpSpaceAddBody(space, getPlayer()->body);
+		cpSpaceAddShape(space, getPlayer()->shape);
+	}
 }
 
 void gameOverSetup()

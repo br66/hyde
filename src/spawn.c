@@ -313,3 +313,22 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		SET_FLAG(spawnerKid->flags, ENT_SHOW); //might change this
 	}
 }
+
+void spawnParticle (int x, int y, float speed)
+{
+	entity_t * ent = Init_Ent();
+	sprintf(ent->classname, "particle");
+	
+	ent->sprite = load ("graphic/particle/particle.png", 32, 32);
+
+	ent->show = show_Ent;
+	SET_FLAG(ent->flags, ENT_SHOW);
+
+	ent->xVel = -3;
+	ent->yVel = -3;
+}
+
+void spawnMultiParticle (int x, int y, float speed)
+{
+
+}
