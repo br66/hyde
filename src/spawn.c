@@ -77,7 +77,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 		if (Game.gameState != GSTATE_LEVELEDIT)
 		{
-			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 40);
+			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 35);
 			edge->e = 0;
 			edge->u = 0;
 			cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
@@ -228,7 +228,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			SET_FLAG(platform4->flags, ENT_FHYDE);
 
 		
-		edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 271, 60);
+		edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 271, 40);
 		edge->e = 0;
 		edge->u = 0;
 		cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x+129, y));
