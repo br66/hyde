@@ -12,13 +12,13 @@ int max_ents; /* Number of entities that have been made in-game */ //getMaxEnts(
 extern game_t Game;
 
 /**********************************************************************************************//**
- * @fn	entity_t *Init_Ent (void)
+ * @fn	entity_t *initEnt (void)
  *
  * @brief	Initialises single entity.
  *
  * @return	null if it fails, else an address for the pointer
  **************************************************************************************************/
-entity_t *Init_Ent (void)
+entity_t *initEnt (void)
 {
 	int i;
 	
@@ -350,11 +350,11 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 					/* damage varys depending on enemy class */
 					if (strcmp(targ->classname, "player") == 0)
 					{
-						if (strcmp(ent->classname, "kid") == 0)
-						{
-							targ->currentHealth -= 0.5;
-							targ->currentAnger += 2;
-						}
+						//if (strcmp(ent->classname, "kid") == 0)
+						//{
+							//targ->currentHealth -= 0.5;
+							//targ->currentAnger += 2;
+						//}
 						if (strcmp(ent->classname, "bomber") == 0)
 						{
 							targ->currentHealth -= 1;
@@ -374,12 +374,12 @@ void CheckCollision (entity_t *ent, entity_t *targ, int max)
 							ent->currentHealth -= 0.5;
 							ent->currentAnger += 2;
 						}
-						else if (strcmp(targ->classname, "bomber") == 0)
+						if (strcmp(targ->classname, "bomber") == 0)
 						{
 							ent->currentHealth -= 1;
 							ent->currentAnger += 1;
 						}
-						else if (strcmp(targ->classname, "bird") == 0)
+						if (strcmp(targ->classname, "bird") == 0)
 						{
 							ent->currentHealth -= 1;
 							ent->currentAnger += 3;
@@ -558,7 +558,7 @@ void show (entity_t *ent) //name change?
 
 }
 
-void show_Ent (entity_t *ent) //name change?
+void showEnt (entity_t *ent) //name change?
 {
 	surface(ent->sprite, getScreen(), ent->x - getCamera().x, ent->y - getCamera().y, NULL);
 }
@@ -665,11 +665,17 @@ void gammaThink (entity_t *self)
 	self->nextThink = getCurrentTime() + 600;
 }
 
-void spawnThink (entity_t * self)
+void kidSpawnThink (entity_t * self)
 {
 	spawnEntity("kid", self->x, self->y, "jekyll");
 	//printf("cookie");
 	self->nextThink = getCurrentTime() + 9000;
+}
+
+void bombSpawnThink (entity_t * self)
+{
+	spawnEntity("bomber", self->x, self->y, "hyde");
+	self->nextThink = getCurrentTime() + 7500;
 }
 
 //Thinknum[0] - the boss's walk quadrant
@@ -738,10 +744,25 @@ void bossThink (entity_t *self)
 	self->nextThink = getCurrentTime() + 50;
 }
 
+void emitterThink(entity_t * self)
+{
+	printf("cookie");
+	entity_t * ent = initEnt();
+	sprintf(ent->classname, "particle");
+	
+	ent->sprite = load ("graphic/particle/particle.png", 32, 32);
+
+	ent->show = showEnt;
+	SET_FLAG(ent->flags, ENT_SHOW);
+
+	ent->x += 100;
+	ent->y += 100;
+	self->nextThink = getCurrentTime() + 5000;
+}
 
 void initPlayer()
 {
-	entity_t * player = Init_Ent();
+	entity_t * player = initEnt();
 
 	sprintf(player->classname, "player");
 

@@ -470,7 +470,7 @@ void updateHUD ()
 	}
 
 	if (Game.levelState == HYDE_MODE)
-			getPlayer()->currentAnger -= 0.05;
+		getPlayer()->currentAnger -= 0.05;
 
 	if (Game.levelState == HYDE_MODE && getPlayer()->currentAnger < 0)
 		{
@@ -784,6 +784,8 @@ void levelOneSetup()
 		cpSpaceAddBody(space, getPlayer()->body);
 		cpSpaceAddShape(space, getPlayer()->shape);
 	}
+
+	spawnMultiParticle(30, 40, 12);
 }
 
 void levelTwoSetup()
@@ -805,6 +807,15 @@ void levelTwoSetup()
 	start = SDL_GetTicks();
 
 	running = true;
+
+	if (space != NULL && getPlayer() != NULL)
+	{
+		if (!getPlayer()->body) return;
+		if (!getPlayer()->shape) return;
+		//printf("AZIZ LIGHT\n");
+		cpSpaceAddBody(space, getPlayer()->body);
+		cpSpaceAddShape(space, getPlayer()->shape);
+	}
 }
 
 void levelEditSetup()
@@ -830,7 +841,7 @@ void levelEditSetup()
 	if (fp == NULL)
 		fprintf(stderr, "can't open json file");
 
-	setLvlState (JEKYLL_MODE);
+	setLvlState (JEKYLL_MODE);\
 }
 
 void customLevelSetup()

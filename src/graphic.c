@@ -56,7 +56,7 @@ sprite_t* load (char *filename, int width, int height)
 	/* searching thru list of loaded sprites to check if i already have the file asked for loaded */
 	for (i = 0; i < numSprites; i++)
 	{
-		if (strncmp(filename, listSprites[i].filename, 30) == 0)
+		if (strncmp(filename, listSprites[i].filename, 100) == 0)
 		{
 			listSprites[i].used++;
 			return &listSprites[i];

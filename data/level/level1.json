@@ -637,7 +637,31 @@
 			"flag" : "none",
 			"x" : 1000,
 			"y" : 410
-		},			
+		},
+		{
+			"classname" : "bomber spawner",
+			"flag" : "none",
+			"x" : 3000,
+			"y" : 391
+		},	
+		{
+			"classname" : "bomber spawner",
+			"flag" : "none",
+			"x" : 3900,
+			"y" : 391
+		},	
+		{
+			"classname" : "kid spawner",
+			"flag" : "none",
+			"x" : 1300,
+			"y" : 410
+		},
+		{
+			"classname" : "kid spawner",
+			"flag" : "none",
+			"x" : 1700,
+			"y" : 410
+		},
 		{
 			"classname" : "kid",
 			"flag" : "jekyll",

@@ -203,6 +203,7 @@ void levelTwo()
 	delta = SDL_GetTicks() - getCurrentTime();
 	setCurrentTime();
 
+	cpSpaceStep(getSpace(), 0.1);
 	EntityAlive ();
 	CheckCollisions ();
 	Events ();

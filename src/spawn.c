@@ -4,7 +4,7 @@ extern game_t Game;
 
 void newSpawnEntity (const char * name, float x, float y, const char * flag)
 {
-	entity_t * spawn = Init_Ent();
+	entity_t * spawn = initEnt();
 
 	if (strcmp(name, "kid") == 0)
 	{
@@ -26,7 +26,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 {
 	if (strcmp(name, "kid") == 0)
 	{
-		entity_t * kid = Init_Ent();
+		entity_t * kid = initEnt();
 
 		strcpy(kid->classname, "kid");
 		strcpy(kid->classType, "enemy");
@@ -35,7 +35,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		kid->y = y;
 		kid->bBox.w = 16;
 		kid->bBox.h = 23;
-		kid->show = show_Ent;
+		kid->show = showEnt;
 		kid->think = betaThink;
 		kid->nextThink = getCurrentTime() + 2000;
 
@@ -55,14 +55,14 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 	{
 		cpShape * edge = NULL;
 
-		entity_t * platform1 = Init_Ent();
+		entity_t * platform1 = initEnt();
 		strcpy(platform1->classname, "platform 1");
 		platform1->sprite = load("graphic/level/lvldesign/plvl_1.png", 62, 24);
 		platform1->x = x;
 		platform1->y = y;
 		platform1->bBox.w = 62;
 		platform1->bBox.h = 24;
-		platform1->show = show_Ent;
+		platform1->show = showEnt;
 
 		SET_FLAG(platform1->flags, ENT_SOLID);
 
@@ -90,7 +90,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 	if (strcmp(name, "bomber") == 0)
 	{
-		entity_t * bomber = Init_Ent ();
+		entity_t * bomber = initEnt ();
 
 		strcpy(bomber->classname, "bomber");
 		strcpy(bomber->classType, "enemy");
@@ -100,7 +100,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		bomber->y = y;
 		bomber->bBox.w = 16;
 		bomber->bBox.h = 33;
-		bomber->show = show_Ent;
+		bomber->show = showEnt;
 		bomber->think = alphaThink;
 
 		//SET_FLAG(bomber->flags, ENT_SOLID);
@@ -110,11 +110,15 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 		if (strcmp(flag, "hyde") == 0)
 			SET_FLAG(bomber->flags, ENT_FHYDE);
+
+		SET_FLAG(bomber->flags, ENT_SOLID);
 	}
+
+
 
 	if (strcmp(name, "bird") == 0)
 	{
-		entity_t * bird = Init_Ent ();
+		entity_t * bird = initEnt ();
 
 		strcpy(bird->classname, "bird");
 		strcpy(bird->classType, "enemy");
@@ -124,7 +128,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		bird->y = y;
 		bird->bBox.w = 15;
 		bird->bBox.h = 13;
-		bird->show = show_Ent;
+		bird->show = showEnt;
 		bird->think = gammaThink;
 
 		SET_FLAG(bird->flags, ENT_SOLID);
@@ -140,7 +144,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 	{
 		cpShape * edge = NULL;
 
-		entity_t * platform2 = Init_Ent ();
+		entity_t * platform2 = initEnt ();
 
 		strcpy(platform2->classname, "platform 2");
 
@@ -149,7 +153,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		platform2->y = y;
 		platform2->bBox.w = 271;
 		platform2->bBox.h = 56;
-		platform2->show = show_Ent;
+		platform2->show = showEnt;
 
 		SET_FLAG(platform2->flags, ENT_SOLID);
 
@@ -174,7 +178,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 	{
 		cpShape * edge = NULL;
 
-		entity_t * platform3 = Init_Ent ();
+		entity_t * platform3 = initEnt ();
 
 		strcpy(platform3->classname, "platform 3");
 
@@ -183,7 +187,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		platform3->y = y;
 		platform3->bBox.w = 62;
 		platform3->bBox.h = 24;
-		platform3->show = show_Ent;
+		platform3->show = showEnt;
 
 		SET_FLAG(platform3->flags, ENT_SOLID);
 
@@ -208,7 +212,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 	{
 		cpShape * edge = NULL;
 
-		entity_t * platform4 = Init_Ent ();
+		entity_t * platform4 = initEnt ();
 
 		strcpy(platform4->classname, "platform 4");
 
@@ -217,7 +221,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		platform4->y = y;
 		platform4->bBox.w = 271;
 		platform4->bBox.h = 56;
-		platform4->show = show_Ent;
+		platform4->show = showEnt;
 
 		SET_FLAG(platform4->flags, ENT_SOLID);
 
@@ -241,7 +245,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 	if (strcmp(name, "building 1") == 0)
 	{
-		entity_t * building1 = Init_Ent ();
+		entity_t * building1 = initEnt ();
 
 		strcpy(building1->classname, "building 1");
 
@@ -250,7 +254,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		building1->y = y;
 		building1->bBox.w = 64;
 		building1->bBox.h = 111;
-		building1->show = show_Ent;
+		building1->show = showEnt;
 
 		if (strcmp(flag, "jekyll") == 0)
 			SET_FLAG(building1->flags, ENT_FJEKYL);
@@ -261,7 +265,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 	if (strcmp(name, "building 2") == 0)
 	{
-		entity_t * building2 = Init_Ent ();
+		entity_t * building2 = initEnt ();
 
 		strcpy(building2->classname, "building 2");
 
@@ -270,7 +274,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		building2->y = y;
 		building2->bBox.w = 127;
 		building2->bBox.h = 159;
-		building2->show = show_Ent;
+		building2->show = showEnt;
 
 		if (strcmp(flag, "jekyll") == 0)
 			SET_FLAG(building2->flags, ENT_FJEKYL);
@@ -281,7 +285,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 	if (strcmp(name, "light 1") == 0)
 	{
-		entity_t * light1 = Init_Ent ();
+		entity_t * light1 = initEnt ();
 
 		strcpy(light1->classname, "light 1");
 
@@ -290,7 +294,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		light1->y = y;
 		light1->bBox.w = 127;
 		light1->bBox.h = 159;
-		light1->show = show_Ent;
+		light1->show = showEnt;
 
 		if (strcmp(flag, "jekyll") == 0)
 			SET_FLAG(light1->flags, ENT_FJEKYL);
@@ -299,15 +303,177 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			SET_FLAG(light1->flags, ENT_FHYDE);
 	}
 
+	if(!strcmp(name, "platform 5"))
+	{
+		cpShape * edge = NULL;
+
+		entity_t * ent = initEnt();
+		strcpy(ent->classname, "platform 5");
+		ent->sprite = load("graphic/level/lvldesign/62414.png", 116, 16);
+		ent->x = x;
+		ent->y = y;
+		ent->bBox.w = 116;
+		ent->bBox.h = 16;
+		ent->show = showEnt;
+
+		SET_FLAG(ent->flags, ENT_SOLID);
+
+		if (strcmp(flag, "jekyll") == 0)
+		{
+			strcpy(ent->mode, "jekyll");
+			SET_FLAG(ent->flags, ENT_FJEKYL);
+		}
+
+		if (strcmp(flag, "hyde") == 0)
+			SET_FLAG(ent->flags, ENT_FHYDE);
+
+		if (Game.gameState != GSTATE_LEVELEDIT)
+		{
+			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 35);
+			edge->e = 0;
+			edge->u = 0;
+			cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
+			cpShapeSetCollisionType(edge, 1);
+			cpShapeSetLayers(edge,CP_ALL_LAYERS);
+			cpShapeSetUserData(edge, (const cpDataPointer)ent);
+			cpSpaceAddStaticShape(getSpace(), edge);
+		}
+	}
+
+	if(!strcmp(name, "platform 8"))
+	{
+		cpShape * edge = NULL;
+
+		entity_t * ent = initEnt();
+		strcpy(ent->classname, "platform 8");
+		ent->sprite = load("graphic/level/lvldesign/lvl2plat8.png", 116, 16);
+		ent->x = x;
+		ent->y = y;
+		ent->bBox.w = 116;
+		ent->bBox.h = 16;
+		ent->show = showEnt;
+
+		SET_FLAG(ent->flags, ENT_SOLID);
+
+		if (strcmp(flag, "jekyll") == 0)
+		{
+			strcpy(ent->mode, "jekyll");
+			SET_FLAG(ent->flags, ENT_FJEKYL);
+		}
+
+		if (strcmp(flag, "hyde") == 0)
+			SET_FLAG(ent->flags, ENT_FHYDE);
+
+		if (Game.gameState != GSTATE_LEVELEDIT)
+		{
+			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 1000, 16);
+			edge->e = 0;
+			edge->u = 0;
+			cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
+			cpShapeSetCollisionType(edge, 1);
+			cpShapeSetLayers(edge,CP_ALL_LAYERS);
+			cpShapeSetUserData(edge, (const cpDataPointer)ent);
+			cpSpaceAddStaticShape(getSpace(), edge);
+		}
+	}
+
+	if(!strcmp(name, "platform 9"))
+	{
+		cpShape * edge = NULL;
+
+		entity_t * ent = initEnt();
+		strcpy(ent->classname, "platform 9");
+		ent->sprite = load("graphic/level/lvldesign/plvl5_9.png", 224, 102);
+		ent->x = x;
+		ent->y = y;
+		ent->bBox.w = 224;
+		ent->bBox.h = 102;
+		ent->show = showEnt;
+
+		SET_FLAG(ent->flags, ENT_SOLID);
+
+		if (strcmp(flag, "jekyll") == 0)
+		{
+			strcpy(ent->mode, "jekyll");
+			SET_FLAG(ent->flags, ENT_FJEKYL);
+		}
+
+		if (strcmp(flag, "hyde") == 0)
+			SET_FLAG(ent->flags, ENT_FHYDE);
+
+		if (Game.gameState != GSTATE_LEVELEDIT)
+		{
+			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 224, 98);
+			edge->e = 0;
+			edge->u = 0;
+			cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x+100, y+30));
+			cpShapeSetCollisionType(edge, 1);
+			cpShapeSetLayers(edge,CP_ALL_LAYERS);
+			cpShapeSetUserData(edge, (const cpDataPointer)ent);
+			cpSpaceAddStaticShape(getSpace(), edge);
+		}
+	}
+
+	if(!strcmp(name, "platform 10"))
+	{
+		cpShape * edge = NULL;
+
+		entity_t * ent = initEnt();
+		strcpy(ent->classname, "platform 10");
+		ent->sprite = load("graphic/level/lvldesign/plvl5_10.png", 16, 32);
+		ent->x = x;
+		ent->y = y;
+		ent->bBox.w = 16;
+		ent->bBox.h = 32;
+		ent->show = showEnt;
+
+		SET_FLAG(ent->flags, ENT_SOLID);
+
+		if (strcmp(flag, "jekyll") == 0)
+		{
+			strcpy(ent->mode, "jekyll");
+			SET_FLAG(ent->flags, ENT_FJEKYL);
+		}
+
+		if (strcmp(flag, "hyde") == 0)
+			SET_FLAG(ent->flags, ENT_FHYDE);
+
+		if (Game.gameState != GSTATE_LEVELEDIT)
+		{
+			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 16, 32);
+			edge->e = 0;
+			edge->u = 0;
+			cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
+			cpShapeSetCollisionType(edge, 1);
+			cpShapeSetLayers(edge,CP_ALL_LAYERS);
+			cpShapeSetUserData(edge, (const cpDataPointer)ent);
+			cpSpaceAddStaticShape(getSpace(), edge);
+		}
+	}
+
 	if (strcmp(name, "kid spawner") == 0)
 	{
-		entity_t * spawnerKid = Init_Ent ();
+		entity_t * spawnerKid = initEnt ();
 
 		strcpy(spawnerKid->classname, "kid spawner");
 
 		spawnerKid->x = x;
 		spawnerKid->y = y;
-		spawnerKid->think = spawnThink;
+		spawnerKid->think = kidSpawnThink;
+		spawnerKid->nextThink = getCurrentTime() + 70;
+
+		SET_FLAG(spawnerKid->flags, ENT_SHOW); //might change this
+	}
+
+	if (strcmp(name, "bomber spawner") == 0)
+	{
+		entity_t * spawnerKid = initEnt ();
+
+		strcpy(spawnerKid->classname, "bomber spawner");
+
+		spawnerKid->x = x;
+		spawnerKid->y = y;
+		spawnerKid->think = bombSpawnThink;
 		spawnerKid->nextThink = getCurrentTime() + 70;
 
 		SET_FLAG(spawnerKid->flags, ENT_SHOW); //might change this
@@ -316,19 +482,32 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 void spawnParticle (int x, int y, float speed)
 {
-	entity_t * ent = Init_Ent();
+	entity_t * ent = initEnt();
 	sprintf(ent->classname, "particle");
 	
 	ent->sprite = load ("graphic/particle/particle.png", 32, 32);
 
-	ent->show = show_Ent;
+	ent->show = showEnt;
 	SET_FLAG(ent->flags, ENT_SHOW);
 
-	ent->xVel = -3;
-	ent->yVel = -3;
+	ent->xVel = -speed;
+	ent->yVel = -speed;
 }
 
+//the emitter
 void spawnMultiParticle (int x, int y, float speed)
 {
+	entity_t * emitter = initEnt();
+	sprintf(emitter->classname, "emitter");
 
+	emitter->x = x;
+	emitter->y = y;
+
+	//emitter->show = showEnt;
+	//SET_FLAG(emitter->flags, ENT_SHOW);
+	emitter->think = emitterThink;
+	emitter->nextThink = getCurrentTime() + 200;
+	//spawnParticle (x - 5, y, speed);
+	//spawnParticle (x, y, speed);
+	//spawnParticle (x + 5, y, speed);
 }

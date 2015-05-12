@@ -103,7 +103,7 @@ typedef struct entity_s
 } entity_t;
 
 // for initialization/removal of entities
-entity_t *Init_Ent (void);
+entity_t *initEnt (void);
 void freeEnt (entity_t * self);
 void initEntities ();
 void closeEntities ();
@@ -130,15 +130,17 @@ void move ( entity_t *ent );
 void show ( entity_t *ent ); // show frames from a spritesheet... terribly
 
 // all other ents
-void show_Ent ( entity_t *ent ); //  function for showing single sprite
+void showEnt ( entity_t *ent ); //  function for showing single sprite
 
 /* thinks */
 void projThink (entity_t *ent);
 void alphaThink (entity_t *self);
 void betaThink (entity_t *self);
 void gammaThink (entity_t *self);
-void spawnThink (entity_t * self);
+void kidSpawnThink (entity_t * self);
+void bombSpawnThink (entity_t * self);
 void bossThink (entity_t *self);
+void emitterThink (entity_t * self);
 
 /* setting the entity states */
 void setStateTo (entity_t *ent, int animState);

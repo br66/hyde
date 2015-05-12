@@ -4,7 +4,7 @@ void fire_Bomb (entity_t *ent)
 {
 	entity_t *bomb;
 
-	bomb = Init_Ent();
+	bomb = initEnt();
 
 	bomb->owner = ent;
 
@@ -17,14 +17,14 @@ void fire_Bomb (entity_t *ent)
 	bomb->bBox.h = 20;
 
 	bomb->sprite = load("graphic/enemy/projectile/bomb.png", 32, 32); //#sprite
-	bomb->show = show_Ent;
+	bomb->show = showEnt;
 }
 
 void fire_Projectile (entity_t *shooter)
 {
 	entity_t *projectile; /* create projectile */
 
-	projectile = Init_Ent(); /* put into memory */
+	projectile = initEnt(); /* put into memory */
 
 	projectile->owner = shooter; /* owner of this projectile is whoever shot it (whoever called this function)*/
 	sprintf(projectile->classname, "enemy");
@@ -39,7 +39,7 @@ void fire_Projectile (entity_t *shooter)
 	projectile->bBox.w = 64;
 
 	projectile->sprite = load("graphic/enemy/projectile/projectile.png", 32, 32);; //#sprite
-	projectile->show = show_Ent;
+	projectile->show = showEnt;
 
 	projectile->think = projThink;
 	projectile->nextThink = getCurrentTime() + 100;
