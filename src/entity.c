@@ -1,15 +1,12 @@
 #include "include.h"
 #include "spawn.h"
-//#include <Box2D.h>
-//efforts at including any kind of physics fails
-
-entity_t listEntities [MAX_ENTITIES];
-
-SDL_Event keyevent;
-
-int max_ents; /* Number of entities that have been made in-game */ //getMaxEnts(); move out of header file
 
 extern game_t Game;
+
+/* list of entities */
+entity_t listEntities [MAX_ENTITIES];
+/* Number of entities that have been made in-game */
+int max_ents;  //getMaxEnts(); move out of header file
 
 /**********************************************************************************************//**
  * @fn	entity_t *initEnt (void)
@@ -30,21 +27,24 @@ entity_t *initEnt (void)
 			return &listEntities[i];
 		}
 	}
+
 	max_ents++;
 	fprintf(stderr, "LOL TOO MANY ENTITIES");
 	return NULL;
-
 }
 
-// frees single entity from memory
+/**********************************************************************************************//**
+ * @fn	void *freeEnt (void)
+ *
+ * @brief	Removes single entity.
+ **************************************************************************************************/
 void freeEnt (entity_t * self)
 {
 	self->inuse = 0; // self->inuse--;?
 	max_ents--;
 
-	if(self->sprite != NULL) freeSprite(self->sprite);
-
-	// no sounds yet
+	if(self->sprite != NULL)
+		freeSprite(self->sprite);
 	
 	self->owner = NULL;
 	self->think = NULL;
@@ -58,10 +58,14 @@ void freeEnt (entity_t * self)
 	self->yVel = 0;
 }
 
-// initializes entity list
+/**********************************************************************************************//**
+ * @fn	void *initEntities (void)
+ *
+ * @brief	Initialises the entity list.
+ **************************************************************************************************/
 void initEntities()
 {
-	int i,j;
+	int i, j;
 
 	memset(listEntities,0,sizeof(entity_t) * MAX_ENTITIES);
 
@@ -69,7 +73,7 @@ void initEntities()
 	{
 		listEntities[i].animState = 0;
 		listEntities[i].flags = 0;
-		listEntities[i].input = NULL;  //JUSTIN: if you're not using them, don't bother setting them to NULL. Set to NULL when freeing.
+		listEntities[i].input = NULL;
 		listEntities[i].inuse = 0;
 		listEntities[i].move = NULL;
 		listEntities[i].nextThink = 0;
@@ -81,11 +85,15 @@ void initEntities()
 		listEntities[i].touch = NULL;
 		
 		for (j=0; j< 10; j++)
-		listEntities[i].thinknums[j] = 0;
+			listEntities[i].thinknums[j] = 0;
 	}
 }
 
-// frees all entities in list
+/**********************************************************************************************//**
+ * @fn	void *closeEntities (void)
+ *
+ * @brief	Closes the entity list.
+ **************************************************************************************************/
 void closeEntities()
 {
 	int i;
@@ -115,10 +123,9 @@ void EntityAlive()
 			{
 				listEntities[i].think(&listEntities[i]);
 			}
-			/* if listentiies[i].nextanimthink <= time
-			{
-				call animthink; //replaced by show???
-			}*/
+
+			/*if listentiies[i].nextanimthink <= time
+				call animthink; //replaced by show???*/
 
 			if (e->xVel != 0)
 			{e->x += e->xVel;}
@@ -450,50 +457,6 @@ void PlayerAlive (entity_t * ent)
 		show(ent);
 	}
 }
-
-/**********************************************************************************************//**
- * @fn	void playerInput ( entity_t *ent )
- *
- * @brief	Handles the playerInput described by player via key events.
- *
- * @author	iwh
- * @date	4/10/2015
- *
- * @param [in,out]	ent	If non-null, the ent.
- **************************************************************************************************/
-/*
-void playerInput ( entity_t *ent ) //fix
-{
-	while(SDL_PollEvent (&keyevent))
-	{
-		if(strcmp(ent->classname, "player") == 0)
-		{
-			printf("event");
-			if (keyevent.type == SDL_KEYDOWN)
-			{
-				printf("event2");
-				switch (keyevent.key.keysym.sym )
-				{
-					case SDLK_UP: ent->yVel -= ent->height >> 5; break;
-					case SDLK_DOWN: ent->yVel += ent->height >> 5; break;
-					case SDLK_LEFT: ent->xVel -= ent->width >> 5; break;
-					case SDLK_RIGHT: ent->xVel += ent->width >> 5; break;
-				}
-			}
-			else if ( keyevent.type == SDL_KEYUP )
-			{
-				switch ( keyevent.key.keysym.sym)
-				{
-					case SDLK_UP: ent->yVel += ent->height >> 5; break;
-					case SDLK_DOWN: ent->yVel -= ent->height >> 5; break;
-					case SDLK_LEFT: ent->xVel += ent->width >> 5; break;
-					case SDLK_RIGHT: ent->xVel -= ent->width >> 5; break;
-				}
-			}
-		}
-	}
-}
-*/
 
 /**********************************************************************************************//**
  * @fn	void move ( entity_t *ent )
