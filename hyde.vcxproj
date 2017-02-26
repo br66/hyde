@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClInclude Include="src\boolean.h" />
     <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gfunc.h" />
     <ClInclude Include="src\graphic.h" />
     <ClInclude Include="src\include.h" />

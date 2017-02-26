@@ -30,21 +30,6 @@ extern FILE * fp;
 // for game states
 extern game_t Game;
 
-void input() 
-{
-
-}
-
-void update()
-{
-
-}
-
-void draw()
-{
-
-}
-
 
 void mainmenuSetup()
 {

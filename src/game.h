@@ -1,16 +1,14 @@
 /**********************************************************************************************//**
  * @file	src\game.h
  *
- * @brief	splash screen, main menu, levels, level editor
+ * @brief	input, graphics and update functions, rename main.h?
  **************************************************************************************************/
-/*
+
 #include "boolean.h"
 
-#ifndef _GAMEH_
-#define _GAMEH_
+#ifndef _GAME_H_
+#define _GAME_H_
 
-// function for showing and removing the main menu
-void mainmenu();
 
-#endif
-*/
+
+#endif // _GAME_H_
