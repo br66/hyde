@@ -17,8 +17,8 @@ SDL_JoyButtonEvent joyEvent;
 // for time
 static SDL_Surface *seconds = NULL;
 static Uint32 currentTime = 0;
-static TTF_Font *time = NULL;  // to rename time font
-extern bool done;
+static TTF_Font *time = NULL;  // to rename time font 
+bool done;
 extern Uint32 start;
 extern bool running;
 static bool pause = false;
@@ -122,7 +122,6 @@ void begin()
 	//setGameState(GSTATE_MENU, true);
 	//setLvlState(NO_MODE);
 	//SDL_WM_SetCaption ("HYDE", NULL);
-	printf("Project2017 SDL ver2");
 }
 
 // for end of game

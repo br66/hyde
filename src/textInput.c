@@ -3,7 +3,6 @@
 #include "graphic.h"
 #include "gfunc.h"
 
-extern SDL_Color timeColor;
 
 void drawText (char * text, SDL_Surface * screen, int x, int y, Uint32 color)
 {
@@ -11,7 +10,7 @@ void drawText (char * text, SDL_Surface * screen, int x, int y, Uint32 color)
 
 	SDL_Rect dst;
 
-	fontSurface = TTF_RenderText_Solid(getFont(), text, timeColor);
+	//fontSurface = TTF_RenderText_Solid(getFont(), text, timeColor);
 	
 	dst.x = x;
 	dst.y = y;

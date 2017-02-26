@@ -124,6 +124,7 @@
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\gfunc.c" />
     <ClCompile Include="src\graphic.c" />
+    <ClCompile Include="src\main.c" />
     <ClCompile Include="src\spawn.c" />
     <ClCompile Include="src\textInput.c" />
     <ClCompile Include="src\weapon.c" />

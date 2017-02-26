@@ -1,7 +1,7 @@
 //#include <jansson.h> // find jansson or make own file parser, need to reinclude janssson.lib
 #include <stdio.h>
 #include <stdlib.h>
-#include "include.h"
+#include "include.h" // not doin dis no more
 #include "spawn.h"
 #include <chipmunk.h>
 
@@ -9,12 +9,14 @@
 static Uint32 delta = 0;
 Uint32 start = 0;
 bool running = true;
-SDL_Color timeColor = { 255, 255, 255 };
+//SDL_Color timeColor = { 255, 255, 255 }; // color of the clock, will remove clock, don't know how it works, make own?
 
 // for keystates
 static Uint8 *keystates;
 
-// for the mouse
+/* 
+
+for the mouse
 extern int mouseX, mouseY;
 extern int objX, objY;
 
@@ -23,87 +25,24 @@ SDL_Event clickEvent;
 extern sprite_t * testTile;
 extern FILE * fp;
 
+*/
+
 // for game states
 extern game_t Game;
 
-//temp????
-extern SDL_Event event;
-
-//for the main game loop
-bool done = false;
-
-int main(int argc, char *argv[])
+void input() 
 {
-	bool done = false;
 
-	begin();
-	
-	do
-	{
-		//pull(); // rename poll or input
-		//update();
-		//draw();
-	}
-	while (!done);
-	
-	return 0;
-}
-
-void pull()  //JUSTIN: Why not skip a step and just call Events(); in your game loop
-{
-	Events();
 }
 
 void update()
 {
-	SDL_Flip(getScreen());
 
-	switch (Game.gameState)
-	{
-		case -1:
-			end(); break;
-		case GSTATE_LEVEL1:
-			levelOne(); //updates level one, screen is being flipped twice
-			break;
-		case GSTATE_LEVEL2:
-			levelTwo();
-			break;
-		case GSTATE_LEVELEDIT:
-			levelEdit();
-			break;
-		case GSTATE_PLAYEDIT:
-			playCustomLevel();
-			break;
-		case GSTATE_GAMEOVER:
-			Events();
-			break;
-	}
 }
 
 void draw()
 {
-	showBackgrounds ();
 
-	switch (Game.gameState)
-	{
-		case GSTATE_LEVEL1:
-			entityShowSwitch ();
-			updateHUD ();
-			break;
-		case GSTATE_LEVEL2:
-			entityShowSwitch ();
-			updateHUD ();
-			break;
-		case GSTATE_LEVELEDIT:
-			entityShowSwitch ();
-			break;
-		case GSTATE_PLAYEDIT:
-			entityShowAll();
-			updateHUD();
-			break;
-		case GSTATE_GAMEOVER:
-			break;
-	}
 }
 
 
@@ -167,7 +106,7 @@ void levelOne()
 				msg[i] = 0;
 
 			strcpy( msg, FormatTimeString(start));
-			setUpSeconds(msg, timeColor);
+			//setUpSeconds(msg, timeColor);
 		}
 
 		delta = SDL_GetTicks() - getCurrentTime();
@@ -198,7 +137,7 @@ void levelTwo()  //JUSTIN: This is the same as level one
 			msg[i] = 0;
 
 		strcpy( msg, FormatTimeString(start));
-		setUpSeconds(msg, timeColor);
+		//setUpSeconds(msg, timeColor);
 	}
 
 	delta = SDL_GetTicks() - getCurrentTime();
