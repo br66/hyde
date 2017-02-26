@@ -1,4 +1,4 @@
-#include <jansson.h>
+//#include <jansson.h> // find jansson or make own file parser, need to reinclude janssson.lib
 #include <stdio.h>
 #include <stdlib.h>
 #include "include.h"
@@ -26,7 +26,7 @@ extern FILE * fp;
 // for game states
 extern game_t Game;
 
-//temp
+//temp????
 extern SDL_Event event;
 
 //for the main game loop
@@ -36,13 +36,13 @@ int main(int argc, char *argv[])
 {
 	bool done = false;
 
-	begin(); //getting basic assets
+	begin();
 	
 	do
 	{
-		pull(); //input
-		update();
-		draw();
+		//pull(); // rename poll or input
+		//update();
+		//draw();
 	}
 	while (!done);
 	
@@ -63,7 +63,7 @@ void update()
 		case -1:
 			end(); break;
 		case GSTATE_LEVEL1:
-			levelOne(); //updates level one
+			levelOne(); //updates level one, screen is being flipped twice
 			break;
 		case GSTATE_LEVEL2:
 			levelTwo();
@@ -171,6 +171,7 @@ void levelOne()
 		}
 
 		delta = SDL_GetTicks() - getCurrentTime();
+		printf("%i = %i - %i\n", delta, SDL_GetTicks(), getCurrentTime());
 		setCurrentTime();
 
 		cpSpaceStep(getSpace(), 0.1);
@@ -214,8 +215,3 @@ void levelTwo()  //JUSTIN: This is the same as level one
 
 	SDL_Flip(getScreen());
 }
-
-/*
-JUSTIN NOTES: 
-- You really need to clean up code that you have commented out
-*/

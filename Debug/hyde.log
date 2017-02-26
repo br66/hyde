@@ -1,37 +1,23 @@
-﻿Build started 5/13/2015 6:21:04 PM.
-     1>Project "C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.vcxproj" on node 2 (build target(s)).
-     1>InitializeBuildStatus:
-         Creating "Debug\hyde.unsuccessfulbuild" because "AlwaysCreate" was specified.
-       ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I./ /I"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\Box2D" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\entity.c
-         entity.c
-     1>src\entity.c(145): warning C4305: '=' : truncation from 'double' to 'float'
-     1>src\entity.c(501): warning C4244: '=' : conversion from 'cpFloat' to 'float', possible loss of data
-     1>src\entity.c(502): warning C4244: '=' : conversion from 'cpFloat' to 'float', possible loss of data
-     1>src\entity.c(608): warning C4305: '-=' : truncation from 'double' to 'float'
-     1>src\entity.c(738): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>src\entity.c(738): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>src\entity.c(746): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
-       Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:./lib OpenGL32.lib Glu32.lib sdl.lib sdlmain.lib sdl_image.lib sdl_ttf.lib sdl_net.lib sdl_mixer.lib jansson.lib chipmunk.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\hyde.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.pdb" /SUBSYSTEM:CONSOLE /OPT:NOREF /OPT:NOICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.lib" /MACHINE:X86 Debug\entity.obj
-         Debug\game.obj
-         Debug\gfunc.obj
-         Debug\graphic.obj
-         Debug\spawn.obj
-         Debug\textInput.obj
-         Debug\weapon.obj
-     1>LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
-         Generating code
-         Finished generating code
-         hyde.vcxproj -> C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.exe
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\\hyde.exe;#1" /manifest Debug\hyde.exe.intermediate.manifest
-       FinalizeBuildStatus:
-         Deleting file "Debug\hyde.unsuccessfulbuild".
-         Touching "Debug\hyde.lastbuildstate".
-     1>Done Building Project "C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\hyde.vcxproj" (build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.63
+﻿  gfunc.c
+src\gfunc.c(162): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+src\gfunc.c(163): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+src\gfunc.c(397): warning C4244: '=': conversion from 'float' to 'Sint16', possible loss of data
+src\gfunc.c(398): warning C4244: '=': conversion from 'float' to 'Sint16', possible loss of data
+src\gfunc.c(468): warning C4244: '=': conversion from 'float' to 'Uint16', possible loss of data
+src\gfunc.c(473): warning C4244: '=': conversion from 'float' to 'Uint16', possible loss of data
+src\gfunc.c(486): warning C4244: '=': conversion from 'float' to 'Uint16', possible loss of data
+src\gfunc.c(495): warning C4244: '=': conversion from 'float' to 'Uint16', possible loss of data
+src\gfunc.c(505): warning C4305: '-=': truncation from 'double' to 'float'
+src\gfunc.c(555): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+src\gfunc.c(579): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+src\gfunc.c(781): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+chipmunk.lib(cpSpace.obj) : warning LNK4217: locally defined symbol _printf imported in function _cpSpaceInit
+chipmunk.lib(chipmunk.obj) : warning LNK4217: locally defined symbol _vfprintf imported in function _cpMessage
+chipmunk.lib(chipmunk.obj) : warning LNK4217: locally defined symbol _fprintf imported in function _cpMessage
+sdlmain.lib(SDL_win32_main.obj) : warning LNK4049: locally defined symbol _fprintf imported
+chipmunk.lib(chipmunk.obj) : warning LNK4217: locally defined symbol ___iob_func imported in function _cpMessage
+sdlmain.lib(SDL_win32_main.obj) : warning LNK4049: locally defined symbol ___iob_func imported
+  hyde.vcxproj -> C:\Users\iwh-pc\Documents\Archive\Game Projects\project2017\\hyde.exe
+  hyde.vcxproj -> C:\Users\iwh-pc\Documents\Archive\Game Projects\project2017\\hyde.pdb (Full PDB)

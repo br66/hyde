@@ -1,11 +1,16 @@
 #include "include.h"
 #include "spawn.h"
 
-extern game_t Game;
+extern game_t Game; // ?
 
-/* list of entities */
+/* 
+	list of entities 	
+*/
 entity_t listEntities [MAX_ENTITIES];
-/* Number of entities that have been made in-game */
+
+/* 
+	Number of entities created since game started 
+*/
 int max_ents;  //getMaxEnts(); move out of header file
 
 /**********************************************************************************************//**
@@ -120,38 +125,36 @@ void EntityAlive()
 		if (listEntities[i].inuse && listEntities[i].think)
 		{
 			if (listEntities[i].nextThink <= getCurrentTime())
-			{
 				listEntities[i].think(&listEntities[i]);
-			}
 
 			/*if listentiies[i].nextanimthink <= time
 				call animthink; //replaced by show???*/
-
+			
+			// for those without chipmunk physics
 			if (e->xVel != 0)
-			{e->x += e->xVel;}
+				e->x += e->xVel;
 			if (e->yVel != 0)
-			{ e->y += e->yVel;}
+				e->y += e->yVel;
 
+			// for those with chipmunk physics
 			if (e->shape && e->body)
 			{
-				//printf("%f\n", (float)e->shape->body->v.x);
-
 				if (e->xVel != 0)
 					e->shape->body->p.x += e->xVel;
 				else
 					e->shape->body->v.x = 0;
 
-				if (e->xVel > 1.2)
-					e->xVel = 1.2;
-
 				if (e->yVel != 0)
 					e->shape->body->p.y += e->yVel * 1.1;
+
+				if (e->xVel > 1.2f)
+					e->xVel = 1.2f;
 
 				if (e->yVel > 2)
 					e->yVel = 2;
 			}
 		}
-		e++;
+		e++; // don't understand why I need this, w/out it only first entity can move (player)
 	}
 }
 
@@ -475,7 +478,7 @@ void move ( entity_t *ent ) //better name? also needs to be reorganized
 
 	ent->x += ent->xVel;
 	if (ent->xVel < 0)	
-		setStateTo(getPlayer(), PL_LEFT);
+		setStateTo(getPlayer(), PL_LEFT); // anim states shouldn't be hard coded, different for every sprite!
 	else if (ent->xVel == 0)
 		setStateTo(getPlayer(), PL_IDLE);
 	else
@@ -505,14 +508,15 @@ void move ( entity_t *ent ) //better name? also needs to be reorganized
 
 void show (entity_t *ent) //name change?
 {
+	/*
 	if (ent)
 	{
-	/* check states here, if state, animate function draws next frame */
+	// check states here, if state, animate function draws next frame
 		if (Game.levelState == HYDE_MODE && ent->sprite->animationSet != NULL)
 		{
 			Animate(ent->sprite, &ent->sprite->animationSet->set[1], ent->x - getCamera().x, ent->y - getCamera().y);
-			/* if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
-			at some random spot in memory */
+			// if i don't get the address to the actual set from playerAnim, I will be editing the values of a temporary copy
+			at some random spot in memory 
 		}
 		else
 		{
@@ -521,7 +525,7 @@ void show (entity_t *ent) //name change?
 	}
 	//if an eneny && they are a SILENT_IDLE and its spritesheet is loaded
 	// animate the enemy, with this particular animation in the its animation set, at this position
-
+	*/
 }
 
 void showEnt (entity_t *ent) //name change?
@@ -605,7 +609,7 @@ void betaThink (entity_t *self)
 	}
 	else
 	{
-		self->xVel -= .20;
+		self->xVel -= .20f;
 	}
 
 	if (self->x < 20)
@@ -735,7 +739,7 @@ void particleMove(entity_t * self)
 
 void emitterThink (entity_t * self)
 {
-	spawnParticle(self->x, self->y, 12);
+	spawnParticle(self->x, self->y, 12.0f);
 	self->nextThink = getCurrentTime() + 500;
 }
 
@@ -743,7 +747,7 @@ void initPlayer()
 {
 	entity_t * player = initEnt();
 
-	sprintf(player->classname, "player");
+	//sprintf(player->classname, "player");
 
 	player->x = 0;
 	player->y = 340;
@@ -751,7 +755,7 @@ void initPlayer()
 	player->width = 32;
 	player->height = 32;
 	
-	player->sprite = load("graphic/player/jekyll_sheet3.png", 32, 32);
+	//player->sprite = load("graphic/player/jekyll_sheet3.png", 32, 32);
 
 	player->bBox.w = 32;
 	player->bBox.h = 32;
@@ -762,20 +766,22 @@ void initPlayer()
 	player->currentAnger = 1;
 	player->maxAnger = 100;
 
-	player->sprite->animationSet = getAnimSet("sprite\\anim\\animsettest.json");
+	//player->sprite->animationSet = getAnimSet("sprite\\anim\\animsettest.json");
 
 	SET_FLAG(player->flags, ENT_SOLID);
 	SET_FLAG(player->flags, ENT_SHOW);
 
-	player->show = show;
-	player->think = PlayerAlive;
+	//player->show = show;
+	//player->think = PlayerAlive;
 
+	/*
 	player->body = cpBodyNew(10, cpMomentForCircle(10, 16, 0, cpvzero));
 	player->shape = cpCircleShapeNew(player->body, 16, cpvzero);
 	cpBodySetPos(player->body, cpv(player->x, player->y));
 	cpShapeSetLayers(player->shape,CP_ALL_LAYERS);
 	cpShapeSetCollisionType(player->shape, 2);
 	cpShapeSetUserData(player->shape, (const cpDataPointer)player);
+	*/
 }
 
 void setStateTo(entity_t *ent, int animState)

@@ -3,23 +3,34 @@
  *
  * @brief	Declares the entity class.  Used for all in-game that act and can be acted on.
  **************************************************************************************************/
-#include <chipmunk.h> // needed or else cp things become undefined
 
-#ifndef _ENTITY_
-#define _ENTITY_
+#ifndef _ENTITY_H_
+#define _ENTITY_H_
 
-#define MAX_ENTITIES  255 /* Abs. max. # of entities that can be made in-game before I set fire to the rain. */
+#include <chipmunk.h>
 
+/* 
+	Maximum # of entities that can exist at once. 
+*/
+#define MAX_ENTITIES  255
+
+/*
+	Flags
+*/
 #define ENT_SHOW	0x00000001
 #define ENT_THINK	0x00000002
 #define ENT_SOLID	0x00000004
-#define ENT_FJEKYL	0x00000008 // for sprites that show if you are in jekyll form
-#define ENT_FHYDE	0x00000010 // for sprites that show if you've transformed to hyde
+#define ENT_FJEKYL	0x00000008 // remoooooooooove
+#define ENT_FHYDE	0x00000010 // remoooooooooove
 
+/*
+	Flag settings
+*/
 #define REMOVE_FLAG(x, y) (x &= ~y)
 #define SET_FLAG(x, y) (x |= y)
 #define IS_SET(x, y) (x & y)
 
+// remooooooooooooooooooooooooooooove
 /**********************************************************************************************//**
  * @enum	animState
  *
@@ -45,11 +56,19 @@ typedef struct entity_s
 	/** @brief	Inuse - for checking if the entity is being used. */
 	int				inuse;
 
-	float			x,y;
-	float			xVel, yVel;
+	// TransformComponent transform; // will have position, rotation and scale vectors
+
+	float			x,y; // DEPRECATION INCOMING
+	float			xVel, yVel; // DEPRECATION INCOMING
+
+	// PhysicsComponent physics; // bounding box, bounding shape
+
+	// SpriteComponent sprite;
+
+	// AnimationComponent anim;
 
 	/** @brief	Bounding Box - for collision */
-	SDL_Rect		bBox;
+	SDL_Rect		bBox; // DEPRECATION INCOMING
 	/** @brief	Trigger - for triggering think functions **/
 	SDL_Rect		trigger;
 	/** @brief	Sprite - The entity's new sprite. */

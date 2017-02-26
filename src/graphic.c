@@ -1,7 +1,7 @@
 // #include
 #include <SDL.h>
 #include <SDL_image.h>
-#include <jansson.h>
+//#include <jansson.h>
 
 #include "graphic.h"
 #include "gfunc.h"
@@ -234,6 +234,7 @@ animset_t *InitAnimSet (void)
 	return NULL;
 }
 
+/*
 animset_t *getAnimSet (char *filename)
 {
 	int i, j, k;
@@ -260,7 +261,7 @@ animset_t *getAnimSet (char *filename)
 	{
 		json_t *data, *animation, *init, *frames, *f_array, *intervals, *i_array;
 
-		/* f_array and i_array are incorrectly named, they're actually the current value found in their respective arrays */
+		// f_array and i_array are incorrectly named, they're actually the current value found in their respective arrays
 
 		data = json_array_get(parser, i);
 		if(!json_is_object(data))
@@ -370,4 +371,4 @@ void Animate (sprite_t * spritesheet, animation_t *animation, float x, float y)
 
 	// actually shows the new frame
 	showFrame(spritesheet->graphic, getScreen(), x, y, animation->frames[animation->curFrame]);
-}
+}*/

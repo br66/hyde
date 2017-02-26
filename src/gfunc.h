@@ -63,7 +63,6 @@ typedef struct game_s
 
 }game_t;
 
-
 /* Functions */
 
 // for beginning and end of game
@@ -140,4 +139,5 @@ void playCustomLevel();
 void gameOverSetup();
 
 void showBackgrounds();
+
 #endif

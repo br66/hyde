@@ -1,11 +1,14 @@
 /* companion to game.c file */
 
-#include <jansson.h>
+//#include <jansson.h>
 #include <stdio.h>
 #include "include.h"
 #include "spawn.h"
 
 game_t Game;
+
+bool left = false;
+bool right = false;
 
 // for external controls
 SDL_Joystick * joystick;
@@ -49,9 +52,21 @@ cpSpace * space;
 // for music
 Mix_Music * bgMusic;
 
+extern "C" 
+{ 
+	FILE __iob_func[3] = { *stdin,*stdout,*stderr }; 
+
+	extern int	vfprintf(FILE *, const char *, va_list);
+}
+
+
+
 // for beginning of game
 void begin()
 {
+	// project2017: remove SDL1 and change to SDL2
+
+	/*
 	if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 )
 		printf("SDL 1.2 error \n", SDL_GetError());
 	else printf("sdl init success \n");
@@ -64,13 +79,13 @@ void begin()
 		printf("SDL TTF error \n", SDL_GetError());
 	else printf("sdl ttf success \n");
 
-	/* graphics/sprites */
+	// graphics/sprites
 	initSprites();
 	if (setupScreen() == false)
 		printf("problem setting up screen \n", SDL_GetError());
 	else printf("screen is set up \n");
 
-	/* entities */
+	// entities
 	initEntities();
 
 	time = TTF_OpenFont("font/lazy.ttf", 20);
@@ -102,17 +117,18 @@ void begin()
 
 	if (Mix_PlayMusic (bgMusic, -1) == -1)
 		return;
-
+	*/
 	//start the game at the menu
-	setGameState(GSTATE_MENU, true);
-	setLvlState(NO_MODE);
-	SDL_WM_SetCaption ("HYDE", NULL);
+	//setGameState(GSTATE_MENU, true);
+	//setLvlState(NO_MODE);
+	//SDL_WM_SetCaption ("HYDE", NULL);
+	printf("Project2017 SDL ver2");
 }
 
 // for end of game
 void end()
 {
-	if (SDL_JoystickOpened(0))
+	/*if (SDL_JoystickOpened(0))
 		SDL_JoystickClose(joystick);
 	
 	Mix_HaltMusic();
@@ -122,9 +138,8 @@ void end()
 	closeScreen();
 	closeSprites();
 	closeEntities();
-	SDL_Quit();
+	SDL_Quit();*/
 	exit(0);
-	//destroy everything
 }
 
 void setGameState(int gameState, bool setup)
@@ -169,8 +184,8 @@ void setGameState(int gameState, bool setup)
 				printf("space has been freed\n");
 			}
 
-			closeSprites();
-			closeEntities();
+			//closeSprites();
+			//closeEntities();
 
 		switch (gameState) //local gameState
 		{
@@ -216,6 +231,7 @@ void setLvlState (int levelState)
 		Game.levelState = levelState;
 }
 
+/*
 void loadLevel(char * level)
 {
 	int i, j;
@@ -365,7 +381,7 @@ void loadLevel(char * level)
 	
 
 	return;
-}
+}*/
 
 /* gets, sets, and closers to reduce amount of externs */
 SDL_Rect getCamera (void)
@@ -461,6 +477,12 @@ void initHUD ()
 // for the player and hud
 void updateHUD ()
 {
+	printf("%i", left);
+	printf("%i", right);
+
+	if (left && right)
+		printf("both buttons are being pressed\n");
+
 	health.w = (getPlayer()->currentHealth * 100) / getPlayer()->max_health; //how do I get rid of division? can I
 
 	if (getPlayer()->currentHealth < 0)
@@ -625,14 +647,21 @@ void Events()
 						}
 					case SDLK_LEFT:
 						{
+							left = true;
 							if(getPlayer() != NULL)
+							{
 								getPlayer()->xVel -= getPlayer()->width >> 5;
+							}
 							break;
 						}
 					case SDLK_RIGHT: 
 						{
+							right = true;
 							if(getPlayer() != NULL)
+							{
 								getPlayer()->xVel += getPlayer()->width >> 5; 
+							
+							}
 							break;
 						}
 				}
@@ -640,6 +669,7 @@ void Events()
 			}
 			else if (event.type == SDL_KEYUP)
 			{
+				printf("no keys");
 				switch ( event.key.keysym.sym )
 				{
 					case SDLK_UP:
@@ -656,12 +686,14 @@ void Events()
 						}
 					case SDLK_LEFT:
 						{
+							left = false;
 							if(getPlayer() != NULL)
 								getPlayer()->xVel += getPlayer()->width >> 5;
 							break;
 						}
 					case SDLK_RIGHT:
 						{
+							right = false;
 							if(getPlayer() != NULL)
 								getPlayer()->xVel -= getPlayer()->width >> 5; 
 							break;
@@ -725,7 +757,7 @@ char *FormatNumber(Uint32 number, int min)
 
 char* FormatTimeString(Uint32 offset) //creates result var, converts raw time into h/m/s time and retruns it
 {
-	static char result[80]; /* ??? */
+	static char result[80]; /* doesn't change outside function */
 	int i; // for counting
 	char *hundreths, *seconds, *minutes, *hours;
 	Uint32 ticks = SDL_GetTicks() - offset; /* we dont start the time automatically, we wait a few milsecs to have something to compare the time to */
@@ -776,9 +808,9 @@ void levelOneSetup()
 
 	initPlayer ();
 
-	loadLevel ("level 1");
+	//loadLevel ("level 1");
 
-	setLvlState (JEKYLL_MODE);
+	//setLvlState (JEKYLL_MODE);
 
 	initHUD ();
 
@@ -806,7 +838,7 @@ void levelTwoSetup()
 
 	initPlayer ();
 
-	loadLevel ("level 2");
+	//loadLevel ("level 2");
 
 	setLvlState (HYDE_MODE);
 
@@ -830,6 +862,7 @@ void levelTwoSetup()
 
 void levelEditSetup()
 {
+	/*
 	spawned = 0;
 
 	sprite_t * lvlEditBg = NULL;
@@ -851,7 +884,8 @@ void levelEditSetup()
 	if (fp == NULL)
 		fprintf(stderr, "can't open json file");
 
-	setLvlState (JEKYLL_MODE);\
+	setLvlState (JEKYLL_MODE);
+	*/
 }
 
 void customLevelSetup()
@@ -862,7 +896,7 @@ void customLevelSetup()
 
 	initPlayer ();
 
-	loadLevel ("custom level");
+	//loadLevel ("custom level");
 
 	setLvlState (JEKYLL_MODE);
 
