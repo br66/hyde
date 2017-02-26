@@ -77,14 +77,14 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 		if (Game.gameState != GSTATE_LEVELEDIT)
 		{
-			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 35);
-			edge->e = 0;
-			edge->u = 0;
-			cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
+			//edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 35);
+			//edge->e = 0;
+			//edge->u = 0;
+			//cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
 			cpShapeSetCollisionType(edge, 1);
-			cpShapeSetLayers(edge,CP_ALL_LAYERS);
-			cpShapeSetUserData(edge, (const cpDataPointer)platform1);
-			cpSpaceAddStaticShape(getSpace(), edge);
+			//cpShapeSetLayers(edge,CP_ALL_LAYERS);
+			//cpShapeSetUserData(edge, (const cpDataPointer)platform1);
+			//cpSpaceAddStaticShape(getSpace(), edge);
 		}
 	}
 
@@ -176,7 +176,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 	if (strcmp(name, "platform 3") == 0)
 	{
-		cpShape * edge = NULL;
+		//cpShape * edge = NULL;
 
 		entity_t * platform3 = initEnt ();
 
@@ -210,7 +210,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 	if (strcmp(name, "platform 4") == 0)
 	{
-		cpShape * edge = NULL;
+		//cpShape * edge = NULL;
 
 		entity_t * platform4 = initEnt ();
 
@@ -232,6 +232,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			SET_FLAG(platform4->flags, ENT_FHYDE);
 
 		
+		/*
 		edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 271, 40);
 		edge->e = 0;
 		edge->u = 0;
@@ -240,6 +241,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		cpShapeSetLayers(edge,CP_ALL_LAYERS);
 		cpShapeSetUserData(edge, (const cpDataPointer)platform4);
 		cpSpaceAddStaticShape(getSpace(), edge);
+		*/
 
 	}
 
@@ -305,7 +307,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 	if(!strcmp(name, "platform 5"))
 	{
-		cpShape * edge = NULL;
+		//cpShape * edge = NULL;
 
 		entity_t * ent = initEnt();
 		strcpy(ent->classname, "platform 5");
@@ -327,6 +329,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		if (strcmp(flag, "hyde") == 0)
 			SET_FLAG(ent->flags, ENT_FHYDE);
 
+		/*
 		if (Game.gameState != GSTATE_LEVELEDIT)
 		{
 			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 35);
@@ -337,12 +340,12 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			cpShapeSetLayers(edge,CP_ALL_LAYERS);
 			cpShapeSetUserData(edge, (const cpDataPointer)ent);
 			cpSpaceAddStaticShape(getSpace(), edge);
-		}
+		}*/
 	}
 
 	if(!strcmp(name, "platform 8"))
 	{
-		cpShape * edge = NULL;
+		//cpShape * edge = NULL;
 
 		entity_t * ent = initEnt();
 		strcpy(ent->classname, "platform 8");
@@ -364,6 +367,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		if (strcmp(flag, "hyde") == 0)
 			SET_FLAG(ent->flags, ENT_FHYDE);
 
+		/*
 		if (Game.gameState != GSTATE_LEVELEDIT)
 		{
 			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 1000, 16);
@@ -374,12 +378,12 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			cpShapeSetLayers(edge,CP_ALL_LAYERS);
 			cpShapeSetUserData(edge, (const cpDataPointer)ent);
 			cpSpaceAddStaticShape(getSpace(), edge);
-		}
+		}*/
 	}
 
 	if(!strcmp(name, "platform 9"))
 	{
-		cpShape * edge = NULL;
+		//cpShape * edge = NULL;
 
 		entity_t * ent = initEnt();
 		strcpy(ent->classname, "platform 9");
@@ -401,6 +405,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		if (strcmp(flag, "hyde") == 0)
 			SET_FLAG(ent->flags, ENT_FHYDE);
 
+		/*
 		if (Game.gameState != GSTATE_LEVELEDIT)
 		{
 			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 224, 98);
@@ -411,12 +416,12 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			cpShapeSetLayers(edge,CP_ALL_LAYERS);
 			cpShapeSetUserData(edge, (const cpDataPointer)ent);
 			cpSpaceAddStaticShape(getSpace(), edge);
-		}
+		}*/
 	}
 
 	if(!strcmp(name, "platform 10"))
 	{
-		cpShape * edge = NULL;
+		//cpShape * edge = NULL;
 
 		entity_t * ent = initEnt();
 		strcpy(ent->classname, "platform 10");
@@ -438,6 +443,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		if (strcmp(flag, "hyde") == 0)
 			SET_FLAG(ent->flags, ENT_FHYDE);
 
+		/*
 		if (Game.gameState != GSTATE_LEVELEDIT)
 		{
 			edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 16, 32);
@@ -448,7 +454,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			cpShapeSetLayers(edge,CP_ALL_LAYERS);
 			cpShapeSetUserData(edge, (const cpDataPointer)ent);
 			cpSpaceAddStaticShape(getSpace(), edge);
-		}
+		}*/
 	}
 
 	if (strcmp(name, "kid spawner") == 0)

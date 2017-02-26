@@ -45,8 +45,8 @@ void mainmenuSetup()
 
 void levelEdit()
 {
-	Events();
-	SDL_Flip(getScreen());
+	//Events();
+	//SDL_Flip(getScreen());
 }
 
 void playCustomLevel()
@@ -72,11 +72,11 @@ void playCustomLevel()
 	CheckCollisions ();
 	Events ();
 
-	keystates = SDL_GetKeyState (NULL);
+	keystates = (NULL);
 
 	// checking keyboard input does not work outside of a function
 
-	SDL_Flip(getScreen());
+	//SDL_Flip(getScreen());
 }
 
 void levelOne()
@@ -93,7 +93,7 @@ void levelOne()
 			strcpy( msg, FormatTimeString(start));
 			//setUpSeconds(msg, timeColor);
 		}
-
+		
 		delta = SDL_GetTicks() - getCurrentTime();
 		printf("%i = %i - %i\n", delta, SDL_GetTicks(), getCurrentTime());
 		setCurrentTime();
@@ -103,11 +103,11 @@ void levelOne()
 		CheckCollisions ();
 		Events ();
 
-		keystates = SDL_GetKeyState (NULL);
+		keystates = (NULL);
 
 		// checking keyboard input does not work outside of a function
 
-		SDL_Flip(getScreen());
+		//SDL_Flip(getScreen());
 }
 
 void levelTwo()  //JUSTIN: This is the same as level one
@@ -133,9 +133,10 @@ void levelTwo()  //JUSTIN: This is the same as level one
 	CheckCollisions ();
 	Events ();
 
-	keystates = SDL_GetKeyState (NULL);
+	keystates = (NULL);
 
 	// checking keyboard input does not work outside of a function
 
-	SDL_Flip(getScreen());
+	//SDL_Flip(getScreen());
+	
 }

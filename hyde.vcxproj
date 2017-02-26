@@ -14,6 +14,7 @@
     <ProjectGuid>{1F234EA9-B205-4B0F-A2A5-25EA7F61298B}</ProjectGuid>
     <RootNamespace>hyde</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>project2017</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -43,11 +44,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\</OutDir>
-    <IncludePath>C:\libraries\Chipmunk-6.2.2\include\chipmunk;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\include;C:\yaml\yaml-0.1.5\include;C:\libraries\SDL_net-1.2.8\include;C:\libraries\SDL_mixer-1.2.12\include;C:\libraries\SDL_image-1.2.12\include;C:\libraries\SDL_ttf-2.0.11\include;C:\libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
-    <ReferencePath>C:\libraries\Chipmunk-6.2.2\msvc\vc10\chipmunk\Win32\Release;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\libraries\Chipmunk-6.2.2\bin\src\Debug;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\NewLib\Chipmunk-7.0.1\include\chipmunk;C:\NewLib\SDL2-2.0.5\include;C:\NewLib\SDL2_ttf-2.0.14\include;C:\NewLib\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\NewLib\SDL2-2.0.5\include;C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;C:\NewLib\SDL2_ttf-2.0.14;C:\NewLib\SDL2_image-2.0.1\include;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\NewLib\SDL2-2.0.5\lib\x86;C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;C:\NewLib\SDL2_ttf-2.0.14\lib\x86;C:\NewLib\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
-    <SourcePath>C:\libraries\Chipmunk-6.2.2\src;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\src;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\src;$(SourcePath)</SourcePath>
+    <SourcePath>C:\NewLib\Chipmunk-7.0.1\src;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\</OutDir>
@@ -69,12 +70,12 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <AdditionalIncludeDirectories>./;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\Box2D</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <AdditionalIncludeDirectories>./</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenGL32.lib;Glu32.lib;sdl.lib;sdlmain.lib;sdl_image.lib;sdl_ttf.lib;sdl_net.lib;sdl_mixer.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;Glu32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>
       </OptimizeReferences>

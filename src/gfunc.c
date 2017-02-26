@@ -1,5 +1,3 @@
-/* companion to game.c file */
-
 //#include <jansson.h>
 #include <stdio.h>
 #include "include.h"
@@ -50,14 +48,16 @@ SDL_Rect anger;
 cpSpace * space;
 
 // for music
-Mix_Music * bgMusic;
+//Mix_Music * bgMusic;
 
+/*
 extern "C" 
 { 
 	FILE __iob_func[3] = { *stdin,*stdout,*stderr }; 
 
 	extern int	vfprintf(FILE *, const char *, va_list);
 }
+*/
 
 
 

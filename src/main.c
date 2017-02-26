@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <SDL.h>
+#include "boolean.h"
 
 // these functions must be defined before main or I get identifier not found
-
 bool startApp()
 {
+	//SDL_Init(SDL_INIT_EVERYTHING);
 	return true;
 }
 
@@ -25,7 +27,7 @@ void draw()
 
 void endApp()
 {
-
+	//SDL_Quit();
 }
 
 int main(int argc, char *argv[])
@@ -37,7 +39,7 @@ int main(int argc, char *argv[])
 	if (startApp())
 	{
 		// print success message
-		printf("Project2017 SDL ver2  Chipmunk ver???");
+		printf("Project2017 SDL ver2.0.5  Chipmunk ver7.0.1");
 
 		do
 		{

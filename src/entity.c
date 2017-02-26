@@ -34,7 +34,7 @@ entity_t *initEnt (void)
 	}
 
 	max_ents++;
-	fprintf(stderr, "LOL TOO MANY ENTITIES");
+	//fprintf(stderr, "LOL TOO MANY ENTITIES");
 	return NULL;
 }
 
@@ -140,12 +140,12 @@ void EntityAlive()
 			if (e->shape && e->body)
 			{
 				if (e->xVel != 0)
-					e->shape->body->p.x += e->xVel;
-				else
-					e->shape->body->v.x = 0;
+					//e->shape->body->p.x += e->xVel;
+				//else
+					//e->shape->body->v.x = 0;
 
 				if (e->yVel != 0)
-					e->shape->body->p.y += e->yVel * 1.1;
+					//e->shape->body->p.y += e->yVel * 1.1;
 
 				if (e->xVel > 1.2f)
 					e->xVel = 1.2f;
@@ -499,7 +499,7 @@ void move ( entity_t *ent ) //better name? also needs to be reorganized
 	//ent->shape->surface_v = cpv(ent->x, 0.0);
 	//ent->shape->u = 10/2;
 
-	v = cpBodyGetPos (ent->body);
+	//v = cpBodyGetPos (ent->body);
 	//ent->body->f = cpv(ent->xVel, ent->yVel);
 	ent->x = v.x;
 	ent->y = v.y;

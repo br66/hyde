@@ -23,7 +23,7 @@ void initSprites ()
 {
 	int i; numSprites = 0;
 
-	memset(listSprites,0,sizeof(sprite_t) * MAX_SPRITES); //gets 50 blocks of memory
+	memset(listSprites,0,sizeof(sprite_t) * MAX_SPRITES); // memset undefined?
 
 	for (i = 0; i < MAX_SPRITES; i++)
 	{
@@ -50,10 +50,8 @@ void closeSprites ()
 // load sprite from file
 sprite_t* load (char *filename, int width, int height)
 {
-	int i;
-	SDL_Surface * temp;
 
-	/* searching thru list of loaded sprites to check if i already have the file asked for loaded */
+	/* searching thru list of loaded sprites to check if i already have the file asked for loaded
 	for (i = 0; i < numSprites; i++)
 	{
 		if (strncmp(filename, listSprites[i].filename, 100) == 0)
@@ -63,17 +61,17 @@ sprite_t* load (char *filename, int width, int height)
 		}
 	}
 
-	/* do we have room? */
+	// do we have room?
 	if(numSprites + 1 >= MAX_SPRITES)
 	{
-		fprintf(stderr, "Maximum Sprites Reached. \n");
+		//fprintf(stderr, "Maximum Sprites Reached. \n");
 		exit(0);
 	}
 	
-	/* you made it this far kid, now time for the real stuff */
+	// you made it this far kid, now time for the real stuff
 	numSprites++;
 
-	/* if i find one that isn't used break */
+	// if i find one that isn't used break
 	for (i=0; i <= numSprites; i++)
 		if(!listSprites[i].used)
 			break;
@@ -81,8 +79,8 @@ sprite_t* load (char *filename, int width, int height)
 	temp = IMG_Load(filename);
 	if (temp == NULL)
 	{
-		fprintf(stderr, "s", IMG_GetError());
-		fprintf(stderr, "s", IMG_GetError());
+		//fprintf(stderr, "s", IMG_GetError());
+		//fprintf(stderr, "s", IMG_GetError());
 		exit(0);
 	}
 
@@ -90,28 +88,23 @@ sprite_t* load (char *filename, int width, int height)
 	listSprites[i].graphic = SDL_DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 
-	SDL_SetColorKey(listSprites[i].graphic, SDL_SRCCOLORKEY, SDL_MapRGB(listSprites[i].graphic->format, 255, 255, 255));
+	//SDL_SetColorKey(listSprites[i].graphic, SDL_SRCCOLORKEY, SDL_MapRGB(listSprites[i].graphic->format, 255, 255, 255));
 
 	// setting [i]'s filename
 	strncpy(listSprites[i].filename, filename, 40);
-	
-	/* depending on their filename, function will determine if sprite is high 
-	or low priority if you have platform in your name, most likely high
-	if you're specific to one level, low priority and expendable gotta find 
-	function that only searches through some of the char array may also include 
-	what levels they belong to */
 
 	listSprites[i].framesperline = 16;
 	listSprites[i].width = width;
 	listSprites[i].height = height;
 	listSprites[i].used++;
 	
-	return &listSprites[i];
+	return &listSprites[i];*/
 }
 
 // free individual sprite from memory
 void freeSprite (sprite_t * sprite)
 {
+	/*
 	if (sprite->used < 0)
 		sprite->used = 0;
 	else
@@ -130,6 +123,7 @@ void freeSprite (sprite_t * sprite)
 		
 		sprite->graphic = NULL;
 	}
+	*/
 }
 
 // old function for blitting surfaces to screen - to remove, 1 dependency (void setUpSeconds, game.c, line 264 approx.)
@@ -197,7 +191,7 @@ bool setupScreen()
 
 	}*/
 	
-	screen = SDL_SetVideoMode (SCREEN_WIDTH, SCREEN_HEIGHT, BITSPERPIXEL, SDL_SWSURFACE);
+	screen = NULL;
 	if (screen == NULL)
 	{
 		return false;
@@ -208,7 +202,7 @@ bool setupScreen()
 // get function for files that want the screen, but can't access it normally
 SDL_Surface* getScreen (void)
 {
-	return screen;
+	//return screen;
 }
 
 // get rid of the screen, usually used for the end of game
