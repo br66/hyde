@@ -1,46 +1,5 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (hyde.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  entity.c
-src\entity.c(61): warning C4047: '=': 'int' differs in levels of indirection from 'void *'
-src\entity.c(75): warning C4013: 'memset' undefined; assuming extern returning int
-src\entity.c(258): warning C4013: 'strcmp' undefined; assuming extern returning int
-src\entity.c(504): warning C4244: '=': conversion from 'cpFloat' to 'float', possible loss of data
-src\entity.c(505): warning C4244: '=': conversion from 'cpFloat' to 'float', possible loss of data
-src\entity.c(742): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
-  game.c
-src\game.c(63): warning C4013: 'strcpy' undefined; assuming extern returning int
-  gfunc.c
-src\gfunc.c(161): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(162): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(396): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(397): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(467): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(472): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(485): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(494): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-src\gfunc.c(504): warning C4305: '-=': truncation from 'double' to 'float'
-src\gfunc.c(554): warning C4244: 'function': conversion from 'int' to 'float', possible loss of data
-src\gfunc.c(578): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-src\gfunc.c(780): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-  graphic.c
-src\graphic.c(26): warning C4013: 'memset' undefined; assuming extern returning int
   main.c
-  spawn.c
-src\spawn.c(9): warning C4013: 'strcmp' undefined; assuming extern returning int
-src\spawn.c(11): warning C4013: 'strcpy' undefined; assuming extern returning int
-src\spawn.c(492): warning C4013: 'sprintf' undefined; assuming extern returning int
-src\spawn.c(494): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-src\spawn.c(495): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-src\spawn.c(511): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-src\spawn.c(512): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  textInput.c
-src\textInput.c(41): warning C4013: 'strlen' undefined; assuming extern returning int
-  weapon.c
-src\weapon.c(30): warning C4013: 'sprintf' undefined; assuming extern returning int
-  Generating Code...
-c:\users\iwh-pc\documents\archive\game projects\project2017\src\graphic.c(102): warning C4716: 'load': must return a value
-c:\users\iwh-pc\documents\archive\game projects\project2017\src\graphic.c(206): warning C4716: 'getScreen': must return a value
-c:\users\iwh-pc\documents\archive\game projects\project2017\src\entity.c(504): warning C4700: uninitialized local variable 'v' used
   chipmunk.lib(cpSpaceStep.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
      Creating library C:\Users\iwh-pc\Documents\Archive\Game Projects\project2017\\project2017.lib and object C:\Users\iwh-pc\Documents\Archive\Game Projects\project2017\\project2017.exp
   Generating code
