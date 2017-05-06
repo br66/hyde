@@ -1,0 +1,388 @@
+\hypertarget{structentity__s}{}\section{entity\+\_\+s Struct Reference}
+\label{structentity__s}\index{entity\+\_\+s@{entity\+\_\+s}}
+
+
+The entity that owns this one.  
+
+
+
+
+{\ttfamily \#include $<$entity.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{structentity__s_a679cabe3b846f2e363f43d8e57433834}{inuse}
+\begin{DoxyCompactList}\small\item\em Inuse -\/ for checking if the entity is being used. \end{DoxyCompactList}\item 
+float \hyperlink{structentity__s_ad0da36b2558901e21e7a30f6c227a45e}{x}
+\item 
+float \hyperlink{structentity__s_aa4f0d3eebc3c443f9be81bf48561a217}{y}
+\item 
+float \hyperlink{structentity__s_a68ba7133c5359e424ce5d727d9665a25}{x\+Vel}
+\item 
+float \hyperlink{structentity__s_ada909419c1e8025397fcbba8a9e65a26}{y\+Vel}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{structentity__s_a8df2e6a526b260ce0a46bbe60c16f4a8}{b\+Box}
+\begin{DoxyCompactList}\small\item\em Bounding Box -\/ for collision. \end{DoxyCompactList}\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{structentity__s_a5de6327fc6879218213f1741891b8c52}{fill}
+\begin{DoxyCompactList}\small\item\em Will be removed. \end{DoxyCompactList}\item 
+S\+D\+L\+\_\+\+Surface $\ast$ \hyperlink{structentity__s_a1c7252614a33238e51edd3bbd5fa08c5}{sprite}
+\begin{DoxyCompactList}\small\item\em The entity\textquotesingle{}s sprite. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_a090538eaf48f495a735294df148c1ce7}{framesperline}
+\begin{DoxyCompactList}\small\item\em The amount of frames each line the spritesheet has if the entity\textquotesingle{}s sprite is a spritesheet. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_ad30f972f2e6e3e5ecab0dee38ae6cdb8}{frame}
+\begin{DoxyCompactList}\small\item\em The entity sprite\textquotesingle{}s current frame. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_a1243efedb746d6c3b56bea6b10d3c851}{anim\+State}
+\begin{DoxyCompactList}\small\item\em State of the animation. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_af71c7e5e99c44ec4a2ee923a848e718b}{anim\+Think}
+\begin{DoxyCompactList}\small\item\em Amount of time before moving to the next frame. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_a2474a5474cbff19523a51eb1de01cda4}{width}
+\begin{DoxyCompactList}\small\item\em Entity\textquotesingle{}s width. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_ad12fc34ce789bce6c8a05d8a17138534}{height}
+\begin{DoxyCompactList}\small\item\em Entity\textquotesingle{}s height. \end{DoxyCompactList}\item 
+\hyperlink{boolean_8h_abb452686968e48b67397da5f97445f5b}{bool} \hyperlink{structentity__s_afcbf95c3f0a20a7d68c5d9a241853c66}{on\+Ground}
+\begin{DoxyCompactList}\small\item\em Boolean that is true if the entity is on the ground. \end{DoxyCompactList}\item 
+Uint32 \hyperlink{structentity__s_a135cb0ebb9e7e91c5de82eaa033e4c60}{next\+Think}
+\begin{DoxyCompactList}\small\item\em Amount of time before calling the think function again. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_ac8bf36fe0577cba66bccda3a6f7e80a4}{flags}
+\begin{DoxyCompactList}\small\item\em The flags that turn on and off entities\textquotesingle{} functions. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_a7cb2b75bb66761caa1cfd378e8c4d206}{thinkflags}
+\begin{DoxyCompactList}\small\item\em Used incorrectly, might be depreciated. Amount of time before doing a specified statement. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_a3688a13a7bb7a088e86bc07f1c0502b8}{thinknums} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em Used for state machines; different things happen depending on the number it is set to. Array of 20 integers gives ability to have multiple things set. \end{DoxyCompactList}\item 
+char \hyperlink{structentity__s_a810ee4074f3b71c09214fd9cfafcc922}{classname} \mbox{[}25\mbox{]}
+\begin{DoxyCompactList}\small\item\em The classname of the entity. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_af8c04013cfb0444c405822e9939d8ae6}{current\+Health}
+\begin{DoxyCompactList}\small\item\em The entity\textquotesingle{}s current health. \end{DoxyCompactList}\item 
+int \hyperlink{structentity__s_ae7fb049f4b5173a202e774b3eb3e64e4}{max\+\_\+health}
+\begin{DoxyCompactList}\small\item\em The maximum health the entity could have. \end{DoxyCompactList}\item 
+struct \hyperlink{structentity__s}{entity\+\_\+s} $\ast$ \hyperlink{structentity__s_ab185065de2325558e780597d0e51230f}{owner}
+\item 
+void($\ast$ \hyperlink{structentity__s_a92ed3b86c791f2114d9a1147443e7fe5}{reset\+Position} )(struct \hyperlink{structentity__s}{entity\+\_\+s} $\ast$ent)
+\begin{DoxyCompactList}\small\item\em Function pointer for reseting position. Depreciated, will be removed. \end{DoxyCompactList}\item 
+void($\ast$ \hyperlink{structentity__s_a132b9a4937472ef21d9f098eeae36336}{handle\+\_\+\+Input} )(struct \hyperlink{structentity__s}{entity\+\_\+s} $\ast$ent)
+\item 
+void($\ast$ \hyperlink{structentity__s_ac02404c3a0246eb63f2a8363f453c2e5}{move} )(struct \hyperlink{structentity__s}{entity\+\_\+s} $\ast$ent)
+\item 
+void($\ast$ \hyperlink{structentity__s_a0d1a05278f29fdd42ce786f2baf02f06}{show} )(struct \hyperlink{structentity__s}{entity\+\_\+s} $\ast$ent)
+\item 
+void($\ast$ \hyperlink{structentity__s_af4dbc59d08fcac46ed1ea8abadef6cb4}{set\+Camera} )(void)
+\item 
+void($\ast$ \hyperlink{structentity__s_ab0cc49e009785df670b0991ef6c7c47e}{think} )(struct \hyperlink{structentity__s}{entity\+\_\+s} $\ast$self)
+\item 
+void($\ast$ \hyperlink{structentity__s_aa818c2577d3f6bcf8cf087c1b2c27227}{touch} )(struct \hyperlink{structentity__s}{entity\+\_\+s} $\ast$self)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The entity that owns this one. 
+
+\begin{DoxyAuthor}{Author}
+iwh 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+3/24/2015 
+\end{DoxyDate}
+
+
+Definition at line 39 of file entity.\+h.
+
+
+
+\subsection{Field Documentation}
+\hypertarget{structentity__s_a1243efedb746d6c3b56bea6b10d3c851}{}\index{entity\+\_\+s@{entity\+\_\+s}!anim\+State@{anim\+State}}
+\index{anim\+State@{anim\+State}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{anim\+State}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf anim\+State}}\label{structentity__s_a1243efedb746d6c3b56bea6b10d3c851}
+
+
+State of the animation. 
+
+
+
+Definition at line 58 of file entity.\+h.
+
+\hypertarget{structentity__s_af71c7e5e99c44ec4a2ee923a848e718b}{}\index{entity\+\_\+s@{entity\+\_\+s}!anim\+Think@{anim\+Think}}
+\index{anim\+Think@{anim\+Think}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{anim\+Think}]{\setlength{\rightskip}{0pt plus 5cm}int anim\+Think}\label{structentity__s_af71c7e5e99c44ec4a2ee923a848e718b}
+
+
+Amount of time before moving to the next frame. 
+
+
+
+Definition at line 60 of file entity.\+h.
+
+\hypertarget{structentity__s_a8df2e6a526b260ce0a46bbe60c16f4a8}{}\index{entity\+\_\+s@{entity\+\_\+s}!b\+Box@{b\+Box}}
+\index{b\+Box@{b\+Box}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{b\+Box}]{\setlength{\rightskip}{0pt plus 5cm}S\+D\+L\+\_\+\+Rect b\+Box}\label{structentity__s_a8df2e6a526b260ce0a46bbe60c16f4a8}
+
+
+Bounding Box -\/ for collision. 
+
+
+
+Definition at line 48 of file entity.\+h.
+
+\hypertarget{structentity__s_a810ee4074f3b71c09214fd9cfafcc922}{}\index{entity\+\_\+s@{entity\+\_\+s}!classname@{classname}}
+\index{classname@{classname}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{classname}]{\setlength{\rightskip}{0pt plus 5cm}char classname\mbox{[}25\mbox{]}}\label{structentity__s_a810ee4074f3b71c09214fd9cfafcc922}
+
+
+The classname of the entity. 
+
+
+
+Definition at line 76 of file entity.\+h.
+
+\hypertarget{structentity__s_af8c04013cfb0444c405822e9939d8ae6}{}\index{entity\+\_\+s@{entity\+\_\+s}!current\+Health@{current\+Health}}
+\index{current\+Health@{current\+Health}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{current\+Health}]{\setlength{\rightskip}{0pt plus 5cm}int current\+Health}\label{structentity__s_af8c04013cfb0444c405822e9939d8ae6}
+
+
+The entity\textquotesingle{}s current health. 
+
+
+
+Definition at line 78 of file entity.\+h.
+
+\hypertarget{structentity__s_a5de6327fc6879218213f1741891b8c52}{}\index{entity\+\_\+s@{entity\+\_\+s}!fill@{fill}}
+\index{fill@{fill}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{fill}]{\setlength{\rightskip}{0pt plus 5cm}S\+D\+L\+\_\+\+Rect fill}\label{structentity__s_a5de6327fc6879218213f1741891b8c52}
+
+
+Will be removed. 
+
+
+
+Definition at line 50 of file entity.\+h.
+
+\hypertarget{structentity__s_ac8bf36fe0577cba66bccda3a6f7e80a4}{}\index{entity\+\_\+s@{entity\+\_\+s}!flags@{flags}}
+\index{flags@{flags}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{flags}]{\setlength{\rightskip}{0pt plus 5cm}int flags}\label{structentity__s_ac8bf36fe0577cba66bccda3a6f7e80a4}
+
+
+The flags that turn on and off entities\textquotesingle{} functions. 
+
+
+
+Definition at line 70 of file entity.\+h.
+
+\hypertarget{structentity__s_ad30f972f2e6e3e5ecab0dee38ae6cdb8}{}\index{entity\+\_\+s@{entity\+\_\+s}!frame@{frame}}
+\index{frame@{frame}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{frame}]{\setlength{\rightskip}{0pt plus 5cm}int frame}\label{structentity__s_ad30f972f2e6e3e5ecab0dee38ae6cdb8}
+
+
+The entity sprite\textquotesingle{}s current frame. 
+
+
+
+Definition at line 56 of file entity.\+h.
+
+\hypertarget{structentity__s_a090538eaf48f495a735294df148c1ce7}{}\index{entity\+\_\+s@{entity\+\_\+s}!framesperline@{framesperline}}
+\index{framesperline@{framesperline}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{framesperline}]{\setlength{\rightskip}{0pt plus 5cm}int framesperline}\label{structentity__s_a090538eaf48f495a735294df148c1ce7}
+
+
+The amount of frames each line the spritesheet has if the entity\textquotesingle{}s sprite is a spritesheet. 
+
+
+
+Definition at line 54 of file entity.\+h.
+
+\hypertarget{structentity__s_a132b9a4937472ef21d9f098eeae36336}{}\index{entity\+\_\+s@{entity\+\_\+s}!handle\+\_\+\+Input@{handle\+\_\+\+Input}}
+\index{handle\+\_\+\+Input@{handle\+\_\+\+Input}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{handle\+\_\+\+Input}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ handle\+\_\+\+Input) (struct {\bf entity\+\_\+s} $\ast$ent)}\label{structentity__s_a132b9a4937472ef21d9f098eeae36336}
+
+
+Definition at line 101 of file entity.\+h.
+
+\hypertarget{structentity__s_ad12fc34ce789bce6c8a05d8a17138534}{}\index{entity\+\_\+s@{entity\+\_\+s}!height@{height}}
+\index{height@{height}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{height}]{\setlength{\rightskip}{0pt plus 5cm}int height}\label{structentity__s_ad12fc34ce789bce6c8a05d8a17138534}
+
+
+Entity\textquotesingle{}s height. 
+
+
+
+Definition at line 64 of file entity.\+h.
+
+\hypertarget{structentity__s_a679cabe3b846f2e363f43d8e57433834}{}\index{entity\+\_\+s@{entity\+\_\+s}!inuse@{inuse}}
+\index{inuse@{inuse}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{inuse}]{\setlength{\rightskip}{0pt plus 5cm}int inuse}\label{structentity__s_a679cabe3b846f2e363f43d8e57433834}
+
+
+Inuse -\/ for checking if the entity is being used. 
+
+
+
+Definition at line 42 of file entity.\+h.
+
+\hypertarget{structentity__s_ae7fb049f4b5173a202e774b3eb3e64e4}{}\index{entity\+\_\+s@{entity\+\_\+s}!max\+\_\+health@{max\+\_\+health}}
+\index{max\+\_\+health@{max\+\_\+health}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{max\+\_\+health}]{\setlength{\rightskip}{0pt plus 5cm}int max\+\_\+health}\label{structentity__s_ae7fb049f4b5173a202e774b3eb3e64e4}
+
+
+The maximum health the entity could have. 
+
+
+
+Definition at line 80 of file entity.\+h.
+
+\hypertarget{structentity__s_ac02404c3a0246eb63f2a8363f453c2e5}{}\index{entity\+\_\+s@{entity\+\_\+s}!move@{move}}
+\index{move@{move}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{move}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ move) (struct {\bf entity\+\_\+s} $\ast$ent)}\label{structentity__s_ac02404c3a0246eb63f2a8363f453c2e5}
+
+
+Definition at line 102 of file entity.\+h.
+
+\hypertarget{structentity__s_a135cb0ebb9e7e91c5de82eaa033e4c60}{}\index{entity\+\_\+s@{entity\+\_\+s}!next\+Think@{next\+Think}}
+\index{next\+Think@{next\+Think}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{next\+Think}]{\setlength{\rightskip}{0pt plus 5cm}Uint32 next\+Think}\label{structentity__s_a135cb0ebb9e7e91c5de82eaa033e4c60}
+
+
+Amount of time before calling the think function again. 
+
+
+
+Definition at line 68 of file entity.\+h.
+
+\hypertarget{structentity__s_afcbf95c3f0a20a7d68c5d9a241853c66}{}\index{entity\+\_\+s@{entity\+\_\+s}!on\+Ground@{on\+Ground}}
+\index{on\+Ground@{on\+Ground}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{on\+Ground}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bool} on\+Ground}\label{structentity__s_afcbf95c3f0a20a7d68c5d9a241853c66}
+
+
+Boolean that is true if the entity is on the ground. 
+
+
+
+Definition at line 66 of file entity.\+h.
+
+\hypertarget{structentity__s_ab185065de2325558e780597d0e51230f}{}\index{entity\+\_\+s@{entity\+\_\+s}!owner@{owner}}
+\index{owner@{owner}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{owner}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf entity\+\_\+s}$\ast$ owner}\label{structentity__s_ab185065de2325558e780597d0e51230f}
+
+
+Definition at line 91 of file entity.\+h.
+
+\hypertarget{structentity__s_a92ed3b86c791f2114d9a1147443e7fe5}{}\index{entity\+\_\+s@{entity\+\_\+s}!reset\+Position@{reset\+Position}}
+\index{reset\+Position@{reset\+Position}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{reset\+Position}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ reset\+Position)(struct {\bf entity\+\_\+s} $\ast$ent)}\label{structentity__s_a92ed3b86c791f2114d9a1147443e7fe5}
+
+
+Function pointer for reseting position. Depreciated, will be removed. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in,out}  & {\em ent} & If non-\/null, the ent. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 100 of file entity.\+h.
+
+\hypertarget{structentity__s_af4dbc59d08fcac46ed1ea8abadef6cb4}{}\index{entity\+\_\+s@{entity\+\_\+s}!set\+Camera@{set\+Camera}}
+\index{set\+Camera@{set\+Camera}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{set\+Camera}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ set\+Camera) (void)}\label{structentity__s_af4dbc59d08fcac46ed1ea8abadef6cb4}
+
+
+Definition at line 105 of file entity.\+h.
+
+\hypertarget{structentity__s_a0d1a05278f29fdd42ce786f2baf02f06}{}\index{entity\+\_\+s@{entity\+\_\+s}!show@{show}}
+\index{show@{show}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{show}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ show) (struct {\bf entity\+\_\+s} $\ast$ent)}\label{structentity__s_a0d1a05278f29fdd42ce786f2baf02f06}
+
+
+Definition at line 103 of file entity.\+h.
+
+\hypertarget{structentity__s_a1c7252614a33238e51edd3bbd5fa08c5}{}\index{entity\+\_\+s@{entity\+\_\+s}!sprite@{sprite}}
+\index{sprite@{sprite}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{sprite}]{\setlength{\rightskip}{0pt plus 5cm}S\+D\+L\+\_\+\+Surface$\ast$ sprite}\label{structentity__s_a1c7252614a33238e51edd3bbd5fa08c5}
+
+
+The entity\textquotesingle{}s sprite. 
+
+
+
+Definition at line 52 of file entity.\+h.
+
+\hypertarget{structentity__s_ab0cc49e009785df670b0991ef6c7c47e}{}\index{entity\+\_\+s@{entity\+\_\+s}!think@{think}}
+\index{think@{think}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{think}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ think) (struct {\bf entity\+\_\+s} $\ast$self)}\label{structentity__s_ab0cc49e009785df670b0991ef6c7c47e}
+
+
+Definition at line 107 of file entity.\+h.
+
+\hypertarget{structentity__s_a7cb2b75bb66761caa1cfd378e8c4d206}{}\index{entity\+\_\+s@{entity\+\_\+s}!thinkflags@{thinkflags}}
+\index{thinkflags@{thinkflags}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{thinkflags}]{\setlength{\rightskip}{0pt plus 5cm}int thinkflags}\label{structentity__s_a7cb2b75bb66761caa1cfd378e8c4d206}
+
+
+Used incorrectly, might be depreciated. Amount of time before doing a specified statement. 
+
+
+
+Definition at line 72 of file entity.\+h.
+
+\hypertarget{structentity__s_a3688a13a7bb7a088e86bc07f1c0502b8}{}\index{entity\+\_\+s@{entity\+\_\+s}!thinknums@{thinknums}}
+\index{thinknums@{thinknums}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{thinknums}]{\setlength{\rightskip}{0pt plus 5cm}int thinknums\mbox{[}20\mbox{]}}\label{structentity__s_a3688a13a7bb7a088e86bc07f1c0502b8}
+
+
+Used for state machines; different things happen depending on the number it is set to. Array of 20 integers gives ability to have multiple things set. 
+
+
+
+Definition at line 74 of file entity.\+h.
+
+\hypertarget{structentity__s_aa818c2577d3f6bcf8cf087c1b2c27227}{}\index{entity\+\_\+s@{entity\+\_\+s}!touch@{touch}}
+\index{touch@{touch}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{touch}]{\setlength{\rightskip}{0pt plus 5cm}void($\ast$ touch) (struct {\bf entity\+\_\+s} $\ast$self)}\label{structentity__s_aa818c2577d3f6bcf8cf087c1b2c27227}
+
+
+Definition at line 108 of file entity.\+h.
+
+\hypertarget{structentity__s_a2474a5474cbff19523a51eb1de01cda4}{}\index{entity\+\_\+s@{entity\+\_\+s}!width@{width}}
+\index{width@{width}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{width}]{\setlength{\rightskip}{0pt plus 5cm}int width}\label{structentity__s_a2474a5474cbff19523a51eb1de01cda4}
+
+
+Entity\textquotesingle{}s width. 
+
+
+
+Definition at line 62 of file entity.\+h.
+
+\hypertarget{structentity__s_ad0da36b2558901e21e7a30f6c227a45e}{}\index{entity\+\_\+s@{entity\+\_\+s}!x@{x}}
+\index{x@{x}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{x}]{\setlength{\rightskip}{0pt plus 5cm}float x}\label{structentity__s_ad0da36b2558901e21e7a30f6c227a45e}
+
+
+Definition at line 44 of file entity.\+h.
+
+\hypertarget{structentity__s_a68ba7133c5359e424ce5d727d9665a25}{}\index{entity\+\_\+s@{entity\+\_\+s}!x\+Vel@{x\+Vel}}
+\index{x\+Vel@{x\+Vel}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{x\+Vel}]{\setlength{\rightskip}{0pt plus 5cm}float x\+Vel}\label{structentity__s_a68ba7133c5359e424ce5d727d9665a25}
+
+
+Definition at line 45 of file entity.\+h.
+
+\hypertarget{structentity__s_aa4f0d3eebc3c443f9be81bf48561a217}{}\index{entity\+\_\+s@{entity\+\_\+s}!y@{y}}
+\index{y@{y}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{y}]{\setlength{\rightskip}{0pt plus 5cm}float y}\label{structentity__s_aa4f0d3eebc3c443f9be81bf48561a217}
+
+
+Definition at line 44 of file entity.\+h.
+
+\hypertarget{structentity__s_ada909419c1e8025397fcbba8a9e65a26}{}\index{entity\+\_\+s@{entity\+\_\+s}!y\+Vel@{y\+Vel}}
+\index{y\+Vel@{y\+Vel}!entity\+\_\+s@{entity\+\_\+s}}
+\subsubsection[{y\+Vel}]{\setlength{\rightskip}{0pt plus 5cm}float y\+Vel}\label{structentity__s_ada909419c1e8025397fcbba8a9e65a26}
+
+
+Definition at line 45 of file entity.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+hyde/src/\hyperlink{entity_8h}{entity.\+h}\end{DoxyCompactItemize}

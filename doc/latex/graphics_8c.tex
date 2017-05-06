@@ -1,0 +1,108 @@
+\hypertarget{graphics_8c}{}\section{hyde/src/graphics.c File Reference}
+\label{graphics_8c}\index{hyde/src/graphics.\+c@{hyde/src/graphics.\+c}}
+{\ttfamily \#include \char`\"{}include.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+S\+D\+L\+\_\+\+Surface $\ast$ \hyperlink{graphics_8c_a8cabf96946c853b1e2733ee677b72303}{load\+\_\+\+Image} (char $\ast$filename)
+\item 
+void \hyperlink{graphics_8c_a486acdf27754fe3ec12041e963e47a90}{show\+\_\+\+Surface} (float x, float y, S\+D\+L\+\_\+\+Surface $\ast$source, S\+D\+L\+\_\+\+Surface $\ast$destination, S\+D\+L\+\_\+\+Rect $\ast$clip)
+\item 
+void \hyperlink{graphics_8c_a6cc806988c373c01ff05d0eca9943ea5}{show\+Frame} (\hyperlink{entity_8h_a01f4cf4c936b7ebadc3339bf8b679aa6}{entity\+\_\+t} $\ast$ent, S\+D\+L\+\_\+\+Surface $\ast$surface, float sx, float sy, int frame)
+\item 
+\hyperlink{boolean_8h_abb452686968e48b67397da5f97445f5b}{bool} \hyperlink{graphics_8c_a1bf54d0d63534cba4ae96d14b7440d10}{set\+Up\+Screen} ()
+\item 
+S\+D\+L\+\_\+\+Surface $\ast$ \hyperlink{graphics_8c_a236bdbe44c9fcc42f972a9415f94adfb}{get\+Screen} (void)
+\item 
+void \hyperlink{graphics_8c_aead4df867d8797e5a13b526fb86e1b3c}{close\+Screen} (void)
+\item 
+void \hyperlink{graphics_8c_a3a338d1fd0fbf9a8cd64bc57de10f4ff}{anim\+Idle} (\hyperlink{entity_8h_a01f4cf4c936b7ebadc3339bf8b679aa6}{entity\+\_\+t} $\ast$ent)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{graphics_8c_a3a338d1fd0fbf9a8cd64bc57de10f4ff}{}\index{graphics.\+c@{graphics.\+c}!anim\+Idle@{anim\+Idle}}
+\index{anim\+Idle@{anim\+Idle}!graphics.\+c@{graphics.\+c}}
+\subsubsection[{anim\+Idle}]{\setlength{\rightskip}{0pt plus 5cm}void anim\+Idle (
+\begin{DoxyParamCaption}
+\item[{{\bf entity\+\_\+t} $\ast$}]{ent}
+\end{DoxyParamCaption}
+)}\label{graphics_8c_a3a338d1fd0fbf9a8cd64bc57de10f4ff}
+
+
+Definition at line 80 of file graphics.\+c.
+
+\hypertarget{graphics_8c_aead4df867d8797e5a13b526fb86e1b3c}{}\index{graphics.\+c@{graphics.\+c}!close\+Screen@{close\+Screen}}
+\index{close\+Screen@{close\+Screen}!graphics.\+c@{graphics.\+c}}
+\subsubsection[{close\+Screen}]{\setlength{\rightskip}{0pt plus 5cm}void close\+Screen (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\label{graphics_8c_aead4df867d8797e5a13b526fb86e1b3c}
+
+
+Definition at line 75 of file graphics.\+c.
+
+\hypertarget{graphics_8c_a236bdbe44c9fcc42f972a9415f94adfb}{}\index{graphics.\+c@{graphics.\+c}!get\+Screen@{get\+Screen}}
+\index{get\+Screen@{get\+Screen}!graphics.\+c@{graphics.\+c}}
+\subsubsection[{get\+Screen}]{\setlength{\rightskip}{0pt plus 5cm}S\+D\+L\+\_\+\+Surface$\ast$ get\+Screen (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\label{graphics_8c_a236bdbe44c9fcc42f972a9415f94adfb}
+
+
+Definition at line 71 of file graphics.\+c.
+
+\hypertarget{graphics_8c_a8cabf96946c853b1e2733ee677b72303}{}\index{graphics.\+c@{graphics.\+c}!load\+\_\+\+Image@{load\+\_\+\+Image}}
+\index{load\+\_\+\+Image@{load\+\_\+\+Image}!graphics.\+c@{graphics.\+c}}
+\subsubsection[{load\+\_\+\+Image}]{\setlength{\rightskip}{0pt plus 5cm}S\+D\+L\+\_\+\+Surface$\ast$ load\+\_\+\+Image (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{filename}
+\end{DoxyParamCaption}
+)}\label{graphics_8c_a8cabf96946c853b1e2733ee677b72303}
+
+
+Definition at line 5 of file graphics.\+c.
+
+\hypertarget{graphics_8c_a1bf54d0d63534cba4ae96d14b7440d10}{}\index{graphics.\+c@{graphics.\+c}!set\+Up\+Screen@{set\+Up\+Screen}}
+\index{set\+Up\+Screen@{set\+Up\+Screen}!graphics.\+c@{graphics.\+c}}
+\subsubsection[{set\+Up\+Screen}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bool} set\+Up\+Screen (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\label{graphics_8c_a1bf54d0d63534cba4ae96d14b7440d10}
+
+
+Definition at line 62 of file graphics.\+c.
+
+\hypertarget{graphics_8c_a486acdf27754fe3ec12041e963e47a90}{}\index{graphics.\+c@{graphics.\+c}!show\+\_\+\+Surface@{show\+\_\+\+Surface}}
+\index{show\+\_\+\+Surface@{show\+\_\+\+Surface}!graphics.\+c@{graphics.\+c}}
+\subsubsection[{show\+\_\+\+Surface}]{\setlength{\rightskip}{0pt plus 5cm}void show\+\_\+\+Surface (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{source, }
+\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{destination, }
+\item[{S\+D\+L\+\_\+\+Rect $\ast$}]{clip}
+\end{DoxyParamCaption}
+)}\label{graphics_8c_a486acdf27754fe3ec12041e963e47a90}
+
+
+Definition at line 32 of file graphics.\+c.
+
+\hypertarget{graphics_8c_a6cc806988c373c01ff05d0eca9943ea5}{}\index{graphics.\+c@{graphics.\+c}!show\+Frame@{show\+Frame}}
+\index{show\+Frame@{show\+Frame}!graphics.\+c@{graphics.\+c}}
+\subsubsection[{show\+Frame}]{\setlength{\rightskip}{0pt plus 5cm}void show\+Frame (
+\begin{DoxyParamCaption}
+\item[{{\bf entity\+\_\+t} $\ast$}]{ent, }
+\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{surface, }
+\item[{float}]{sx, }
+\item[{float}]{sy, }
+\item[{int}]{frame}
+\end{DoxyParamCaption}
+)}\label{graphics_8c_a6cc806988c373c01ff05d0eca9943ea5}
+
+
+Definition at line 45 of file graphics.\+c.
+

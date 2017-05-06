@@ -175,7 +175,6 @@ void setGameState(int gameState, bool setup)
 				fclose(fp);
 				spawned = 0;
 			}
-
 			/*if (space != NULL)
 			{
 				//cpSpaceFree(space);
@@ -903,7 +902,6 @@ void customLevelSetup()
 	initHUD ();
 
 	start = SDL_GetTicks();
-
 	//running = true;
 
 	/*if (space != NULL && getPlayer() != NULL)
@@ -924,7 +922,6 @@ void gameOverSetup()
 	setLvlState (NO_MODE);
 
 	start = 0;
-
 	//running = false;
 }
 
@@ -936,4 +933,5 @@ void gameOverSetup()
 int getSpawned()
 {
 	return spawned;
+<<<<<<< HEAD
 }*/

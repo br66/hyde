@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // .c 
 
 // Custom headers
@@ -18,6 +19,7 @@ bool _entityMInitialized = 0;
  * @brief	Calls all entities' think function within limitations, then move to the next 
  *			entity in the array of entities.
  **************************************************************************************************/
+<<<<<<< HEAD
 /*void EntityAlive() 
 {
 	int i = 0;
@@ -410,7 +412,6 @@ void collisions()
 */
 /*void show (entity_t *ent) //name change?
 {
-	
 	if (ent)
 	{
 	// check states here, if state, animate function draws next frame
@@ -435,7 +436,6 @@ void showEnt (entity_t *ent) //name change?
 }
 
 Check Collision - name change?
-
 bool isCollide (entity_t *otherent, entity_t *ent)
 {
 	SDL_Rect A;
@@ -493,7 +493,6 @@ void alphaThink (entity_t *self)
 	}
 	else 
 		self->xVel -= 0.2f; 
-
 	if (self->x < 20)
 		freeEnt(self);
 

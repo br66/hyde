@@ -1,0 +1,101 @@
+#-----------------------------------------------
+# Player Animation Set for Dr. Jekyll
+# Idle, Run Left, Run Right, Jump?
+# following animation_t, animation_s
+#-----------------------------------------------
+
+playerIdle:
+  maxFrames: 10
+  initialFrame: 1
+  frames:
+    - 1
+    - 3
+    - 5
+    - 4
+    - 2
+    - 1
+    - 3
+    - 5
+    - 4
+    - 2
+    
+  intervals:
+    - 200
+    - 200
+    - 250
+    - 250
+    - 300
+    - 200
+    - 200
+    - 250
+    - 250
+    - 300
+
+playerLeft:
+  maxFrames: 10
+  initialFrame: 6
+  frames:
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+
+  intervals:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+
+playerRight:
+  maxFrames: 10
+  initialFrame: 11
+  frames:
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+
+  intervals:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+	
+WalkL
+{
+
+}
+
+WalkR
+{
+
+} 
+
+array of objects/animations
+[
+	
+]

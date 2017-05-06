@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
 		// it is linked (combined?) with the rest of my project when the
 		// .exe is running.  The version of SDL that I'm compiling may be
 		// different than the one that is linked.
+
 		SDL_version compiledVersion;
 		SDL_VERSION(&compiledVersion);
 

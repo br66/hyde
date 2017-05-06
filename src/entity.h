@@ -1,4 +1,5 @@
 /**********************************************************************************************//**
+<<<<<<< HEAD
  * @file	entity.h
  *
  * @brief	This is the entity class.  Used for all in-game that act and can be acted on.  <<< Redefine
@@ -7,6 +8,7 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
+<<<<<<< HEAD
  // Standard C headers
 #include <string.h> 
 
@@ -134,6 +136,17 @@ int MaxRecordedEntities();
 #define MAX_ENTITIES  255
 
 //	Flags
+=======
+#include <chipmunk.h>
+
+/* 
+	Maximum # of entities that can exist at once. 
+*/
+#define MAX_ENTITIES  255
+
+/*
+	Flags
+*/
 #define ENT_SHOW	0x00000001
 #define ENT_THINK	0x00000002
 #define ENT_SOLID	0x00000004
@@ -181,6 +194,7 @@ typedef struct entity_s
 
 	// AnimationComponent anim;
 
+<<<<<<< HEAD
 	 @brief	Bounding Box - for collision 
 	SDL_Rect		bBox; // DEPRECATION INCOMING
 	 @brief	Trigger - for triggering think functions
@@ -262,7 +276,9 @@ void show ( entity_t *ent ); // show frames from a spritesheet... terribly
 // all other ents
 void showEnt ( entity_t *ent ); //  function for showing single sprite
 
+
  thinks
+
 void projThink (entity_t *ent);
 void alphaThink (entity_t *self);
 void betaThink (entity_t *self);
@@ -274,6 +290,7 @@ void particleMove (entity_t * self);
 void emitterThink (entity_t * self);
 
  setting the entity states 
+
 void setStateTo (entity_t *ent, int animState);
 */
 #endif

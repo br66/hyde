@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // .c
  
 //#include <jansson.h> // find jansson or make own file parser, need to reinclude janssson.lib
@@ -17,12 +18,12 @@
 extern Uint32 delta;
 extern Uint32 start;
 
+
 bool running = true;
 //SDL_Color timeColor = { 255, 255, 255 }; // color of the clock, will remove clock, don't know how it works, make own?
 
 // for keystates
 static Uint8 *keystates;
-
 
 //
 for the mouse
@@ -33,12 +34,10 @@ extern int objX, objY;
 SDL_Event clickEvent;
 extern sprite_t * testTile;
 extern FILE * fp;
-
 //
 
 // for game states
 extern game_t Game;
-
 
 void mainmenuSetup()
 {
@@ -147,5 +146,4 @@ void levelTwo()
 	// checking keyboard input does not work outside of a function
 
 	//SDL_Flip(getScreen());
-	
 }*/

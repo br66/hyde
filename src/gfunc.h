@@ -8,8 +8,6 @@
 #ifndef _FUNC_
 #define _FUNC_
 
-
-
 /* Includes */ 
 
 #include <SDL_ttf.h> // failed attempt to remove this
@@ -79,6 +77,7 @@ void loadLevel(char * level);
 /* gets, sets, and closers to reduce amount of externs */
 SDL_Rect getCamera (void);
 void cameraSetOn( struct Entity *ent);
+
 //SDL_Rect *addrCamera (void);
 
 TTF_Font *getFont (void);

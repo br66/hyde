@@ -9,5 +9,5 @@ void spawnEntity(const char * name, float x, float y, const char * flag); // spa
 //void enemySpawner (const char * name, float x, float y); // will spawn multiple enemies depending on player's mode
 void spawnParticle (int x, int y, float speed);
 void spawnMultiParticle (int x, int y, float speed);
- 
+
 #endif

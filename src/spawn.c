@@ -57,6 +57,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 
 		//struct Entity* platform1 = initEnt();
 		/*strcpy(platform1->classname, "platform 1");
+
 		platform1->sprite = load("graphic/level/lvldesign/plvl_1.png", 62, 24);
 		platform1->x = x;
 		platform1->y = y;
@@ -81,6 +82,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 			//edge->e = 0;
 			//edge->u = 0;
 			//cpBodySetPos(cpSpaceGetStaticBody(getSpace()), cpv(x, y));
+
 			//cpShapeSetCollisionType(edge, 1);
 			//cpShapeSetLayers(edge,CP_ALL_LAYERS);
 			//cpShapeSetUserData(edge, (const cpDataPointer)platform1);
@@ -101,6 +103,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		bomber->y = y;
 		bomber->bBox.w = 16;
 		bomber->bBox.h = 33;
+
 		//bomber->show = showEnt;
 		//bomber->think = alphaThink;
 
@@ -178,7 +181,6 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 	if (strcmp(name, "platform 3") == 0)
 	{
 		//cpShape * edge = NULL;
-
 		//entity_t * platform3 = initEnt ();
 
 		//strcpy(platform3->classname, "platform 3");
@@ -188,6 +190,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		platform3->y = y;
 		platform3->bBox.w = 62;
 		platform3->bBox.h = 24;
+
 		//platform3->show = showEnt;
 
 		//SET_FLAG(platform3->flags, ENT_SOLID);
@@ -196,7 +199,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		//	SET_FLAG(platform3->flags, ENT_FJEKYL);
 
 		//if (strcmp(flag, "hyde") == 0)
-		//l	SET_FLAG(platform3->flags, ENT_FHYDE);
+		//SET_FLAG(platform3->flags, ENT_FHYDE);
 
 		/*edge = cpBoxShapeNew(cpSpaceGetStaticBody(getSpace()), 62, 40);
 		edge->e = 0;
@@ -206,13 +209,11 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		cpShapeSetLayers(edge,CP_ALL_LAYERS);
 		cpShapeSetUserData(edge, (const cpDataPointer)platform3);
 		cpSpaceAddStaticShape(getSpace(), edge);*/
-
 	/*}
 	
 	if (strcmp(name, "platform 4") == 0)
 	{
 		//cpShape * edge = NULL;
-
 		//entity_t * platform4 = initEnt ();
 
 		strcpy(platform4->classname, "platform 4");
@@ -222,6 +223,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		platform4->y = y;
 		platform4->bBox.w = 271;
 		platform4->bBox.h = 56;
+
 		//platform4->show = showEnt;
 
 		//SET_FLAG(platform4->flags, ENT_SOLID);
@@ -243,7 +245,6 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		cpShapeSetUserData(edge, (const cpDataPointer)platform4);
 		cpSpaceAddStaticShape(getSpace(), edge);
 		*/
-
 	/*}
 
 	if (strcmp(name, "building 1") == 0)
@@ -297,6 +298,7 @@ void spawnEntity(const char * name, float x, float y, const char * flag)
 		light1->y = y;
 		light1->bBox.w = 127;
 		light1->bBox.h = 159;
+
 		//light1->show = showEnt;
 
 		//if (strcmp(flag, "jekyll") == 0)
