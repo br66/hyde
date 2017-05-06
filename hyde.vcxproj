@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1F234EA9-B205-4B0F-A2A5-25EA7F61298B}</ProjectGuid>
+    <RootNamespace>project2017</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>project2017</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\</OutDir>
+    <IncludePath>C:\NewLib\Chipmunk-7.0.1\include\chipmunk;C:\NewLib\SDL2-2.0.5\include;C:\NewLib\SDL2_ttf-2.0.14\include;C:\NewLib\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\NewLib\SDL2-2.0.5\include;C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;C:\NewLib\SDL2_ttf-2.0.14;C:\NewLib\SDL2_image-2.0.1\include;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\NewLib\SDL2-2.0.5\lib\x86;C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;C:\NewLib\SDL2_ttf-2.0.14\lib\x86;C:\NewLib\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
+    <SourcePath>C:\NewLib\Chipmunk-7.0.1\src;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\</OutDir>
+    <IncludePath>C:\libraries\Chipmunk-6.2.2\include\chipmunk;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\include;C:\yaml\yaml-0.1.5\include;C:\libraries\SDL_net-1.2.8\include;C:\libraries\SDL_mixer-1.2.12\include;C:\libraries\SDL_image-1.2.12\include;C:\libraries\SDL_ttf-2.0.11\include;C:\libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\libraries\Chipmunk-6.2.2\msvc\vc10\chipmunk\Win32\Release;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\libraries\Chipmunk-6.2.2\bin\src\Debug;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\build\lib\Release;C:\yaml\yaml-0.1.5\win32\vs2008\Output\Release\lib\DLL;C:\libraries\SDL-1.2.15\lib\x86;C:\libraries\SDL_ttf-2.0.11\lib\x86;C:\libraries\SDL_net-1.2.8\lib\x86;C:\libraries\SDL_mixer-1.2.12\lib\x86;C:\libraries\SDL_image-1.2.12\lib\x86;$(LibraryPath)</LibraryPath>
+    <SourcePath>C:\libraries\Chipmunk-6.2.2\src;C:\Users\iwh-pc\Documents\JSON\jansson-2.7\src;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\src;$(SourcePath)</SourcePath>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <CompileAs>CompileAsC</CompileAs>
+      <AdditionalIncludeDirectories>./</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;Glu32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>./lib</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG</PreprocessorDefinitions>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>false</OptimizeReferences>
+      <AdditionalLibraryDirectories>./lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenGL32.lib;Glu32.lib;sdl.lib;sdlmain.lib;sdl_image.lib;sdl_ttf.lib;sdl_net.lib;sdl_mixer.lib;jansson.lib;chipmunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sprite.h" />
+    <ClInclude Include="src\boolean.h" />
+    <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\gfunc.h" />
+    <ClInclude Include="src\graphic.h" />
+    <ClInclude Include="src\include.h" />
+    <ClInclude Include="src\spawn.h" />
+    <ClInclude Include="src\textInput.h" />
+    <ClInclude Include="src\time.h" />
+    <ClInclude Include="src\weapon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\entity.c" />
+    <ClCompile Include="src\game.c" />
+    <ClCompile Include="src\gfunc.c" />
+    <ClCompile Include="src\graphic.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\spawn.c" />
+    <ClCompile Include="src\textInput.c" />
+    <ClCompile Include="src\weapon.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

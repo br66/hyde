@@ -1,0 +1,122 @@
+history
+
+5.9.15
+-------
+general changes
+------------------
+name of the game has been changed to "the wolfman game"
+overall theme of game has been changed - to based of the spanish...
+...inquisition and fear of wolves. see readme.txt
+near-entire re-programming of game AGAIN
+chipmunk physics 6.2.2 is working, version 7 is not made for windows
+attempt at box2d physics integration failed
+added some more graphical assets
+don't need level.txt
+working on werewolf run animation
+forced to compile game as C++ code, chipmunk is developed in C++
+still following C programming rules
+changed debug mode to make chipmunk work (from NDEBUG to _DEBUG)
+textInput class was thought to be needed, to be removed
+
+
+graphic class
+-------------
+.h
+--
+changed level width
+added background int to check if sprite is a background
+
+.c
+--
+fixed load function glitch, checking for filename by length wasn't long enough
+fixed freeSprite func, gets rid of animation set
+showbackgrounds... shows backgrounnds corresponding to the level
+getAnimSet func glitch fixed, was only mapping to first anim set
+
+
+
+game/gfunc class
+----------
+.h
+--
+no longer need addrCamera, getTime, getSeconds, getEvents, or clear functions
+new functions for setting up modes/levels (ex. levelOneSetup, gameOverSetup)
+
+game.c
+------
+added mouse functionality
+failed attempt to write to file for level editor
+only one game loop now
+begin function reinforced
+new functions pull, update, draw
+pull finds input, update makes changes to everything, draw shows changes
+file has been repurposed for mainly functions for updating/running game modes (ex. levelOne)
+some functions have been repurposed (ex. levelOne(), levelTwo())...
+... now used for only updating
+
+gfunc.c
+-------
+file affected by chipmunk physics
+updated begin function
+set game state function now accepts boolean to see if mode needs to be setup..
+.. may be used for pause function
+fixed set level state function
+fixed string issue where strings throughout game were being changed
+loadLevel function affected by chipmunk physics and can load level 2
+updated camera
+renamed font since it is only used for time at this stage
+repositioned on screen timer to optimize HUD
+made new init HUD function, HUD has been redone
+updateHealth and updateAnger are now updateHUD
+updated events function, now takes playerinput
+changed player speed
+level one setup affected by chipmunk physics
+get function to get reference to chipmunk physics space
+made sure health doesn't go below zero
+in wolf mode, anger meter goes down
+
+
+level.json files
+-----------
+level 1 have been fleshed out
+level 2 being worked on too
+failed to make level editor
+
+
+entity class
+------------
+.h
+--
+increased the number of maximum entities
+need to include chipmunk header in this file to avoid "undefined" errors
+MAX_ENTITIES increased
+fixed glitch regarding sprites and solidity based on level state by changing defines
+added classType, chipmunk body and shapes in entity structure
+
+.c
+--
+max_ents (not MAX_ENTITIES) moved to c file
+message for overflow of entities implemented
+maintenance on freeEnt, entityShowSwitch, check collision func
+new entitySolidSwitch func for level state switching
+working on combination of all collision funcs named "collisions()"
+entity alive function affected by chipmunk physics and...
+...accidentally made jump mechanic (hold up button)
+playerInput depreciated
+move player function affected by chipmunk physics
+show player function updated to test animated wolf mode
+isCollide no longer needs testing
+better memory management with entities and balancing speed (espcially enemies)
+created think function for enemy spawner
+updated spritesheet for upcoming jump animation attempt
+initPlayer updated to support chipmunk physics and to be ignored by entityShowSwitch
+damage from enemies vary
+
+
+spawn class (new)
+-----------
+.c
+--
+spawn entity function can spawn more objects now...
+... has been affected by chipmunk physics (specifically platforms)
+new enemy spawner spawns kid instances every few seconds
