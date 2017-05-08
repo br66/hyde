@@ -1,8 +1,8 @@
-// #include
+// Third-party library headers
 #include <SDL.h>
-#include <SDL_image.h> 
-//#include <jansson.h>
+#include <SDL_image.h>
 
+// Custom headers 
 #include "graphic.h"
 #include "gfunc.h"
 

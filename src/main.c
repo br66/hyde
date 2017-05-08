@@ -1,5 +1,3 @@
-// .c
-
 // Standard C headers
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,53 +7,65 @@
 #include <SDL.h>
 #include <chipmunk.h>
 
-// Custom headers 
-#include "time.h"
+// Custom headers
+#include "main.h"
 #include "boolean.h"
 #include "entity.h"
 
-// Game game;
+// Main/Util
+static SDL_Window* window;
 
-// Uint32 - Unsigned 32-bit integer: non-negative number from 0 to 4,294,967,295 (2^32 - 1)
-Uint32 delta = 0;
+// Time ------------------------
+Uint32 delta = 0; // Uint32 - Unsigned 32-bit integer: non-negative number from 0 to 4,294,967,295 (2^32 - 1)
 Uint32 start = 0;
+static Uint32 currentTime = 0; // static variable: can only be used within this .c file
 
+// Input ------------------------
 SDL_Event event;
 
-// static variable: can only be used within this .c file
-static Uint32 currentTime = 0;
-
+// Functions ------------------------
 // functions from startApp() - endApp() must be defined before main() or the program will receive a "identifier not found" error
-
 // will start the application by initializing everything this game depends on to run
+
 bool startApp()
 {
-	// launch SDL, if it doesn't work, return false
-	if (SDL_Init(SDL_INIT_EVERYTHING))	
-		return false;
+	// Start/launch SDL ------------------------
+	if (SDL_Init(SDL_INIT_EVERYTHING)) return false; 
+	// if it doesn't work, return false
+
+	// Open window ------------------------
+	window = SDL_CreateWindow(
+		"An SDL2 window",                  // window title
+		SDL_WINDOWPOS_UNDEFINED,           // initial x position
+		SDL_WINDOWPOS_UNDEFINED,           // initial y position
+		640,                               // width, in pixels
+		480,                               // height, in pixels
+		SDL_WINDOW_OPENGL                  // flags - see below
+	);
 	
+	// Save the timestamp of when SDL finished launching ------------------------
+	start = SDL_GetTicks(); 
 	// start tracking milliseconds since SDL started and save the number, potential use for game mechanics
-	start = SDL_GetTicks();
 	// SDL_GetTicks() also gives the amount of milliseconds that have passed up until the point of the frame we are currently at
 
-	// specifics, change to if statement?
-	EntityMInit();
+	// Create place in computer memory to store entities ------------------------
+	EntityMInit(); 
+	// change to if statement?
 
-	struct Entity* ent = NewEntity();
-	strcpy(ent->m_name, "My first entity");
+	// Create one entity ------------------------
+	struct Entity* ent = NewEntity(); // Creation of new entity
+	strcpy(ent->m_name, "My first entity"); // Giving the new entity a name
 
-	// if everything above runs, the program will skip the "return false" line and return true instead
-	return true;
+	return true; // if everything above runs, the program will skip the "return false" line and return true instead
 }
 
-// checks when the user inputs anything
-void input()
+
+void input() // checks when the user inputs anything
 {
-	//check if quitted to turn done to true;
+	//check if quitted to turn done to true
 }
 
-// updates everything that's going on in the game, usually according to user input, which is why it's called after input
-void update()
+void update() // updates everything that's going on in the game, usually according to user input, which is why it's called after input
 {
 	// DeltaTime();
 	// delta time - change in time; difference between when SDL_GetTicks was last called and now
@@ -63,45 +73,34 @@ void update()
 	// frame before the end of one millisecond; it will vary from time to time.  in order to keep up 
 	// with time, we must calculate the difference between my last completed frame and the current frame
 
-	// delta time = difference between the # of milliseconds I get from SDL_GetTicks() NOW and the num. I got when I last called it
-	delta = SDL_GetTicks() - currentTime;
+	delta = SDL_GetTicks() - currentTime; // delta time = difference between the # of milliseconds I get from SDL_GetTicks() NOW and the num. I got when I last called it
 	
-	// testing new delta time, previously only ran during certain game modes
 	// delta = SDL_GetTicks() - Time();
-	printf("%" PRIu32 "\n", delta);
+	printf("%" PRIu32 "\n", delta); // testing new delta time, previously only ran during certain game modes
 
-	// store the "# of millseconds I get from SDL_GetTicks() NOW" in currentTime, overwriting the previous time, for when I reached update again
-	currentTime = SDL_GetTicks();
+	currentTime = SDL_GetTicks(); // store the "# of millseconds I get from SDL_GetTicks() NOW" in currentTime, overwriting the previous time, for when I reached update again
 }
 
-// draws/renders all the changes from update
-void draw()
+void draw() // draws/renders all the changes from update
 {
 	// draw all objects sprite components
 }
 
-// shut down, deallocate everything, free memory for other Apps running on computer
-void endApp()
+void endApp() // shut down, deallocate everything, free memory for other Apps running on computer
 {
-	// clear all entities from memory
-	EntityMDel();
+	EntityMDel(); // clear all entities from memory
 
-	// switches SDL off
-	SDL_Quit();
+	SDL_Quit(); // switches SDL off
 
-	// exit, unknown parameter
-	exit(0);
+	exit(0); // exit, unknown parameter
 }
 
-// the program starts HERE
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) // <<<<< the program starts HERE
 {
-	// create boolean for determining when the app should stop running
+	bool done = false; // create boolean for determining when the app should stop running
 	// at some point this boolean will be turned true, most likely by input from the player
-	bool done = false;
 
-	// If launching the app is successful,
-	if (startApp())
+	if (startApp()) // If launching the app is successful,
 	{	
 		// SDL2 is "dynamically linked" to this project.  This means that
 		// it is linked (combined?) with the rest of my project when the
@@ -111,21 +110,17 @@ int main(int argc, char *argv[])
 		SDL_version compiledVersion;
 		SDL_VERSION(&compiledVersion);
 
-		// print success message
-		printf("Project2017 SDL ver%d.%d.%d  Chipmunk ver%s", compiledVersion.major, compiledVersion.minor, compiledVersion.patch, cpVersionString);
+		printf("Project2017 SDL ver%d.%d.%d  Chipmunk ver%s", compiledVersion.major, compiledVersion.minor, compiledVersion.patch, cpVersionString); // print success message
 		
-		// do run the game while the game is told it's not done running
-		do
+		do  // do run the game while the game is told it's not done running
 		{
 			input(); // takes the input
 			update(); // updates everything based on changes from input, etc.
 			draw(); // draws all the results from input(), update(), etc.
 		} while (!done); // (!done) means NOT done
 	}
+	
+	endApp(); // game will only run while done is still false, if ever true, it reaches here
 
-	// game will only run while done is still false, if ever true, it reaches here
-	endApp();
-
-	// application will end
-	return 0;
+	return 0; // application will end
 }

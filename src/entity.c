@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // .c 
 
 // Custom headers
@@ -11,15 +10,12 @@ struct Entity* _entityM = NULL;
 int _entity_max_recorded = 0;
 bool _entityMInitialized = 0; 
 
-/* extern game_t Game; */
-
 /**********************************************************************************************//**
  * @fn	void EntityAlive()
  *
  * @brief	Calls all entities' think function within limitations, then move to the next 
  *			entity in the array of entities.
  **************************************************************************************************/
-<<<<<<< HEAD
 /*void EntityAlive() 
 {
 	int i = 0;

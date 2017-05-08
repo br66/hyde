@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\entity.c">
+      <Filter>In Use</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.c">
+      <Filter>In Use</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.c">
+      <Filter>In Use</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gfunc.c">
+      <Filter>Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic.c">
+      <Filter>Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\spawn.c">
+      <Filter>Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textInput.c">
+      <Filter>Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\weapon.c">
+      <Filter>Deprecated</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\boolean.h">
+      <Filter>In Use</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity.h">
+      <Filter>In Use</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>In Use</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>In Use</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfunc.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphic.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\spawn.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textInput.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\time.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\weapon.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="In Use">
+      <UniqueIdentifier>{4c718255-3900-4403-ac28-5a10bdb0b57c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Deprecated">
+      <UniqueIdentifier>{9417fb22-7513-4557-9d0a-18771d2edf97}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

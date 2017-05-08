@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 // .c
  
 //#include <jansson.h> // find jansson or make own file parser, need to reinclude janssson.lib

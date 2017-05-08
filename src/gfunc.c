@@ -64,13 +64,7 @@ extern "C"
 // for beginning of game
 void begin()
 {
-	// project2017: remove SDL1 and change to SDL2
-
 	/*
-	if ( SDL_Init(SDL_INIT_EVERYTHING) == -1 )
-		printf("SDL 1.2 error \n", SDL_GetError());
-	else printf("sdl init success \n");
-
 	if (Mix_OpenAudio ( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
 		printf("SDL Mixer error \n", SDL_GetError());
 	else printf("sdl mixer success \n");
@@ -933,5 +927,4 @@ void gameOverSetup()
 int getSpawned()
 {
 	return spawned;
-<<<<<<< HEAD
 }*/
