@@ -1,4 +1,12 @@
-// .c 
+/**********************************************************************************************//**
+ * @file	entity.c
+ * @author	br66
+ * @date	3/30/17
+ * @brief	The entity source file is for defining the behavior for in-game elements that act and/or can be acted on.
+ *			
+ **************************************************************************************************/
+
+// .c
 
 // Custom headers
 #include "boolean.h"
@@ -702,17 +710,7 @@ entity_t* getPlayer()
 	return NULL;
 }*/
 
-/***********************************************************************************************//*
-* @fn	struct Entity * NewEntity()
-*
-* @brief	Initialises single entity.
-* @return	struct Entity*	
-* @author	br66
-* @date		3/30/2017
-*
-* @return	null if it fails, else finds empty spot in entity manager to use to make a new entity
-**************************************************************************************************/
-struct Entity * NewEntity()
+struct Entity* NewEntity()
 {
 	int i;
 
@@ -736,15 +734,6 @@ struct Entity * NewEntity()
 	return NULL;
 }
 
-/**********************************************************************************************//**
-* @fn	void DeleteEntity(struct Entity *self)
-*
-* @brief	Deletes single entity.
-* @author	br66
-* @date		3/30/2017
-*
-* @param	self	Entity to delete
-***************************************************************************************************/
 void DeleteEntity(struct Entity *self)
 {
 	if (!self)
@@ -761,17 +750,12 @@ void DeleteEntity(struct Entity *self)
 	memset(self->m_name, 0, sizeof(char) * 36);
 }
 
-/**********************************************************************************************//**
- * @fn	void *EntityMInit (void)
- *
- * @brief	Initialises the entity list.
- * @author	br66
- * @date	3/30/2017
- **************************************************************************************************/
 void EntityMInit()
 {
 	int i;
 
+	// if it's already been initialized/in memory, call return to exit this function
+	// no need to do anything else
 	if (_entityMInitialized)
 		return;
 
@@ -781,6 +765,7 @@ void EntityMInit()
 	// clear out the garbage that's in it
 	memset(_entityM, 0, sizeof(struct Entity)*255);
 
+	// format the memory to suit what it will be used for
 	for (i = 0; i < 255; i++)
 	{
 		_entityM[i].m_active = 0;
@@ -791,42 +776,31 @@ void EntityMInit()
 		memset(_entityM[i].m_name, 0, sizeof(char) * 36);
 	}
 
+	// entity list now exists in memory
 	_entityMInitialized = true;
 }
 
-/**********************************************************************************************//**
- * @fn	void *EntityMDel (void)
- *
- * @brief	Clears the entity list.
- * @author	br66
- * @date	3/30/2017
- **************************************************************************************************/
 void EntityMDel()
 {
 	int i;
+	// for the highest number of possible entities
 	for (i = 0; i < 255; i++)
 	{
-		// if it's alive,
+		// if it's alive/in use/active,
 		if (_entityM[i].m_active)
 		{
 			// kill it
 			DeleteEntity(&_entityM[i]);
 		}
-		// kill it all
+		// kill it all, just to make it sure i cleared that entity properly
 		free(_entityM);
 		//__entity_max = 0;
+
+		// this is now false, since I am now clearing entityM from memory
 		_entityMInitialized = false;
 	}
 }
 
-/**********************************************************************************************//**
- * @fn	int *MaxRecordedEntities (void)
- *
- * @brief	Clears the entity list.
- * @return	_entity_max_recorded	How many entities have been made since game start
- * @author	br66
- * @date	3/30/2017
- **************************************************************************************************/
 int MaxRecordedEntities()
 {
 	return _entity_max_recorded;

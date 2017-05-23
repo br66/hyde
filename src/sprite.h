@@ -14,7 +14,7 @@ struct Frame
 	int frame; 
 
 	// how long to show that frame
-	int interval;
+	int interval; 
 };
 
 struct Animation
@@ -45,3 +45,5 @@ struct Sprite
 };
 
 #endif // !__SPRITE_H__
+
+

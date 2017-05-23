@@ -1,3 +1,11 @@
+/**********************************************************************************************//**
+ * @file	main.c
+ * @author	br66
+ * @date	5/8/17
+ * @brief	main is for utilities
+ *			will describe 
+ **************************************************************************************************/
+
 // Standard C headers
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,17 +24,27 @@
 static SDL_Window* window;
 
 // Time ------------------------
-Uint32 delta = 0; // Uint32 - Unsigned 32-bit integer: non-negative number from 0 to 4,294,967,295 (2^32 - 1)
-Uint32 start = 0;
+Uint32 delta = 0; // Unsigned 32-bit integer: non-negative number from 0 to 4,294,967,295 (2^32 - 1)
+Uint32 start = 0; // timestamp of when SDL launched
 static Uint32 currentTime = 0; // static variable: can only be used within this .c file
 
 // Input ------------------------
-SDL_Event event;
+SDL_Event event; // structure for input event information
 
 // Functions ------------------------
 // functions from startApp() - endApp() must be defined before main() or the program will receive a "identifier not found" error
 // will start the application by initializing everything this game depends on to run
 
+/*************************************************************************************************/
+/**
+* @fn	bool startApp()
+*
+* @brief	Runs appropiate instructions to start the application.
+* @return	true if everything in this function runs properly, false if anything fails
+* @author	br66
+* @date		5/8/2017
+*/
+/*************************************************************************************************/
 bool startApp()
 {
 	// Start/launch SDL ------------------------
@@ -35,13 +53,15 @@ bool startApp()
 
 	// Open window ------------------------
 	window = SDL_CreateWindow(
-		"An SDL2 window",                  // window title
-		SDL_WINDOWPOS_UNDEFINED,           // initial x position
-		SDL_WINDOWPOS_UNDEFINED,           // initial y position
-		640,                               // width, in pixels
-		480,                               // height, in pixels
-		SDL_WINDOW_OPENGL                  // flags - see below
+		"2017",								// window title
+		SDL_WINDOWPOS_UNDEFINED,			// initial x position
+		SDL_WINDOWPOS_UNDEFINED,			// initial y position
+		640,								// width, in pixels
+		480,								// height, in pixels
+		SDL_WINDOW_OPENGL					// flags, mess with SDL_WINDOW_ALLOW_HIGHDPI at some point
 	);
+
+	if (!window) return false;
 	
 	// Save the timestamp of when SDL finished launching ------------------------
 	start = SDL_GetTicks(); 

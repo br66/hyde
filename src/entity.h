@@ -1,8 +1,8 @@
 /**********************************************************************************************//**
-<<<<<<< HEAD
  * @file	entity.h
- *
- * @brief	This is the entity class.  Used for all in-game that act and can be acted on.  <<< Redefine
+ * @author	br66
+ * @date	3/30/17
+ * @brief	The entity header file is for declaring the structure for in-game element that act and/or can be acted on.
  **************************************************************************************************/
 
 #ifndef _ENTITY_H_
@@ -18,12 +18,21 @@
 #include "sprite.h"
 
 // math related math.h
+/**********************************************************************************************//**
+ * @struct	Vector2D
+ *
+ * @brief	Container for where 2D objects are in the game world
+ **************************************************************************************************/
 typedef struct
 {
 	float x, y;
 }Vector2D;
 
-// math related
+/**********************************************************************************************//**
+ * @struct	Vector3D
+ *
+ * @brief	Container for where 3D objects are in the game world
+ **************************************************************************************************/
 typedef struct
 {
 	float x, y, z;
@@ -64,47 +73,99 @@ struct Health
 /*
 	Entity should control size of Sprite via transform
 */
+
+/**********************************************************************************************//**
+ * @struct	Entity
+ *
+ * @brief	Defines an structure for any in-game element that act and/or can be acted upon.
+ **************************************************************************************************/
 struct Entity
 {
-	// name of Entity
+	/** name of Entity */
 	char m_name[36];
 
-	// whether the Entity is being used in computer memory (0 if yes, 1 if no)
+	/** whether the Entity is being used in computer memory (0 if yes, 1 if no) */
 	int m_active;
 
-	// will use for multiple tags like Unity (name bittags???)
+	/** will use for multiple tags like Unity (name bittags???) */
 	int m_tags;
 
-	// layers for visiblilty like Unity
+	/** layers for visiblilty like Unity */
 	int m_layer;
 
-	// Position, Rotation, Scale
+	/** Position, Rotation, Scale */
 	struct Transform *m_transform;
 
-	// for getting collision information
+	/** for getting collision information */
 	struct Collider *m_collider;
 
-	// for having um... physics
+	/** for having um... physics */
 	struct Physics *m_physics;
 
-	// made a health component
+	/** health component which generally have health and damage variables */
 	struct Health *m_health;
 
-	// see you can see the damn object
+	/** see you can see the damn object */
 	struct Sprite *m_sprite;
 
-	// this entity could be the child of another
+	/** this entity could be the child of another */
 	struct Entity *m_owner;
 };
 
 // creation of one
-struct Entity *NewEntity();
+/*************************************************************************************************/
+/**
+* @fn	struct Entity* NewEntity()
+*
+* @brief	Initialises a single entity.
+* @return	@c null a.k.a. nothing if it fails, or it finds an empty spot in
+*			the entity manager to use and returns a new entity a.k.a. @c &_entityM[i]
+* @author	br66
+* @date	3/30/2017
+*/
+/*************************************************************************************************/
+struct Entity* NewEntity();
+
+/*************************************************************************************************/
+/**
+* @fn	void DeleteEntity(struct Entity *self)
+*
+* @brief	Deletes single entity.
+* @author	br66
+* @date		3/30/2017
+*
+* @param	self	a.k.a. the entity to delete
+*/
+/*************************************************************************************************/
 void DeleteEntity(struct Entity *self);
 
 // creation of many
+/**********************************************************************************************//**
+ * @fn	void *EntityMInit (void)
+ *
+ * @brief	Initialises the entity list.
+ * @author	br66
+ * @date	3/30/2017
+ **************************************************************************************************/
 void EntityMInit();
+
+/**********************************************************************************************//**
+ * @fn	void *EntityMDel (void)
+ *
+ * @brief	Clears the entity list from memory.
+ * @author	br66
+ * @date	3/30/2017
+ **************************************************************************************************/
 void EntityMDel();
 
+/**********************************************************************************************//**
+ * @fn	int MaxRecordedEntities (void)
+ *
+ * @brief	Clears the entity list.
+ * @return	@c _entity_max_recorded	a.k.a. How many entities have been made since the game started
+ * @author	br66
+ * @date	3/30/2017
+ **************************************************************************************************/
 int MaxRecordedEntities();
 
 

@@ -112,14 +112,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sprite.h" />
     <ClInclude Include="src\boolean.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gfunc.h" />
     <ClInclude Include="src\graphic.h" />
     <ClInclude Include="src\include.h" />
+    <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\main.h" />
     <ClInclude Include="src\spawn.h" />
+    <ClInclude Include="src\sprite.h" />
     <ClInclude Include="src\textInput.h" />
     <ClInclude Include="src\time.h" />
     <ClInclude Include="src\weapon.h" />
@@ -131,6 +133,7 @@
     <ClCompile Include="src\graphic.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\spawn.c" />
+    <ClCompile Include="src\sprite.c" />
     <ClCompile Include="src\textInput.c" />
     <ClCompile Include="src\weapon.c" />
   </ItemGroup>

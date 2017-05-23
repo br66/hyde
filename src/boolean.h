@@ -1,8 +1,7 @@
 /**********************************************************************************************//**
  * @file	src\boolean.h
  *
- * @brief	Declares the boolean class.  Visual Studio 2010 C programming does not have
- * 			booleans defined.  Boolean is defined below.
+ * @brief	Defines the concepts of true and false.  In some cases, C will not have them defined.
  **************************************************************************************************/
 
 #ifndef _BOOL_H_ 

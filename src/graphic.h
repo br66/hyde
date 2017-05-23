@@ -1,7 +1,7 @@
 /**********************************************************************************************//**
  * @file	src\graphic.h
  *
- * @brief	Sprites/spritesheets/animation/game screen/game camera
+ * @brief	Deprecated graphics file 
  **************************************************************************************************/
 
 // include
