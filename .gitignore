@@ -258,3 +258,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/ext/SDL2-2.0.7

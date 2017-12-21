@@ -1,13 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\entity.c">
-      <Filter>In Use</Filter>
-    </ClCompile>
     <ClCompile Include="src\game.c">
-      <Filter>In Use</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.c">
       <Filter>In Use</Filter>
     </ClCompile>
     <ClCompile Include="src\gfunc.c">
@@ -28,12 +22,21 @@
     <ClCompile Include="src\sprite.c">
       <Filter>In Use</Filter>
     </ClCompile>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>In Use\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity.cpp">
+      <Filter>In Use\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>In Use\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time.cpp">
+      <Filter>In Use\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\boolean.h">
-      <Filter>In Use</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity.h">
       <Filter>In Use</Filter>
     </ClInclude>
     <ClInclude Include="src\game.h">
@@ -60,14 +63,23 @@
     <ClInclude Include="src\weapon.h">
       <Filter>Deprecated</Filter>
     </ClInclude>
-    <ClInclude Include="src\main.h">
-      <Filter>In Use</Filter>
-    </ClInclude>
     <ClInclude Include="src\sprite.h">
       <Filter>In Use</Filter>
     </ClInclude>
     <ClInclude Include="src\input.h">
       <Filter>In Use</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main.hpp">
+      <Filter>In Use\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entity.hpp">
+      <Filter>In Use\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component.hpp">
+      <Filter>In Use\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.hpp">
+      <Filter>In Use\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +88,15 @@
     </Filter>
     <Filter Include="Deprecated">
       <UniqueIdentifier>{9417fb22-7513-4557-9d0a-18771d2edf97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="In Use\Header">
+      <UniqueIdentifier>{99368fbb-6178-4b2a-8512-849ca1286309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="In Use\Main">
+      <UniqueIdentifier>{433cafb6-3041-4611-a857-2d7a5211a839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="In Use\Source">
+      <UniqueIdentifier>{b12baa5d-73df-43a1-989e-621423061ae7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

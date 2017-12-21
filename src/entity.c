@@ -738,7 +738,7 @@ void DeleteEntity(struct Entity *self)
 {
 	if (!self)
 	{
-		printf("WHA YOU DOIN\n"); // slog
+		//printf("WHA YOU DOIN\n"); // slog
 		return;
 	}
 

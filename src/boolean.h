@@ -4,7 +4,7 @@
  * @brief	Defines the concepts of true and false.  In some cases, C will not have them defined.
  **************************************************************************************************/
 
-#ifndef _BOOL_H_ 
+/*#ifndef _BOOL_H_ 
 #define _BOOL_H_
 
 #define false   0
@@ -12,4 +12,4 @@
 
 #define bool int
 
-#endif
+#endif*/

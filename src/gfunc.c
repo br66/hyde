@@ -17,7 +17,7 @@ static SDL_Surface *seconds = NULL;
 static Uint32 currentTime = 0; 
 static TTF_Font *time = NULL;  // to rename time font 
 bool done;
-extern Uint32 start;
+//extern Uint32 start;
 //extern bool running;
 static bool pause = false;
 //long pauseTime;
@@ -38,7 +38,7 @@ static int spawned;
 static SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
 // for events
-SDL_Event event;
+//extern SDL_Event event;
 
 // for the hud
 SDL_Rect health;
@@ -448,10 +448,11 @@ void closeSeconds(void)
 	}
 }
 
-SDL_Event getEvents()
+/*SDL_Event getEvents()
 {
-	return event;
-}
+	//return event;
+	return;
+}*/
 
 void initHUD ()
 {
@@ -521,7 +522,7 @@ SDL_Rect getAngerBar ()
 
 // for game events (ex. keyboard input)
 // reminder: put player in level file
-void Events()
+/*void Events()
 {
 	int x, y;
 
@@ -548,10 +549,10 @@ void Events()
 							}
 						}
 				}
-			}
+			}*/
 
-			if(joystick /*&& getPlayer() */!= NULL)
-			{
+			//if(joystick /*&& getPlayer() */!= NULL)
+			/*{
 				switch (event.type)
 				{
 					case SDL_JOYAXISMOTION:
@@ -704,7 +705,7 @@ void Events()
 	//{
 		//while (SDL_Polle
 	//}
-}
+}*/
 
 /* for time */
 char *FormatNumber(Uint32 number, int min)
@@ -805,7 +806,7 @@ void levelOneSetup()
 
 	initHUD ();
 
-	start = SDL_GetTicks();
+	//start = SDL_GetTicks();
 
 	//running = true;
 
@@ -837,7 +838,7 @@ void levelTwoSetup()
 
 	initHUD ();
 
-	start = SDL_GetTicks();
+	//start = SDL_GetTicks();
 
 	//running = true;
 
@@ -895,7 +896,7 @@ void customLevelSetup()
 
 	initHUD ();
 
-	start = SDL_GetTicks();
+	//start = SDL_GetTicks();
 	//running = true;
 
 	/*if (space != NULL && getPlayer() != NULL)
@@ -915,7 +916,7 @@ void gameOverSetup()
 
 	setLvlState (NO_MODE);
 
-	start = 0;
+	//start = 0;
 	//running = false;
 }
 

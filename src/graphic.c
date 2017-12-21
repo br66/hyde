@@ -99,6 +99,7 @@ sprite_t* load (char *filename, int width, int height)
 	listSprites[i].used++;
 	
 	return &listSprites[i];*/
+	return 0;
 }
 
 // free individual sprite from memory
@@ -203,6 +204,7 @@ bool setupScreen()
 SDL_Surface* getScreen (void)
 {
 	//return screen;
+	return 0;
 }
 
 // get rid of the screen, usually used for the end of game

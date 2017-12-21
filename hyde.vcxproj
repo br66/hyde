@@ -44,11 +44,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\</OutDir>
-    <IncludePath>C:\NewLib\Chipmunk-7.0.1\include\chipmunk;C:\NewLib\SDL2-2.0.5\include;C:\NewLib\SDL2_ttf-2.0.14\include;C:\NewLib\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
-    <ReferencePath>C:\NewLib\SDL2-2.0.5\include;C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;C:\NewLib\SDL2_ttf-2.0.14;C:\NewLib\SDL2_image-2.0.1\include;$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\NewLib\SDL2-2.0.5\lib\x86;C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;C:\NewLib\SDL2_ttf-2.0.14\lib\x86;C:\NewLib\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)ext;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\NewLib\Chipmunk-7.0.1\msvc\vc13\chipmunk\Win32\Release;$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
-    <SourcePath>C:\NewLib\Chipmunk-7.0.1\src;C:\Users\iwh-pc\Documents\College\modern\it276\original\hyde\src;$(SourcePath)</SourcePath>
+    <SourcePath>
+    </SourcePath>
     <ExecutablePath>C:\Users\ifwhy\Documents\Projects\project2017\dll;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -69,10 +70,10 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <CompileAs>CompileAsC</CompileAs>
-      <AdditionalIncludeDirectories>./</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalIncludeDirectories>C:\Users\ifwhy\Documents\Projects\project2017\src;./</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -113,28 +114,32 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\boolean.h" />
-    <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\Component.hpp" />
+    <ClInclude Include="src\Entity.hpp" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gfunc.h" />
     <ClInclude Include="src\graphic.h" />
     <ClInclude Include="src\include.h" />
     <ClInclude Include="src\input.h" />
-    <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\main.hpp" />
     <ClInclude Include="src\spawn.h" />
     <ClInclude Include="src\sprite.h" />
     <ClInclude Include="src\textInput.h" />
     <ClInclude Include="src\time.h" />
     <ClInclude Include="src\weapon.h" />
+    <ClInclude Include="Time.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\entity.c" />
+    <ClCompile Include="src\Component.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\gfunc.c" />
     <ClCompile Include="src\graphic.c" />
-    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\spawn.c" />
     <ClCompile Include="src\sprite.c" />
     <ClCompile Include="src\textInput.c" />
+    <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\weapon.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -16,7 +16,7 @@
 #include <chipmunk.h>
 
 // Custom headers
-#include "main.h"
+//#include "main.h"
 #include "boolean.h"
 #include "entity.h"
 
@@ -115,7 +115,7 @@ void endApp() // shut down, deallocate everything, free memory for other Apps ru
 	exit(0); // exit, unknown parameter
 }
 
-int main(int argc, char *argv[]) // <<<<< the program starts HERE
+/*int main(int argc, char *argv[]) // <<<<< the program starts HERE
 {
 	bool done = false; // create boolean for determining when the app should stop running
 	// at some point this boolean will be turned true, most likely by input from the player
@@ -143,4 +143,4 @@ int main(int argc, char *argv[]) // <<<<< the program starts HERE
 	endApp(); // game will only run while done is still false, if ever true, it reaches here
 
 	return 0; // application will end
-}
+}*/

@@ -71,7 +71,7 @@ struct Health
 	Not really necessary here.
 */
 /*
-	Entity should control size of Sprite via transform
+	Entity should control size of Sprite via transform->scale
 */
 
 /**********************************************************************************************//**
